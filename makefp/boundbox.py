@@ -30,24 +30,38 @@ HPs = ((1, 5.00),
 
 
 def create_layer_table():
+    laytab={}
     numlayers = pcbnew.PCB_LAYER_ID_COUNT
     for i in range(numlayers):
-        layertable[board.GetLayerName(i)] = i
-    return layertable
+        laytab[board.GetLayerName(i)] = i
+    return laytab
 
 
-# Get the bounding box around the edge cuts
 def find_pcb_outline_bbox():
-    rect = None
+    """Get the bounding box around all edge cuts drawings, and list of edge cuts drawings"""
+    edgecuts_dwgs = []
+    boundingbox = None
     for d in board.GetDrawings():
         if (d.GetLayerName() != "Edge.Cuts"):
             continue
-        if (rect == None):
-            rect = d.GetBoundingBox()
+        edgecuts_dwgs.append(d)
+        if (boundingbox == None):
+            boundingbox = d.GetBoundingBox()
         else:
-            rect.Merge(d.GetBoundingBox())
-    rect.Inflate(-150000) #assume a 0.15mm line width
-    return rect
+            boundingbox.Merge(d.GetBoundingBox())
+    boundingbox.Inflate(-150000) #assume a 0.15mm line width
+    return boundingbox, edgecuts_dwgs
+
+
+def delete_drawings_on_layer(layernum):
+    for d in board.GetDrawings():
+        if (d.GetLayer() != layernum):
+            continue
+        board.Remove(d)
+
+def move_drawings(dwgs, tolayernum):
+    for d in dwgs:
+        d.SetLayer(tolayernum)
 
 
 # Calculate the HP
@@ -60,12 +74,18 @@ def find_width_to_hp(pcbwidth):
 
 #def remove_inner_edgecuts(bottomleft, topright):
 
+
 #Create the layer table
 layertable=create_layer_table()
 
+# Find the pcb outline and a list of the drawings on the edgecuts layer
+pcboutline, edgecuts_dwgs = find_pcb_outline_bbox()
+
 # Find the center of the pcb outline
-pcboutline = find_pcb_outline_bbox()
 pcbcenter = pcboutline.Centre()
+
+# Move the previous edge cuts to comments layer
+move_drawings(edgecuts_dwgs, layertable['Cmts.User'])
 
 
 # Set the fp width to the smallest standard HP size that's larger than the pcb width
@@ -110,3 +130,12 @@ board.Add(rightline)
 rightline.SetLayer(layertable['Edge.Cuts'])
 rightline.SetStart(topright)
 rightline.SetEnd(bottomright)
+
+#remove all tracks
+delete_drawings_on_layer(layertable["F.Cu"])
+delete_drawings_on_layer(layertable["B.Cu"])
+
+# Add the rail mounts
+
+
+
