@@ -5,8 +5,10 @@
 # Then delete everything without this attribute
 #
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/deletefootprints.py")
+# execfile("/Users/design/gdrive/4ms/kicad-pcb/_script/makefp/deletefootprints.py")
 
-footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+#footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+footprint_lib = "/Users/design/gdrive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 footprint_convert={
 'ROTENC-12MM-BUT': 'FaceplateHole_Encoder_290',
@@ -56,17 +58,17 @@ def find_pcb_outline_bbox():
     boundingbox.Inflate(-150000) #assume a 0.15mm line width
     return boundingbox
 
-def find_net(netname_str):
-	nets = board.GetNetsByName()
-	found_neti = nets.find(netname_str)
-	if (found_neti != nets.end()):
-		found_net = found_neti.value()[1]
-		return found_net
-	else:
-		print "Net name {} not found".format(netname_str)
+# def find_net(netname_str):
+# 	nets = board.GetNetsByName()
+# 	found_neti = nets.find(netname_str)
+# 	if (found_neti != nets.end()):
+# 		found_net = found_neti.value()[1]
+# 		return found_net
+# 	else:
+# 		print "Net name {} not found".format(netname_str)
 
 
-def convert_and_delete_modules(midline, net, remove_layer=pcbnew.F_Cu):
+def convert_and_delete_modules(midline, remove_layer=pcbnew.F_Cu):
     for m in board.GetModules():
 
 		center = m.GetPosition()
@@ -85,9 +87,9 @@ def convert_and_delete_modules(midline, net, remove_layer=pcbnew.F_Cu):
 			center.x = new_x
 			faceplate_mod.SetPosition(center)
 
-			pads = faceplate_mod.Pads()
-			for pad in pads:
-				pad.SetNet(net)
+			# pads = faceplate_mod.Pads()
+			# for pad in pads:
+			# 	pad.SetNet(net)
 
 			board.Add(faceplate_mod)
 
@@ -113,10 +115,10 @@ def convert_and_delete_modules(midline, net, remove_layer=pcbnew.F_Cu):
 bbox = find_pcb_outline_bbox()
 center = bbox.Centre()
 
-gndnet = find_net("GND")
+# gndnet = find_net("GND")
 #remove all other nets
 #remove_all_nets_but("GND")
 
-convert_and_delete_modules(center.x, gndnet)
+convert_and_delete_modules(center.x)
 
 

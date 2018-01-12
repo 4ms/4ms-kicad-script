@@ -4,8 +4,10 @@
 # Then move the existing EdgeCuts to Cmts.User
 #
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/boundbox.py")
+# execfile("/Users/design/gdrive/4ms/kicad-pcb/_script/makefp/boundbox.py")
 
-footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+#footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+footprint_lib = "/Users/design/gdrive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
 railmount_fp = "FACEPLATE-Rail-mount-slot"
 
 import pcbnew

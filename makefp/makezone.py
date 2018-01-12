@@ -1,7 +1,11 @@
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/makezone.py")
+# execfile("/Users/design/gdrive/4ms/kicad-pcb/_script/makefp/makezone.py")
+
+#todo: set zone pad connections to "Solid" instead of "Thermal Relief"
 
 import pcbnew
 board = pcbnew.GetBoard()
+SCALE = 1000000.0
 
 def find_net(netname_str):
 	nets = board.GetNetsByName()
@@ -37,30 +41,18 @@ gndnet = find_net("GND")
 set_all_pads_to_net(gndnet)
 
 pcboutline = find_pcb_outline_bbox()
-pcbwidth = pcboutline.GetWidth()
 
-# Calculate the left and right edges of the faceplate
-fpleft = pcbcenter.x - pcbwidth*SCALE/2.0
-fpright = fpleft + pcbwidth*SCALE
+pcboutline.Inflate(-1 * pcbnew.FromMils(10))
+leftside = pcboutline.GetLeft()
+rightside = pcboutline.GetRight()
+bottomside = pcboutline.GetBottom()
+topside = pcboutline.GetTop()
 
-# Calculate the top and bottom edges of the faceplate (128.5mm height)
-fpbottom = pcbcenter.y + 128.5*SCALE/2.0
-fptop = fpbottom - 128.5*SCALE
+print "Creating copper pour on GND: top={} bottom={} left={} right={}".format(topside/SCALE, bottomside/SCALE, leftside/SCALE, rightside/SCALE)
 
-# Calculate the four corners
-bottomleft = pcbnew.wxPoint(int(fpleft), int(fpbottom))
-bottomright = pcbnew.wxPoint(int(fpright), int(fpbottom))
-topleft = pcbnew.wxPoint(int(fpleft), int(fptop))
-topright = pcbnew.wxPoint(int(fpright), int(fptop))
-
-
-zone_container = board.InsertArea(gndnet.GetNet(), 0, pcbnew.B_Cu, topleft.x, topleft.y, pcbnew.CPolyLine.DIAGONAL_EDGE)
+zone_container = board.InsertArea(gndnet.GetNet(), 0, pcbnew.B_Cu, leftside, topside, pcbnew.CPolyLine.DIAGONAL_EDGE)
 shape_poly_set = zone_container.Outline()
-shape_poly_set.Append(topright.x, topright.y);
-shape_poly_set.Append(bottomright.x, bottomright.y);
-shape_poly_set.Append(bottomleft.x, bottomleft.y);
-shape_poly_set.Append(topleft.x, topleft.y);
-#shape_poly_set.CloseLastContour()
+shape_poly_set.Append(leftside, bottomside);
+shape_poly_set.Append(rightside, bottomside);
+shape_poly_set.Append(rightside, topside);
 zone_container.Hatch()
-
-
