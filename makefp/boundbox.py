@@ -1,10 +1,16 @@
 # Create a EdgeCuts box centered around existing EdgeCuts
 #     Height=5.059in
 #     Width = smallest HP size possible (from A-100 tech specs lookup table)
-# Then delete the existing EdgeCuts
+# Then move the existing EdgeCuts to Cmts.User
+#
+# execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/boundbox.py")
+
+footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+railmount_fp = "FACEPLATE-Rail-mount-slot"
 
 import pcbnew
 board = pcbnew.GetBoard()
+io = pcbnew.PCB_IO()
 
 SCALE = 1000000.0
 
@@ -29,12 +35,12 @@ HPs = ((1, 5.00),
 (42, 213.00))
 
 
-def create_layer_table():
-    laytab={}
-    numlayers = pcbnew.PCB_LAYER_ID_COUNT
-    for i in range(numlayers):
-        laytab[board.GetLayerName(i)] = i
-    return laytab
+# def create_layer_table():
+#     laytab={}
+#     numlayers = pcbnew.PCB_LAYER_ID_COUNT
+#     for i in range(numlayers):
+#         laytab[board.GetLayerName(i)] = i
+#     return laytab
 
 
 def find_pcb_outline_bbox():
@@ -53,15 +59,9 @@ def find_pcb_outline_bbox():
     return boundingbox, edgecuts_dwgs
 
 
-def delete_drawings_on_layer(layernum):
-    for d in board.GetDrawings():
-        if (d.GetLayer() != layernum):
-            continue
-        board.Remove(d)
-
-def move_drawings(dwgs, tolayernum):
-    for d in dwgs:
-        d.SetLayer(tolayernum)
+def move_drawings(dwgs_list, dest_layernum):
+    for d in dwgs_list:
+        d.SetLayer(dest_layernum)
 
 
 # Calculate the HP
@@ -75,8 +75,8 @@ def find_width_to_hp(pcbwidth):
 #def remove_inner_edgecuts(bottomleft, topright):
 
 
-#Create the layer table
-layertable=create_layer_table()
+# #Create the layer table
+# layertable=create_layer_table()
 
 # Find the pcb outline and a list of the drawings on the edgecuts layer
 pcboutline, edgecuts_dwgs = find_pcb_outline_bbox()
@@ -85,7 +85,7 @@ pcboutline, edgecuts_dwgs = find_pcb_outline_bbox()
 pcbcenter = pcboutline.Centre()
 
 # Move the previous edge cuts to comments layer
-move_drawings(edgecuts_dwgs, layertable['Cmts.User'])
+move_drawings(edgecuts_dwgs, pcbnew.Cmts_User)
 
 
 # Set the fp width to the smallest standard HP size that's larger than the pcb width
@@ -109,33 +109,46 @@ topright = pcbnew.wxPoint(int(fpright), int(fptop))
 # Draw the board outline segments
 bottomline = pcbnew.DRAWSEGMENT(board)
 board.Add(bottomline)
-bottomline.SetLayer(layertable['Edge.Cuts'])
+bottomline.SetLayer(pcbnew.Edge_Cuts)
 bottomline.SetStart(bottomleft)
 bottomline.SetEnd(bottomright)
 
 topline = pcbnew.DRAWSEGMENT(board)
 board.Add(topline)
-topline.SetLayer(layertable['Edge.Cuts'])
+topline.SetLayer(pcbnew.Edge_Cuts)
 topline.SetStart(topleft)
 topline.SetEnd(topright)
 
 leftline = pcbnew.DRAWSEGMENT(board)
 board.Add(leftline)
-leftline.SetLayer(layertable['Edge.Cuts'])
+leftline.SetLayer(pcbnew.Edge_Cuts)
 leftline.SetStart(topleft)
 leftline.SetEnd(bottomleft)
 
 rightline = pcbnew.DRAWSEGMENT(board)
 board.Add(rightline)
-rightline.SetLayer(layertable['Edge.Cuts'])
+rightline.SetLayer(pcbnew.Edge_Cuts)
 rightline.SetStart(topright)
 rightline.SetEnd(bottomright)
 
-#remove all tracks
-delete_drawings_on_layer(layertable["F.Cu"])
-delete_drawings_on_layer(layertable["B.Cu"])
+#add rail mount slots
+railmount_topleft = pcbnew.wxPoint(topleft.x + 0.295*25.4*SCALE, topleft.y + 0.118*25.4*SCALE)
+railmount_topright = pcbnew.wxPoint(topright.x - 0.295*25.4*SCALE, topright.y + 0.118*25.4*SCALE)
+railmount_bottomleft = pcbnew.wxPoint(bottomleft.x + 0.295*25.4*SCALE, bottomleft.y - 0.118*25.4*SCALE)
+railmount_bottomright = pcbnew.wxPoint(bottomright.x - 0.295*25.4*SCALE, bottomright.y - 0.118*25.4*SCALE)
 
-# Add the rail mounts
+mod = io.FootprintLoad(footprint_lib, railmount_fp)
+mod.SetPosition(railmount_topleft)
+board.Add(mod)
 
+mod = io.FootprintLoad(footprint_lib, railmount_fp)
+mod.SetPosition(railmount_topright)
+board.Add(mod)
 
+mod = io.FootprintLoad(footprint_lib, railmount_fp)
+mod.SetPosition(railmount_bottomleft)
+board.Add(mod)
 
+mod = io.FootprintLoad(footprint_lib, railmount_fp)
+mod.SetPosition(railmount_bottomright)
+board.Add(mod)

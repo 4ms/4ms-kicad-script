@@ -1,27 +1,27 @@
+# Delete all tracks and drawings on F.Cu and B.Cu layers
+#
+# execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/removetracks.py")
+
 import pcbnew
 board = pcbnew.GetBoard()
 
-SCALE = 1000000.0
-
-	
-
 def delete_tracks_on_layer(layernum):
     for d in board.GetTracks():
-        if (d.GetLayer() != layernum):
-            continue
-        board.Remove(d)
+        if (d.GetLayer() == layernum):
+        	board.Remove(d)
 
-def create_layer_table():
-    laytab={}
-    numlayers = pcbnew.PCB_LAYER_ID_COUNT
-    for i in range(numlayers):
-        laytab[board.GetLayerName(i)] = i
-    return laytab
+def delete_graphics_on_layer(layernum):
+    for d in board.GetDrawings():
+        if (d.GetLayer() == layernum):
+        	board.Remove(d)
 
-layertable = create_layer_table()
+
 
 #remove all tracks
-delete_tracks_on_layer(layertable["F.Cu"])
-delete_tracks_on_layer(layertable["B.Cu"])
+delete_tracks_on_layer(pcbnew.F_Cu)
+delete_tracks_on_layer(pcbnew.B_Cu)
 
-
+delete_graphics_on_layer(pcbnew.F_Cu)
+delete_graphics_on_layer(pcbnew.B_Cu)
+delete_graphics_on_layer(pcbnew.F_SilkS)
+delete_graphics_on_layer(pcbnew.B_SilkS)
