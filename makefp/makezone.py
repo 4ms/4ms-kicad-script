@@ -55,4 +55,5 @@ shape_poly_set = zone_container.Outline()
 shape_poly_set.Append(leftside, bottomside);
 shape_poly_set.Append(rightside, bottomside);
 shape_poly_set.Append(rightside, topside);
+zone_container.SetPadConnection(pcbnew.PAD_ZONE_CONN_FULL);
 zone_container.Hatch()

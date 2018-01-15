@@ -1,6 +1,6 @@
 # Delete all modules except for known faceplate modules
 # 
-# Todo: perhaps we coudl set an attribute of each module
+# Todo: perhaps we could set an attribute of each module
 # that tells what its faceplate equivlent is
 # Then delete everything without this attribute
 #

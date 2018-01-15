@@ -37,14 +37,6 @@ HPs = ((1, 5.00),
 (42, 213.00))
 
 
-# def create_layer_table():
-#     laytab={}
-#     numlayers = pcbnew.PCB_LAYER_ID_COUNT
-#     for i in range(numlayers):
-#         laytab[board.GetLayerName(i)] = i
-#     return laytab
-
-
 def find_pcb_outline_bbox():
     """Get the bounding box around all edge cuts drawings, and list of edge cuts drawings"""
     edgecuts_dwgs = []
@@ -73,12 +65,6 @@ def find_width_to_hp(pcbwidth):
             #print("HP={}".format(hp))
             return width
             break;
-
-#def remove_inner_edgecuts(bottomleft, topright):
-
-
-# #Create the layer table
-# layertable=create_layer_table()
 
 # Find the pcb outline and a list of the drawings on the edgecuts layer
 pcboutline, edgecuts_dwgs = find_pcb_outline_bbox()
