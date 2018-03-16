@@ -1,14 +1,17 @@
+# Run this 2nd
+#
 # Create a EdgeCuts box centered around existing EdgeCuts
 #     Height=5.059in
 #     Width = smallest HP size possible (from A-100 tech specs lookup table)
 # Then move the existing EdgeCuts to Cmts.User
 #
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/boundbox.py")
-# execfile("/Users/design/gdrive/4ms/kicad-pcb/_script/makefp/boundbox.py")
+# execfile("/Users/design/4ms/kicad-pcb/_script/makefp/boundbox.py")
 
 #footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
-footprint_lib = "/Users/design/gdrive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
-railmount_fp = "FACEPLATE-Rail-mount-slot"
+footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+
+railmount_fp = "Faceplate_Rail_Mount_Slot"
 
 import pcbnew
 board = pcbnew.GetBoard()

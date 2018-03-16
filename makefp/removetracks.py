@@ -1,7 +1,13 @@
+# Run this 1st.
+# 1st: removetracks.py
+# 2nd: boundbox.py
+# 3rd: deletefootprints.py
+# 4th: makezone.py
+#
 # Delete all tracks and drawings on F.Cu and B.Cu layers
 #
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/removetracks.py")
-# execfile("/Users/design/gdrive/4ms/kicad-pcb/_script/makefp/removetracks.py")
+# execfile("/Users/design/4ms/kicad-pcb/_script/makefp/removetracks.py")
 
 import pcbnew
 board = pcbnew.GetBoard()

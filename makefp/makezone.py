@@ -1,5 +1,7 @@
+# Run this 4th
+#
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/makezone.py")
-# execfile("/Users/design/gdrive/4ms/kicad-pcb/_script/makefp/makezone.py")
+# execfile("/Users/design/4ms/kicad-pcb/_script/makefp/makezone.py")
 
 #todo: set zone pad connections to "Solid" instead of "Thermal Relief"
 
