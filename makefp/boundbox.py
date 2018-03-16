@@ -81,7 +81,7 @@ pcbwidth = pcboutline.GetWidth()
 fpwidth = find_width_to_hp(pcbwidth/SCALE)
 
 # Calculate the left and right edges of the faceplate
-fpleft = pcbcenter.x - fpwidth*SCALE/2.0
+fpleft = pcbcenter.x - pcbnew.FromMMfpwidth*SCALE/2.0
 fpright = fpleft + fpwidth*SCALE
 
 # Calculate the top and bottom edges of the faceplate (128.5mm height)
@@ -124,6 +124,16 @@ railmount_topleft = pcbnew.wxPoint(topleft.x + 0.295*25.4*SCALE, topleft.y + 0.1
 railmount_topright = pcbnew.wxPoint(topright.x - 0.295*25.4*SCALE, topright.y + 0.118*25.4*SCALE)
 railmount_bottomleft = pcbnew.wxPoint(bottomleft.x + 0.295*25.4*SCALE, bottomleft.y - 0.118*25.4*SCALE)
 railmount_bottomright = pcbnew.wxPoint(bottomright.x - 0.295*25.4*SCALE, bottomright.y - 0.118*25.4*SCALE)
+
+
+
+# fp = pcbnew.LIB_ID("4ms_Faceplate", "FACEPLATE-Rail-mount-slot")
+# if fp.IsValid():
+#     mod = pcbnew.MODULE(board)
+#     mod.SetFPID(fp)
+#     mod.SetPosition(railmount_topleft)
+#     board.Add(mod)
+
 
 mod = io.FootprintLoad(footprint_lib, railmount_fp)
 mod.SetPosition(railmount_topleft)
