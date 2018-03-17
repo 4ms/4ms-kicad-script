@@ -5,9 +5,18 @@
 # 4th: makezone.py
 #
 # Delete all tracks and drawings on F.Cu and B.Cu layers
-#
+
+#Dan's Home exe:
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/removetracks.py")
+
+#Dan's Work exe:
 # execfile("/Users/design/4ms/kicad-pcb/_script/makefp/removetracks.py")
+
+#Zach's exe:
+# execfile("/Users/dag/Desktop/kicad/4ms-kicad-script/makefp/removetracks.py")
+
+#Darcy's exe:
+# execfile("/XXXXXXXXXXXXXXXXX/makefp/removetracks.py")
 
 import pcbnew
 board = pcbnew.GetBoard()

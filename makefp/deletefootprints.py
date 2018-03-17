@@ -6,18 +6,27 @@
 # Todo: perhaps we could set an attribute of each module
 # that tells what its faceplate equivlent is
 # Then delete everything without this attribute
-#
+
+#Dan's home exe:
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/deletefootprints.py")
+
+#Dan's work exe:
 # execfile("/Users/design/4ms/kicad-pcb/_script/makefp/deletefootprints.py")
+
+#Zach's exe:
+# execfile("/Users/dag/Desktop/kicad/4ms-kicad-script/makefp/deletefootprints.py")
+
+#Darcy's exe:
+# execfile("/XXXXXXXXXXXXXX/makefp/deletefootprints.py")
 
 #Dan's home computer:
 #footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 #Dan's work comptuer:
-footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+#footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 #Zach's computer:
-#footprint_lib = "xxxxxxxx/_lib/lib-footprints/4ms_Faceplate.pretty"
+footprint_lib = "/Users/dag/Desktop/kicad/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 #Darcy's computer:
 #footprint_lib = "xxxxxxxx/_lib/lib-footprints/4ms_Faceplate.pretty"
