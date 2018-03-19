@@ -37,6 +37,9 @@ footprint_convert={
 'SPDT-SUB': 'Faceplate_Hole_SubMini_Toggle',
 'RGB_ROTARY_ENCODER': 'Faceplate_Hole_Encoder_RGB_NoBushing',
 'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
+'BUTTON-LED-PB61303': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
+'TRIM-T73YE': 'Faceplate_Hole_Trim_3.175mm_With_Mask_Opening',
+
 'PJ301M-12': 'Faceplate_Hole_Jack_3.5mm',
 'PJ366ST': 'Faceplate_Hole_Jack_3.5mm',
 'PJ301M-12-FIX': 'Faceplate_Hole_Jack_3.5mm',
