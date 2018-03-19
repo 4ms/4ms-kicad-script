@@ -39,6 +39,7 @@ footprint_convert={
 'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
 'PJ301M-12': 'Faceplate_Hole_Jack_3.5mm',
 'PJ366ST': 'Faceplate_Hole_Jack_3.5mm',
+'PJ301M-12-FIX': 'Faceplate_Hole_Jack_3.5mm',
 'LED-PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
 
 'LED-C1-A2-3MM-VERT': 'Faceplate_Hole_LED_3mm',
@@ -130,10 +131,10 @@ def convert_and_delete_modules(midline, remove_layer=pcbnew.F_Cu):
 			continue
 
 		#print "Removing footprint: {} at {}mm,{}mm.".format(footpr, center.x/SCALE, center.y/SCALE)
-		print "Unknown Back layer footprint: {} at {}mm,{}mm. Moving 200mm down ".format(footpr, center.x/SCALE, center.y/SCALE)
-		center.y = center.y + int(2000.0*SCALE)
-		center.x = 0
-		m.SetPosition(center)
+		print "Unknown Back layer footprint: {} at {}mm,{}mm. ".format(footpr, center.x/SCALE, center.y/SCALE)
+		#center.y = center.y + int(2000.0*SCALE)
+		#center.x = 0
+		#m.SetPosition(center)
 
 
 bbox = find_pcb_outline_bbox()
