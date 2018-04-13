@@ -4,12 +4,31 @@
 #     Height=5.059in
 #     Width = smallest HP size possible (from A-100 tech specs lookup table)
 # Then move the existing EdgeCuts to Cmts.User
-#
+
+
+#Dan's home path:
 # execfile("/Users/dann/Google Drive/4ms/kicad-pcb/_script/makefp/boundbox.py")
+
+#Dan's work Path
 # execfile("/Users/design/4ms/kicad-pcb/_script/makefp/boundbox.py")
 
+#Zach's path:
+# execfile("/Users/dag/Desktop/kicad/4ms-kicad-script/makefp/boundbox.py")
+
+#Darcy's Path
+# execfile("XXXXXXXXXXXXXXXXXX/makefp/boundbox.py")
+
+#Dan's home computer:
 #footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
-footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+
+#Dan's work comptuer:
+#footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+
+#Zach's computer:
+footprint_lib = "/Users/dag/Desktop/kicad/_lib/lib-footprints/4ms_Faceplate.pretty"
+
+#Darcy's computer:
+#footprint_lib = "xxxxxxxx/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 railmount_fp = "Faceplate_Rail_Mount_Slot"
 
