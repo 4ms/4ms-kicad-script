@@ -39,18 +39,25 @@ footprint_convert={
 'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
 'BUTTON-LED-PB61303': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
 'TRIM-T73YE': 'Faceplate_Hole_Trim_3.175mm_With_Mask_Opening',
+'POT-9MM-SONGHUEI': 'Faceplate_Hole_Pot_9mm',
+#Metal Colar
+#'POT-9MM-SONGHUEI': 'Faceplate_Hole_Pot_9mm_Metal_Collar',
 
 'PJ301M-12': 'Faceplate_Hole_Jack_3.5mm',
 'PJ366ST': 'Faceplate_Hole_Jack_3.5mm',
 'PJ301M-12-FIX': 'Faceplate_Hole_Jack_3.5mm',
 'LED-PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
+'PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
+'Switch_Toggle_SPDT_Mini_SolderLug': 'Switch_Toggle_Mini_6.35mm_With_Mask_Opening',
 
 'LED-C1-A2-3MM-VERT': 'Faceplate_Hole_LED_3mm',
 'LED_D3.0mm-3': 'Faceplate_Hole_LED_3mm',
 'LED-3MM-SQUARE-ANODE': 'Faceplate_Hole_LED_3mm',
+'LED-T1X2': 'Faceplate_Hole_LED_3mm',
 'LED-T1': 'Faceplate_Hole_LED_3mm',
 
 'POT-SLIDER-LED-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
+'POT-SLIDER-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
 '16MM-RV16AF-4A': 'Faceplate_Hole_Pot_16mm',
 'POT-9MM-ALPHA': 'Faceplate_Hole_Pot_9mm',
 'Slide_Switch_SS22D06-G6-H_Runrun': 'Slide_Switch_SS22D06_Runrun_faceplate',
