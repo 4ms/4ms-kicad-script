@@ -7,9 +7,11 @@ import pcbnew
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, Circle, Ellipse, FancyBboxPatch
 
+import textwrap
 
 def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
     qty, value, footpr, highlight_refs = bom_row
+    # global ax
 
     plt.figure(figsize=(5.8, 8.2))
     ax = plt.subplot("111", aspect="equal")
@@ -39,12 +41,12 @@ def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
 
     # add title
     ax.text(board_xmin + .5 * (board_xmax - board_xmin), board_ymin - 0.5,
-            "%dx %s, %s" % (qty, value, footpr), wrap=True,
-            horizontalalignment='center', verticalalignment='bottom')\
+            "%dx %s, %s" % (qty, value, footpr), 
+            horizontalalignment='center', verticalalignment='bottom')
 
     # add ref list
-    ax.text(board_xmin + .5 * (board_xmax - board_xmin), board_ymax + 0.5,
-            ", ".join(highlight_refs), wrap=True,
+    ax.text((board_xmax + board_xmin)*0.5, board_ymax + 0.5,
+            textwrap.fill(", ".join(highlight_refs), 60), 
             horizontalalignment='center', verticalalignment='top')
 
     # draw parts
@@ -91,7 +93,7 @@ def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
             elif shape == 0:
                 rct = Ellipse(pos, size[0], size[1], angle=angle)
             else:
-                print("Unsupported pad shape")
+                print("Unsupported pad shape", shape)
                 continue
             rct.set_linewidth(0)
             rct.set_color(color_pad2 if highlight else color_pad1)
@@ -142,6 +144,9 @@ def generate_bom(pcb, filter_layer=None):
         refs.append(m.GetReference())
 
     # build bom table, sort refs
+    # bom_table is a list of lines
+    #    line is a tuple of (qty-int, value-string, fp-string, refs-[list])
+    #    refs is a list of references
     bom_table = []
     for (value, footpr), refs in part_groups.items():
         line = (len(refs), value, footpr, natural_sort(refs))
@@ -158,24 +163,38 @@ def generate_bom(pcb, filter_layer=None):
 
 
 if __name__ == "__main__":
-    import argparse
+    #import argparse
     from matplotlib.backends.backend_pdf import PdfPages
 
-    parser = argparse.ArgumentParser(description='KiCad PCB pick and place assistant')
-    parser.add_argument('file', type=str, help="KiCad PCB file")
-    args = parser.parse_args()
+    #parser = argparse.ArgumentParser(description='KiCad PCB pick and place assistant')
+    #parser.add_argument('file', type=str, help="KiCad PCB file")
+    #args = parser.parse_args()
 
     # build BOM
-    print("Loading %s" % args.file)
-    pcb = pcbnew.LoadBoard(args.file)
-    bom_table = generate_bom(pcb, filter_layer=pcbnew.F_Cu)
+    #print("Loading %s" % args.file)
+    #pcb = pcbnew.LoadBoard(args.file)
+    pcb = pcbnew.GetBoard()
+    bom_table = generate_bom(pcb, filter_layer=pcbnew.B_Cu)
 
     # for each part group, print page to PDF
-    fname_out = os.path.splitext(args.file)[0] + "_picknplace.pdf"
-    with PdfPages(fname_out) as pdf:
-        for i, bom_row in enumerate(bom_table):
-            print("Plotting page (%d/%d)" % (i+1, len(bom_table)))
-            create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu)
+    #fname_out = os.path.splitext(args.file)[0] + "_picknplace.pdf"
+    # if (int(sys.args[0])>0 && int(sys.args[0])<len(bom_table)):
+        # pagenum = int(sys.args[0]);
+    print_just_page_one = False
+    if print_just_page_one:
+        pagenum = 1
+        fname_out = pcb.GetFileName() + "_picknplace_"+str(pagenum)+".pdf"
+        with PdfPages(fname_out) as pdf:
+            bom_row = bom_table[pagenum-1]
+            print("Plotting page %d/%d" % (pagenum, len(bom_table)))
+            create_board_figure(pcb, bom_row, layer=pcbnew.B_Cu)
             pdf.savefig()
-            plt.close()
+    else:
+        fname_out = pcb.GetFileName() + "_picknplace.pdf"
+        with PdfPages(fname_out) as pdf:
+            for i, bom_row in enumerate(bom_table):
+                print("Plotting page (%d/%d)" % (i+1, len(bom_table)))
+                create_board_figure(pcb, bom_row, layer=pcbnew.B_Cu)
+                pdf.savefig()
+                #plt.close('') # This throws an error with wx when run interactively
     print("Output written to %s" % fname_out)
