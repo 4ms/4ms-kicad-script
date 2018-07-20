@@ -16,57 +16,70 @@
 #Zach's exe:
 # execfile("/Users/dag/Desktop/kicad/4ms-kicad-script/makefp/deletefootprints.py")
 
-#Darcy's exe:
-# execfile("/XXXXXXXXXXXXXX/makefp/deletefootprints.py")
-
 #Dan's home computer:
 #footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 #Dan's work comptuer:
-#footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 #Zach's computer:
-footprint_lib = "/Users/dag/Desktop/kicad/_lib/lib-footprints/4ms_Faceplate.pretty"
-
-#Darcy's computer:
-#footprint_lib = "xxxxxxxx/_lib/lib-footprints/4ms_Faceplate.pretty"
+# footprint_lib = "/Users/dag/Desktop/kicad/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 
 footprint_convert={
-'ROTENC-12MM-BUT': 'Faceplate_Hole_Encoder_290',
-'SPDT-SUB': 'Faceplate_Hole_SubMini_Toggle',
-'RGB_ROTARY_ENCODER': 'Faceplate_Hole_Encoder_RGB_NoBushing',
-'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
-'BUTTON-LED-PB61303': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
-'TRIM-T73YE': 'Faceplate_Hole_Trim_3.175mm_With_Mask_Opening',
+
+# POTS
+'Potentiometer_Alpha_RV112_Dual_Vert': 'Faceplate_Hole_Pot_16mm',
 'POT-9MM-SONGHUEI': 'Faceplate_Hole_Pot_9mm',
-#Metal Colar
+'16MM-RV16AF-4A': 'Faceplate_Hole_Pot_16mm',
+'POT-9MM-ALPHA': 'Faceplate_Hole_Pot_9mm',
+'TRIM-T73YE': 'Faceplate_Hole_Trim_3.175mm_With_Mask_Opening',
+#Metal Collar 9mm pot
 #'POT-9MM-SONGHUEI': 'Faceplate_Hole_Pot_9mm_Metal_Collar',
 
+# SLIDERS:
+'POT-SLIDER-LED-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
+'POT-SLIDER-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
+
+# ENCODERS:
+'RGB_ROTARY_ENCODER': 'Faceplate_Hole_Encoder_RGB_NoBushing',
+'ROTENC-12MM-BUT': 'Faceplate_Hole_Encoder_290',
+
+# JACKS:
 'PJ301M-12': 'Faceplate_Hole_Jack_3.5mm',
 'PJ366ST': 'Faceplate_Hole_Jack_3.5mm',
 'PJ301M-12-FIX': 'Faceplate_Hole_Jack_3.5mm',
-'LED-PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
-'PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
-'Switch_Toggle_SPDT_Mini_SolderLug': 'Switch_Toggle_Mini_6.35mm_With_Mask_Opening',
+'EighthInch_PJ398SM': 'Faceplate_Hole_Jack_3.5mm',
 
+# LEDS AND LIGHTPIPES:
+'LED-PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
+'LED_0603_1608Metric': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
+'PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
 'LED-C1-A2-3MM-VERT': 'Faceplate_Hole_LED_3mm',
 'LED_D3.0mm-3': 'Faceplate_Hole_LED_3mm',
 'LED-3MM-SQUARE-ANODE': 'Faceplate_Hole_LED_3mm',
 'LED-T1X2': 'Faceplate_Hole_LED_3mm',
 'LED-T1': 'Faceplate_Hole_LED_3mm',
 
-'POT-SLIDER-LED-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
-'POT-SLIDER-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
-'16MM-RV16AF-4A': 'Faceplate_Hole_Pot_16mm',
-'POT-9MM-ALPHA': 'Faceplate_Hole_Pot_9mm',
+# FLIP SWITCHES
+'Switch_Toggle_SPDT_Mini_SolderLug': 'Switch_Toggle_Mini_6.35mm_With_Mask_Opening',
+'SPDT-SUB': 'Faceplate_Hole_SubMini_Toggle',
+'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
+
+# BUTTONS:
+'BUTTON-LED-PB61303': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
+
+# SLIDE SWITCHES
 'Slide_Switch_SS22D06-G6-H_Runrun': 'Slide_Switch_SS22D06_Runrun_faceplate',
 'SWITCHCRAFT-STEREO-SW_with_outline': 'Faceplate_Hole_Jack_Quarter_Inch',
 
+# SPACERS/MOUNTS/SLOTS
 'Faceplate_Rail_Mount_Slot': 'Faceplate_Rail_Mount_Slot',
 'Faceplate_Hole_Spacer_Mount_256': 'Faceplate_Hole_Spacer_Mount_256',
-'Faceplate_Hole_FSR_slot': 'Faceplate_Hole_FSR_slot'
+'Faceplate_Hole_FSR_slot': 'Faceplate_Hole_FSR_slot',
 
+
+'last_item': 'last_item'
 }
 
 remove_fps = ['R0603', 'C0603', 'PAD-06']

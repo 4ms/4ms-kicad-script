@@ -22,10 +22,10 @@
 #footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 #Dan's work comptuer:
-#footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
+footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 #Zach's computer:
-footprint_lib = "/Users/dag/Desktop/kicad/_lib/lib-footprints/4ms_Faceplate.pretty"
+# footprint_lib = "/Users/dag/Desktop/kicad/_lib/lib-footprints/4ms_Faceplate.pretty"
 
 #Darcy's computer:
 #footprint_lib = "xxxxxxxx/_lib/lib-footprints/4ms_Faceplate.pretty"
