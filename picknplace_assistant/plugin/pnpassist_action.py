@@ -6,11 +6,81 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, Circle, Ellipse, FancyBboxPatch
 from matplotlib.backends.backend_pdf import PdfPages
+import wx
 
 import textwrap
 
+class displayDialog(wx.Dialog):
+    """
+    The default frame
+    http://stackoverflow.com/questions/3566603/how-do-i-make-wx-textctrl-multi-line-text-update-smoothly
+    """
+
+    #----------------------------------------------------------------------
+    #def __init__(self):
+    #    """Constructor"""
+    #    wx.Frame.__init__(self, None, title="Display Frame", style=wx.DEFAULT_FRAME_STYLE, wx.ICON_INFORMATION)
+    #    panel = wx.Panel(self)
+    def __init__(self, parent):
+        wx.Dialog.__init__(self, parent, id=-1, title="PNP Assist output")#
+        #, style=wx.DEFAULT_DIALOG_STYLE, wx.ICON_INFORMATION) 
+        #, style=wx.DEFAULT_DIALOG_STYLE, wx.ICON_INFORMATION)
+        #, pos=DefaultPosition, size=DefaultSize, style = wx.DEFAULT_FRAME_STYLE & (~wx.MAXIMIZE_BOX), name="fname")
+        #, wx.ICON_INFORMATION) #, title="Annular Check", style=wx.DEFAULT_FRAME_STYLE, wx.ICON_INFORMATION)    
+        #
+        
+        #self.SetIcon(PyEmbeddedImage(round_ico_b64_data).GetIcon())
+
+        #wx.IconFromBitmap(wx.Bitmap("icon.ico", wx.BITMAP_TYPE_ANY)))
+        self.panel = wx.Panel(self)     
+        self.title = wx.StaticText(self.panel, label="PNP Assist debug:")
+        #self.result = wx.StaticText(self.panel, label="")
+        #self.result.SetForegroundColour('#FF0000')
+        self.button = wx.Button(self.panel, label="Close")
+        #self.lblname = wx.StaticText(self.panel, label="Your name:")
+        #self.editname = wx.TextCtrl(self.panel, size=(140, -1))
+        self.editname = wx.TextCtrl(self.panel, size = (600, 500), style = wx.TE_MULTILINE|wx.TE_READONLY)
+
+
+        # Set sizer for the frame, so we can change frame size to match widgets
+        self.windowSizer = wx.BoxSizer()
+        self.windowSizer.Add(self.panel, 1, wx.ALL | wx.EXPAND)        
+
+        # Set sizer for the panel content
+        self.sizer = wx.GridBagSizer(5, 0)
+        self.sizer.Add(self.title, (0, 0))
+        #self.sizer.Add(self.result, (1, 0))
+        #self.sizer.Add(self.lblname, (1, 0))
+        self.sizer.Add(self.editname, (1, 0))
+        self.sizer.Add(self.button, (2, 0), (1, 2), flag=wx.EXPAND)
+
+        # Set simple sizer for a nice border
+        self.border = wx.BoxSizer()
+        self.border.Add(self.sizer, 1, wx.ALL | wx.EXPAND, 5)
+        
+        # Use the sizers
+        self.panel.SetSizerAndFit(self.border)  
+        self.SetSizerAndFit(self.windowSizer)  
+        #self.result.SetLabel(msg)
+        # Set event handlers
+        #self.Show()
+        self.button.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.Bind(wx.EVT_CLOSE,self.OnClose)
+
+    def OnClose(self,e):
+        #wx.LogMessage("c")
+        e.Skip()
+        self.Close()
+
+    #def OnButton(self, e):
+    #    self.result.SetLabel(self.editname.GetValue())
+    def setMsg(self, t_msg):
+        self.editname.SetValue(t_msg)
+
 
 def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
+    msg = ""
+    unsupported_pads = []
     qty, value, footpr, highlight_refs = bom_row
     # global ax
 
@@ -94,7 +164,12 @@ def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
             elif shape == 0:
                 rct = Ellipse(pos, size[0], size[1], angle=angle)
             else:
+                #todo: check if already printed this error
+                #already_found_unsupported_shape = ref+p.GetPadName() in unsupported_pads
+                #if !already_found_unsupported_shape:
+                #    unsupported_pads.append(ref+p.GetPadName())
                 print("Unsupported pad shape", shape)
+                msg+="Unsupported pad shape " + str(shape) + " for " + ref + " at " + str(p.GetPosition().x) + ", " + str(p.GetPosition().y)+"\n"
                 continue
             rct.set_linewidth(0)
             rct.set_color(color_pad2 if highlight else color_pad1)
@@ -110,6 +185,7 @@ def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
     plt.ylim(board_ymax, board_ymin)
 
     plt.axis('off')
+    return msg
 
 
 def natural_sort(l):
@@ -169,37 +245,44 @@ class pnpassist( pcbnew.ActionPlugin ):
         self.description = "Create a PDF showing which parts go where"
 
     def Run( self ):
-        #parser = argparse.ArgumentParser(description='KiCad PCB pick and place assistant')
-        #parser.add_argument('file', type=str, help="KiCad PCB file")
-        #args = parser.parse_args()
-
         # build BOM
-        #print("Loading %s" % args.file)
-        #pcb = pcbnew.LoadBoard(args.file)
+        msg="Loading Board..."
+        msg+="\n"
         pcb = pcbnew.GetBoard()
-        bom_table = generate_bom(pcb, filter_layer=pcbnew.F_Cu)
 
-        # for each part group, print page to PDF
-        #fname_out = os.path.splitext(args.file)[0] + "_picknplace.pdf"
-        # if (int(sys.args[0])>0 && int(sys.args[0])<len(bom_table)):
-            # pagenum = int(sys.args[0]);
-        print_just_page_one = False
-        if print_just_page_one:
-            pagenum = 1
-            fname_out = pcb.GetFileName() + "_picknplace_"+str(pagenum)+".pdf"
-            with PdfPages(fname_out) as pdf:
-                bom_row = bom_table[pagenum-1]
-                print("Plotting page %d/%d" % (pagenum, len(bom_table)))
-                create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu)
+        # Front
+        bom_table = generate_bom(pcb, filter_layer=pcbnew.F_Cu)
+        fname_out = pcb.GetFileName() + "_front_picknplace.pdf"
+        with PdfPages(fname_out) as pdf:
+            for i, bom_row in enumerate(bom_table):
+                msg+="Plotting page (%d/%d)" % (i+1, len(bom_table))
+                msg+="\n"
+                msg+=create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu)
                 pdf.savefig()
-        else:
-            fname_out = pcb.GetFileName() + "_picknplace.pdf"
-            with PdfPages(fname_out) as pdf:
-                for i, bom_row in enumerate(bom_table):
-                    print("Plotting page (%d/%d)" % (i+1, len(bom_table)))
-                    create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu)
-                    pdf.savefig()
-                    #plt.close('') # This throws an error with wx when run interactively
-        print("Output written to %s" % fname_out)
+                #plt.close('') # This throws an error with wx when run interactively
+
+        msg+="Front side written to %s" % fname_out
+        msg+="\n"
+
+        # Back
+        bom_table = generate_bom(pcb, filter_layer=pcbnew.B_Cu)
+        fname_out = pcb.GetFileName() + "_back_picknplace.pdf"
+        with PdfPages(fname_out) as pdf:
+            for i, bom_row in enumerate(bom_table):
+                msg+="Plotting page (%d/%d)" % (i+1, len(bom_table))
+                msg+="\n"
+                msg+=create_board_figure(pcb, bom_row, layer=pcbnew.B_Cu)
+                pdf.savefig()
+                #plt.close('') # This throws an error with wx when run interactively
+
+        msg+="Back side written to %s" % fname_out
+        msg+="\n"
+
+        frame = displayDialog(None)
+        frame.Center()
+        frame.setMsg(msg)
+        frame.ShowModal()
+        frame.Destroy()
+
 
 pnpassist().register()

@@ -1,4 +1,4 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf820
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
 {\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
 {\colortbl;\red255\green255\blue255;\red24\green24\blue24;\red255\green255\blue255;}
 {\*\expandedcolortbl;;\cssrgb\c12549\c12549\c12549;\cssrgb\c100000\c100000\c100000;}
@@ -7,9 +7,24 @@
 \pard\pardeftab720\partightenfactor0
 
 \f0\b\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\ul \ulc2 PnP SCRIPT\cb1 \
+\ul \ulc2 PnP Assist SCRIPT\cb1 \
 
 \b0 \ulnone \
+
+\b Using PnP Assist as a plug-in: 
+\i\b0 (The easy way)\
+
+\i0\b \
+
+\b0 1. Install pnpassist_action.py as a kicad python plugin by copying this file into /Applications/Kicad/kicad.app/Contents/SharedSupport/scripting/plugins\
+Make sure to copy the file inside the plugin directory named \'93pnpassist_action.py\'94, not the \'93pnpassist.py\'94 file.\
+\
+2. Open PCBnew and run the script by selecting it from the Tools > External Plugins\'85 menu\
+\
+
+\b Using PnP Assist as a one-time script (not a plugin): 
+\i\b0 (The hard way)
+\i0 \
 1. Open 
 \b PCBnew
 \b0 \
@@ -46,14 +61,16 @@
 \i\b \ul \
 
 \i0\b0 \ulnone \
+\pard\pardeftab720\partightenfactor0
 
-\i NOTE: Use 
+\i \cf2 NOTE: Use 
 \b pnpassist_back.py 
 \b0 to generate components on the back side of the board.
 \i0 \
 \
+\pard\pardeftab720\partightenfactor0
 
-\b \ul PRINTING\
+\b \cf2 \ul PRINTING\
 
 \b0 \ulnone 1. Open PDF in Preview (or any PDF viewer)\
 \
@@ -72,4 +89,4 @@
 	ex: Waverecorder = 6 pages per sheet\
 \
 6. Make sure \'92Two-sided\'92 is checked (to save paper) and click 
-\b Print}
+\b Print. }
