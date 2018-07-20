@@ -1,14 +1,12 @@
-import pcbnew
 import re
 import os
 import numpy as np
+import pcbnew
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, Circle, Ellipse, FancyBboxPatch
-from matplotlib.backends.backend_pdf import PdfPages
-
 import textwrap
-
+from matplotlib.backends.backend_pdf import PdfPages
 
 def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
     qty, value, footpr, highlight_refs = bom_row
@@ -162,22 +160,16 @@ def generate_bom(pcb, filter_layer=None):
 
     return bom_table
 
-class pnpassist( pcbnew.ActionPlugin ):
+
+class pnpassistback( pcbnew.ActionPlugin ):
     def defaults( self ):
-        self.name = "PNP Assistant"
+        self.name = "PNP Assistant - back"
         self.category = "PNP"
-        self.description = "Create a PDF showing which parts go where"
+        self.description = "Create a PDF showing which parts go where (back side)"
 
     def Run( self ):
-        #parser = argparse.ArgumentParser(description='KiCad PCB pick and place assistant')
-        #parser.add_argument('file', type=str, help="KiCad PCB file")
-        #args = parser.parse_args()
-
-        # build BOM
-        #print("Loading %s" % args.file)
-        #pcb = pcbnew.LoadBoard(args.file)
         pcb = pcbnew.GetBoard()
-        bom_table = generate_bom(pcb, filter_layer=pcbnew.F_Cu)
+        bom_table = generate_bom(pcb, filter_layer=pcbnew.B_Cu)
 
         # for each part group, print page to PDF
         #fname_out = os.path.splitext(args.file)[0] + "_picknplace.pdf"
@@ -190,16 +182,16 @@ class pnpassist( pcbnew.ActionPlugin ):
             with PdfPages(fname_out) as pdf:
                 bom_row = bom_table[pagenum-1]
                 print("Plotting page %d/%d" % (pagenum, len(bom_table)))
-                create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu)
+                create_board_figure(pcb, bom_row, layer=pcbnew.B_Cu)
                 pdf.savefig()
         else:
             fname_out = pcb.GetFileName() + "_picknplace.pdf"
             with PdfPages(fname_out) as pdf:
                 for i, bom_row in enumerate(bom_table):
                     print("Plotting page (%d/%d)" % (i+1, len(bom_table)))
-                    create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu)
+                    create_board_figure(pcb, bom_row, layer=pcbnew.B_Cu)
                     pdf.savefig()
                     #plt.close('') # This throws an error with wx when run interactively
         print("Output written to %s" % fname_out)
 
-pnpassist().register()
+pnpassistback().register()
