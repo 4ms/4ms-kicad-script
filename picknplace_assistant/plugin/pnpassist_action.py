@@ -1,6 +1,7 @@
 import pcbnew
 import re
 import os
+import errno
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -250,9 +251,28 @@ class pnpassist( pcbnew.ActionPlugin ):
         msg+="\n"
         pcb = pcbnew.GetBoard()
 
-        # Front
+        pcbfilename, kicadpcb_ext = os.path.splitext(pcb.GetFileName())
+        pathname = os.path.dirname(pcbfilename)
+
+        # Front side PDF
+        filename = os.path.basename(pcbfilename) + "_front_picknplace.pdf"
+        fname_out = pathname + "/bom/" + filename
+
+        # make the ./bom directory
+        if not os.path.exists(os.path.dirname(fname_out)):
+            try:
+                os.makedirs(os.path.dirname(fname_out))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+
+        frame = displayDialog(None)
+        frame.Center()
+        frame.setMsg("This will take a moment, click \"Close\" and please wait...")
+        frame.ShowModal()
+        frame.Destroy()
+
         bom_table = generate_bom(pcb, filter_layer=pcbnew.F_Cu)
-        fname_out = pcb.GetFileName() + "_front_picknplace.pdf"
         with PdfPages(fname_out) as pdf:
             for i, bom_row in enumerate(bom_table):
                 msg+="Plotting page (%d/%d)" % (i+1, len(bom_table))
@@ -264,9 +284,19 @@ class pnpassist( pcbnew.ActionPlugin ):
         msg+="Front side written to %s" % fname_out
         msg+="\n"
 
-        # Back
+        # Back side PDF
+        filename = os.path.basename(pcbfilename) + "_back_picknplace.pdf"
+        fname_out = pathname + "/bom/" + filename
+
+        # make the ./bom directory
+        if not os.path.exists(os.path.dirname(fname_out)):
+            try:
+                os.makedirs(os.path.dirname(fname_out))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+
         bom_table = generate_bom(pcb, filter_layer=pcbnew.B_Cu)
-        fname_out = pcb.GetFileName() + "_back_picknplace.pdf"
         with PdfPages(fname_out) as pdf:
             for i, bom_row in enumerate(bom_table):
                 msg+="Plotting page (%d/%d)" % (i+1, len(bom_table))
