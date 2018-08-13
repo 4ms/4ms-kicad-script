@@ -1,0 +1,2 @@
+s/Text GLabel (\d*) (\d+) 2\s+(\d+)*\s+[A-Za-z]* ~ 0/Text Label \1 \2 0 \3 ~ 0/
+s/Text GLabel (\d*) (\d+) 0\s+(\d+)*\s+[A-Za-z]* ~ 0/Text Label \1 \2 2 \3 ~ 0/
