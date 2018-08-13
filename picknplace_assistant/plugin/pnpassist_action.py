@@ -4,6 +4,8 @@ import os
 import errno
 import numpy as np
 
+import sys
+sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, Circle, Ellipse, FancyBboxPatch
 from matplotlib.backends.backend_pdf import PdfPages
