@@ -149,7 +149,8 @@ def convert_and_delete_modules(midline, remove_layer, brd):
         'PJ366ST': 'Faceplate_Hole_Jack_3.5mm',
         'PJ301M-12-FIX': 'Faceplate_Hole_Jack_3.5mm',
         'EighthInch_PJ398SM': 'Faceplate_Hole_Jack_3.5mm',
-
+        'Barrel_Vert_PJ064': 'Faceplate_Hole_Jack_Barrel_315',
+        
         # LEDS AND LIGHTPIPES:
         'LED-PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
         'LED_PLCC-4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
@@ -165,10 +166,11 @@ def convert_and_delete_modules(midline, remove_layer, brd):
         # FLIP SWITCHES
         'Switch_Toggle_SPDT_Mini_SolderLug': 'Switch_Toggle_Mini_6.35mm_With_Mask_Opening',
         'SPDT-SUB': 'Faceplate_Hole_SubMini_Toggle',
-        'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
+        'Switch_Toggle_SPDT_SubMini': 'Faceplate_Hole_SubMini_Toggle',
 
         # BUTTONS:
         'BUTTON-LED-PB61303': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
+        'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
 
         # SLIDE SWITCHES
         'Slide_Switch_SS22D06-G6-H_Runrun': 'Faceplate_Slide_Switch_SS22D06_Runrun',
