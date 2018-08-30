@@ -1,8 +1,8 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
 {\colortbl;\red255\green255\blue255;\red24\green24\blue24;\red255\green255\blue255;}
 {\*\expandedcolortbl;;\cssrgb\c12549\c12549\c12549;\cssrgb\c100000\c100000\c100000;}
-\margl1440\margr1440\vieww13080\viewh15100\viewkind0
+\margl1440\margr1440\vieww28500\viewh19900\viewkind0
 \deftab720
 \pard\pardeftab720\partightenfactor0
 
@@ -16,10 +16,12 @@
 
 \i0\b \
 
-\b0 1. Install pnpassist_action.py as a kicad python plugin by copying this file into /Applications/Kicad/kicad.app/Contents/SharedSupport/scripting/plugins\
+\b0 1. Install pnpassist_action.py as a kicad python plugin by copying this file into /User/YOURUSERNAME/Library/Preferences/kicad/scripting/plugins\
+\
 Make sure to copy the file inside the plugin directory named \'93pnpassist_action.py\'94, not the \'93pnpassist.py\'94 file.\
 \
 2. Open PCBnew and run the script by selecting it from the Tools > External Plugins\'85 menu\
+Or in the latest nightlies you can go to PCBnew Preferences and enable plugins to show on the toolbar\
 \
 
 \b Using PnP Assist as a one-time script (not a plugin): 
@@ -36,7 +38,7 @@ Make sure to copy the file inside the plugin directory named \'93pnpassist_actio
 \b0  in the menu bar\
 \
 3. Type or paste the following: 
-\b \cb3 execfile(\'93/User/dann/4ms/kicad/4ms-scripts/pnpassist/pnpassist.py\'94) \
+\b \cb3 execfile(\'93/User/YOURUSENAME/4ms/kicad/4ms-scripts/pnpassist/pnpassist.py\'94) \
 \pard\pardeftab720\partightenfactor0
 
 \b0 \cf2 \
@@ -61,16 +63,12 @@ Make sure to copy the file inside the plugin directory named \'93pnpassist_actio
 \i\b \ul \
 
 \i0\b0 \ulnone \
-\pard\pardeftab720\partightenfactor0
-
-\i \cf2 NOTE: Use 
+7. Use 
 \b pnpassist_back.py 
-\b0 to generate components on the back side of the board.
-\i0 \
+\b0 to generate components on the back side of the board.\
 \
-\pard\pardeftab720\partightenfactor0
 
-\b \cf2 \ul PRINTING\
+\b \ul PRINTING\
 
 \b0 \ulnone 1. Open PDF in Preview (or any PDF viewer)\
 \

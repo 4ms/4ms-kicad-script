@@ -1,4 +1,4 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
 {\colortbl;\red255\green255\blue255;\red24\green24\blue24;\red255\green255\blue255;}
 {\*\expandedcolortbl;;\cssrgb\c12549\c12549\c12549;\cssrgb\c100000\c100000\c100000;}
@@ -11,7 +11,7 @@ How to use the Make Faceplate plugins\
 
 \fs28 \cb1 \
 
-\b0 1. Look inside the makefp/plugin folder. There are four files all ending in _action.py.\
+\b0 1. Look inside the makefp/plugin folder. Inside there are subfolders for various kicad versions. There are four files all ending in _action.py.\
 You have to modify these files to point to your footprint library:\
 \
 
@@ -33,15 +33,9 @@ You have to modify these files to point to your footprint library:\
 \b \
 
 \b0 2. Quit kicad and install these plugins by copying the files to\
-/Applications/Kicad/kicad.app/Contents/SharedSupport/scripting/plugins\
+/User/YOURUSERNAME/Library/Preferences/kicad/scripting/plugins\
 \
-If you use terminal, you can just type:\
-cp makefp_*.py /Applications/Kicad/kicad.app/Contents/SharedSupport/scripting/plugins/\
+2. Open up a PCB from kicad and run the script by selecting it from the Tools > External Plugins\'85 menu\
+Or in the latest nightlies you can go to PCBnew Preferences and enable plugins to show on the toolbar as a button\
 \
-If you use Finder, you have to right-click on the Kicad program (located in the Applications/Kicad/ folder) and select \'93Show Package Contents\'94\
-Then open up Contents, then SharedSupport, then scripting, then plugins. 
-\i Watch out! There\'92s a folder called \'93plugins\'94 that\'92s not inside scripting, so make sure you open scripting before plugins.
-\i0 \
-Inside the plugins folder you\'92ll see a bunch of .py and .pyc files. Drag the four plugin files into this folder.\
-\
-3. Launch Kicad and open a PCB file. You should see the plugins in the Tools > External Plugins\'85 menu}
+}
