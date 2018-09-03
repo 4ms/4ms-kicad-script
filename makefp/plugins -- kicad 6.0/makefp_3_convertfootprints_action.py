@@ -104,14 +104,8 @@ def find_pcb_outline_bbox(board):
 
 def convert_and_delete_modules(midline, remove_layer, brd):
 
-    #Dan's home computer:
-    #footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
-
-    #Dan's work comptuer:
-    footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
-
-    #Zach's computer:
-    # footprint_lib = "/Users/dag/Desktop/kicad/_lib/lib-footprints/4ms_Faceplate.pretty"
+    import faceplate_footprint_lib
+    footprint_lib = faceplate_footprint_lib.get_lib_location()
 
     footprint_convert={
         # POTS

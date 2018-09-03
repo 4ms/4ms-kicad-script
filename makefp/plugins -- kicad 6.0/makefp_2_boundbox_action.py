@@ -7,6 +7,7 @@
 
 import pcbnew
 import wx
+import os
 
 class displayDialog(wx.Dialog):
     """
@@ -129,18 +130,12 @@ def find_width_to_hp(pcbwidth):
 class makefp_boundbox( pcbnew.ActionPlugin ):
     def defaults( self ):
         self.name = "Make Faceplate Step 2 - Create outline"
-        self.category = "Make Faceplate 2"
+        self.category = "Make Faceplate Step 2"
         self.description = "Create standard HP width bounding box on Edge_Cuts layer"
 
     def Run( self ):
-        #Dan's home computer:
-        #footprint_lib = "/Users/dann/Google Drive/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
-
-        #Dan's work comptuer:
-        footprint_lib = "/Users/design/4ms/kicad-pcb/_lib/lib-footprints/4ms_Faceplate.pretty"
-
-        #Zach's computer:
-        # footprint_lib = "/Users/dag/Desktop/kicad/_lib/lib-footprints/4ms_Faceplate.pretty"
+        import faceplate_footprint_lib
+        footprint_lib = faceplate_footprint_lib.get_lib_location()
 
         railmount_fp = "Faceplate_Rail_Mount_Slot"
 
