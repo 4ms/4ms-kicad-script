@@ -143,6 +143,7 @@ def convert_and_delete_modules(midline, remove_layer, brd):
         'PJ366ST': 'Faceplate_Hole_Jack_3.5mm',
         'PJ301M-12-FIX': 'Faceplate_Hole_Jack_3.5mm',
         'EighthInch_PJ398SM': 'Faceplate_Hole_Jack_3.5mm',
+        'EighthInch_Stereo_PJ366ST': 'Faceplate_Hole_Jack_3.5mm',
         'Barrel_Vert_PJ064': 'Faceplate_Hole_Jack_Barrel_315',
         
         # LEDS AND LIGHTPIPES:
