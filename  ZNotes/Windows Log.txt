@@ -1,0 +1,5 @@
+WINDOWS LOG
+
+2/27/19
+Pulling a repo to windows that has quotes or 'weird characters' in a folder name results in a 'fatal: invalid argument' error.
+	-This happened with the scripts folder because the gerbv folder had a sub folder with quotes in the title. I removed these and it fixed the problem.
