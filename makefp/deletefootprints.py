@@ -50,6 +50,7 @@ footprint_convert={
 'PJ366ST': 'Faceplate_Hole_Jack_3.5mm',
 'PJ301M-12-FIX': 'Faceplate_Hole_Jack_3.5mm',
 'EighthInch_PJ398SM': 'Faceplate_Hole_Jack_3.5mm',
+'XLR-NCJ6FA-V-0': 'Faceplate_Hole_XLR_Quarter_Inch',
 
 # LEDS AND LIGHTPIPES:
 'LED-PLCC4': 'Faceplate_Hole_Lightpipe_With_Mask_Opening',
