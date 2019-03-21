@@ -1,0 +1,15 @@
+WINDOWS LOG
+
+2/27/19
+Pulling a repo to windows that has quotes or 'weird characters' in a folder name results in a 'fatal: invalid argument' error.
+	-This happened with the scripts folder because the gerbv folder had a sub folder with quotes in the title. I removed these and it fixed the problem.
+
+2/27/19
+BOM scripts are located here:
+C:\Program Files\KiCad\bin\scripting\plugins
+
+2/27/19
+Ran 4MS PCBA script from kicad - no issues!
+	-Had to use Open Office - comma seperated
+Here are the bom tool paths:
+python "C:\Users\c4am95\Desktop\kicad\4ms-kicad-script\BOM-scripts\plugins/4ms_pcba_bomTEST.py" "%I" "%O.csv"
