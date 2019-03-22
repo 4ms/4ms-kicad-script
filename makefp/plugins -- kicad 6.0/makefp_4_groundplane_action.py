@@ -129,12 +129,12 @@ class makefp_makegroundzone( pcbnew.ActionPlugin ):
 
         print "Creating copper pour on GND: top={} bottom={} left={} right={}".format(topside/SCALE, bottomside/SCALE, leftside/SCALE, rightside/SCALE)
 
-        zone_container = board.InsertArea(gndnet.GetNet(), 0, pcbnew.B_Cu, leftside, topside, pcbnew.CPolyLine.DIAGONAL_EDGE)
+        zone_container = board.InsertArea(gndnet.GetNet(), 0, pcbnew.B_Cu, leftside, topside, pcbnew.ZONE_CONTAINER.DIAGONAL_EDGE)
         shape_poly_set = zone_container.Outline()
-        shape_poly_set.Append(leftside, bottomside);
-        shape_poly_set.Append(rightside, bottomside);
-        shape_poly_set.Append(rightside, topside);
-        zone_container.SetPadConnection(pcbnew.PAD_ZONE_CONN_FULL);
+        shape_poly_set.Append(leftside, bottomside)
+        shape_poly_set.Append(rightside, bottomside)
+        shape_poly_set.Append(rightside, topside)
+        zone_container.SetPadConnection(pcbnew.PAD_ZONE_CONN_FULL)
         zone_container.Hatch()
 
         msg+="\n"
