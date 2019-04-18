@@ -20,6 +20,13 @@ from __future__ import print_function
 import kicad_netlist_reader
 import csv
 import sys
+from datetime import date
+import textwrap
+
+today = date.today()
+wrapper = textwrap.TextWrapper(width=5)
+
+
 
 def myEqu(self, other):
     """myEqu is a more advanced equivalence function for components which is
@@ -75,7 +82,7 @@ partfields -= set( ['Reference', 'Value', 'Datasheet', 'Footprint'] )
 columnset = compfields | partfields     # union
 
 # prepend an initial 'hard coded' list and put the enchillada into list 'columns'
-columns = ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Qnty', 'Designation', 'SMD/TH', 'Layer', 'SMD/TH', 'Total Points', 'Comments'] + sorted(list(columnset))
+columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
 
 # Create a new csv writer object to use as the output formatter
 out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
@@ -88,45 +95,21 @@ def writerow( acsvwriter, columns ):
     acsvwriter.writerow( utf8row )
 
 # Output a set of rows as a header providing general information
-writerow( out, ['Source:', net.getSource()] )
-writerow( out, ['Date:', net.getDate()] )
-writerow( out, ['Tool:', net.getTool()] )
-writerow( out, ['Generator:', sys.argv[0]] )
+#writerow( out, ['Source:', net.getSource()] )
+# NEED TO ADD NAME OF MODULE/PROJECT, COMPANY NAME, EMAIL ADDRESS, AND DISPLAY THE DATE SOMEWHERE BETTER
+writerow( out, ['4ms Company'] )
+writerow( out, ['PCBA Project:', 'MODULE NAME'] )
+writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
+writerow( out, ['DATE:', today] )
 writerow( out, ['Component Count:', len(components)] )
-writerow( out, [] )
-writerow( out, ['Individual Components:'] )
+#writerow( out, ['Individual Components:'] )
 writerow( out, [] )                        # blank line
 writerow( out, columns )
 
+
+
 # Output all the interesting components individually first:
 row = []
-for c in components:
-    del row[:]
-    row.append('')                                      # item is blank in individual table
-    row.append('')                                      # Qty is always 1, why print it
-    row.append( c.getRef() )                            # Reference
-    row.append( c.getValue() )                          # Value
-    row.append( c.getLibName() + ":" + c.getPartName() ) # LibPart
-    #row.append( c.getDescription() )
-    row.append( c.getFootprint() )
-    row.append( c.getDatasheet() )
-
-    # from column 7 upwards, use the fieldnames to grab the data
-    for field in columns[7:]:
-        row.append( c.getField( field ) );
-
-    writerow( out, row )
-
-
-writerow( out, [] )                        # blank line
-writerow( out, [] )                        # blank line
-writerow( out, [] )                        # blank line
-
-writerow( out, ['Collated Components:'] )
-writerow( out, [] )                        # blank line
-writerow( out, columns )                   # reuse same columns
-
-
 
 # Get all of the components in groups of matching parts + values
 # (see kicad_netlist_reader.py)
@@ -151,15 +134,23 @@ for group in grouped:
     # columns = ['Item', 'Qty', 'Reference(s)', 'Value', 'LibPart', 'Footprint', 'Datasheet'] + sorted(list(columnset))
     item += 1
     row.append( item )
-    row.append( len(group) )
+    row.append( c.getField("Manufacturer"))
+    row.append( c.getField("Part Number"))
     row.append( refs );
-    row.append( c.getValue() )
-    row.append( c.getLibName() + ":" + c.getPartName() )
-    row.append( net.getGroupFootprint(group) )
-    row.append( net.getGroupDatasheet(group) )
+    row.append( len(group) )
+    row.append( c.getValue() + "," + c.getField("Designation"))
+    row.append( c.getField("Package"))
+    row.append( c.getField("SMD/TH"))
+    row.append( c.getField("Layer"))
+    row.append( c.getField("Points"))
+    row.append( c.getField("Total Points"))
+    row.append( c.getField("Comments"))
+
+
+#word_list = wrapper.wrap(text=value) 
 
     # from column 7 upwards, use the fieldnames to grab the data
-    for field in columns[7:]:
+    for field in columns[12:]:
         row.append( net.getGroupField(group, field) );
 
     writerow( out, row  )
