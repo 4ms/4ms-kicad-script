@@ -22,6 +22,7 @@ import csv
 import sys
 from datetime import date
 import textwrap
+import re
 
 today = date.today()
 wrapper = textwrap.TextWrapper(width=5)
@@ -94,6 +95,7 @@ def writerow( acsvwriter, columns ):
         utf8row.append( str(col) )  # currently, no change
     acsvwriter.writerow( utf8row )
 
+
 # Output a set of rows as a header providing general information
 #writerow( out, ['Source:', net.getSource()] )
 # NEED TO ADD NAME OF MODULE/PROJECT, COMPANY NAME, EMAIL ADDRESS, AND DISPLAY THE DATE SOMEWHERE BETTER
@@ -104,8 +106,7 @@ writerow( out, ['DATE:', today] )
 writerow( out, ['Component Count:', len(components)] )
 #writerow( out, ['Individual Components:'] )
 writerow( out, [] )                        # blank line
-writerow( out, columns )
-
+writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
 
 
 # Output all the interesting components individually first:
@@ -116,11 +117,14 @@ row = []
 grouped = net.groupComponents(components)
 
 
+
 # Output component information organized by group, aka as collated:
 item = 0
 for group in grouped:
     del row[:]
     refs = ""
+
+    
 
     # Add the reference of every component in the group and keep a reference
     # to the component so that the other data can be filled in once per group
@@ -133,13 +137,29 @@ for group in grouped:
     # Fill in the component groups common data
     # columns = ['Item', 'Qty', 'Reference(s)', 'Value', 'LibPart', 'Footprint', 'Datasheet'] + sorted(list(columnset))
     item += 1
+
+    #deletes '4ms-footprints;' from Footprint name
+    """
+    for component in group:
+        prohibitedWords = ['4ms_Capacitor:', '4ms-footprints:', 'Inductor_SMD:', 'Pin_Headers:', '4ms_Resistor:', '4ms_Switch:', '4ms_Package_SOT:', 'TO_SOT_Packages_SMD:']
+        fprint = str(c.getFootprint())
+        big_regex = re.compile('|'.join(map(re.escape, prohibitedWords)))
+        package = big_regex.sub("", fprint)
+"""
+    #for component in group:
+        #prohibitedWords = ['4ms_Capacitor:', '4ms-footprints:', 'Inductor_SMD:', 'Pin_Headers:', '4ms_Resistor:', '4ms_Switch:', '4ms_Package_SOT:', 'TO_SOT_Packages_SMD:']
+    fprint = str(c.getFootprint())
+    package = re.sub(r".*:", "", fprint)
+
+        #re.sub(r'.*I', 'I', stri)
+
     row.append( item )
     row.append( c.getField("Manufacturer"))
     row.append( c.getField("Part Number"))
     row.append( refs );
     row.append( len(group) )
-    row.append( c.getValue() + "," + c.getField("Designation"))
-    row.append( c.getField("Package"))
+    row.append( c.getValue() + ", " + c.getField("Specifications"))
+    row.append( package )
     row.append( c.getField("SMD/TH"))
     row.append( c.getField("Layer"))
     row.append( c.getField("Points"))
