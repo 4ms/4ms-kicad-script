@@ -106,7 +106,7 @@ writerow( out, ['DATE:', today] )
 writerow( out, ['Component Count:', len(components)] )
 #writerow( out, ['Individual Components:'] )
 writerow( out, [] )                        # blank line
-writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
+writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
 
 
 # Output all the interesting components individually first:
@@ -142,7 +142,8 @@ for group in grouped:
     fprint = str(c.getFootprint())
     package = re.sub(r".*:", "", fprint)
     
-    #checks if package contains '0603' and assigns smd to = SMD
+    #checks if package contains certain letters to decide if its SMD
+    #
     smdcheck = str(package[-4:])
     if smdcheck == ("0603") or smdcheck == ("0805") or smdcheck == ("1206"):
         smd = ("SMD")
