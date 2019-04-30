@@ -139,17 +139,21 @@ for group in grouped:
     item += 1
 
     #deletes '4ms-footprints;' from Footprint name
-    """
-    for component in group:
-        prohibitedWords = ['4ms_Capacitor:', '4ms-footprints:', 'Inductor_SMD:', 'Pin_Headers:', '4ms_Resistor:', '4ms_Switch:', '4ms_Package_SOT:', 'TO_SOT_Packages_SMD:']
-        fprint = str(c.getFootprint())
-        big_regex = re.compile('|'.join(map(re.escape, prohibitedWords)))
-        package = big_regex.sub("", fprint)
-"""
-    #for component in group:
-        #prohibitedWords = ['4ms_Capacitor:', '4ms-footprints:', 'Inductor_SMD:', 'Pin_Headers:', '4ms_Resistor:', '4ms_Switch:', '4ms_Package_SOT:', 'TO_SOT_Packages_SMD:']
     fprint = str(c.getFootprint())
     package = re.sub(r".*:", "", fprint)
+    
+    #checks if package contains '0603' and assigns smd to = SMD
+    smdcheck = str(package[-4:])
+    if smdcheck == ("0603"):
+        smd = ("SMD")
+        points = int(2)
+        totalpoints = (2 * points)
+    else:
+        smd = ("")
+        points = ("")
+        totalpoints = ("")       
+    #print (smd)
+
 
         #re.sub(r'.*I', 'I', stri)
 
@@ -160,10 +164,9 @@ for group in grouped:
     row.append( len(group) )
     row.append( c.getValue() + ", " + c.getField("Specifications"))
     row.append( package )
-    row.append( c.getField("SMD/TH"))
-    row.append( c.getField("Layer"))
-    row.append( c.getField("Points"))
-    row.append( c.getField("Total Points"))
+    row.append( smd )
+    row.append( points )
+    row.append( totalpoints )
     row.append( c.getField("Comments"))
 
 
