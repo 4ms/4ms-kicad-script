@@ -144,15 +144,20 @@ for group in grouped:
     
     #checks if package contains '0603' and assigns smd to = SMD
     smdcheck = str(package[-4:])
-    if smdcheck == ("0603"):
+    if smdcheck == ("0603") or smdcheck == ("0805") or smdcheck == ("1206"):
         smd = ("SMD")
         points = int(2)
-        totalpoints = (2 * points)
+        totalpoints = (len(group) * points)
+    elif smdcheck == ("OT23"):
+            smd = ("SMD")
+            points = int(3)
+            totalpoints = (len(group) * points)    
     else:
         smd = ("")
         points = ("")
         totalpoints = ("")       
-    #print (smd)
+    print (smd)
+    print (smdcheck)
 
 
         #re.sub(r'.*I', 'I', stri)
