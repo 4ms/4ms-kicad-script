@@ -135,15 +135,27 @@ for group in grouped:
         c = component
 
     # Fill in the component groups common data
-    # columns = ['Item', 'Qty', 'Reference(s)', 'Value', 'LibPart', 'Footprint', 'Datasheet'] + sorted(list(columnset))
+    # columns = ['Item', 'Qty', 'Reference(s)', 'Value', 'LibPart','Footprint', 'Datasheet'] + sorted(list(columnset))
     item += 1
-
+              
     #deletes '4ms-footprints;' from Footprint name
     fprint = str(c.getFootprint())
     package = re.sub(r".*:", "", fprint)
     
+    #generates 
+    refcheck = str(refs[0])
+    value = c.getValue()
+    specs = c.getField("Specifications")
+    if refcheck == ("R"):
+        value = value.upper()
+        manufacturer = ("Yageo")
+        part_no = ("RC0603FR-07" + str(value) + "L")
+        specs = ("1%, 1/10W, 0603")  
+    else:
+        manufacturer = ("")
+        part_no = ("")     
+    
     #checks if package contains certain letters to decide if its SMD
-    #
     smdcheck = str(package[-4:])
     if smdcheck == ("0603") or smdcheck == ("0805") or smdcheck == ("1206"):
         smd = ("SMD")
@@ -156,19 +168,17 @@ for group in grouped:
     else:
         smd = ("")
         points = ("")
-        totalpoints = ("")       
-    print (smd)
-    print (smdcheck)
+        totalpoints = ("")      
 
 
         #re.sub(r'.*I', 'I', stri)
 
     row.append( item )
-    row.append( c.getField("Manufacturer"))
-    row.append( c.getField("Part Number"))
+    row.append( manufacturer )
+    row.append( part_no )
     row.append( refs );
     row.append( len(group) )
-    row.append( c.getValue() + ", " + c.getField("Specifications"))
+    row.append( str(value) + (", ") + str(specs))
     row.append( package )
     row.append( smd )
     row.append( points )
