@@ -156,19 +156,61 @@ for group in grouped:
         part_no = ("")     
     
     #checks if package contains certain letters to decide if its SMD
-    smdcheck = str(package[-4:])
-    if smdcheck == ("0603") or smdcheck == ("0805") or smdcheck == ("1206"):
+    smdcheck = str(package[-4:]) #  package at end
+    smdcheck2 = str(package[0:7]) # package at start
+    headercheck = str(package[0:4]) #TH headers
+    if (   smdcheck == ("0603") 
+        or smdcheck == ("0805") 
+        or smdcheck == ("1206")
+        or smdcheck == ("323F")
+        or smdcheck == ("-123")
+        or smdcheck2 == ("CP_Elec")
+        ):
         smd = ("SMD")
         points = int(2)
-        totalpoints = (len(group) * points)
-    elif smdcheck == ("OT23"):
-            smd = ("SMD")
-            points = int(3)
-            totalpoints = (len(group) * points)    
+ 
+    elif (smdcheck == ("C33X")
+        or smdcheck == ("OT23")
+        ):
+        smd = ("SMD")
+        points = int(3)
+
+    elif smdcheck == ("CC-4"):
+        smd = ("SMD")
+        points = int(4) 
+
+    elif smdcheck2 == ("SOT-363"):
+        smd = ("SMD")
+        points = int(6)
+
+    elif smdcheck2 == ("TSSOP-8"):
+        smd = ("SMD")
+        points = int(8)
+        
+    elif smdcheck2 == ("SOIC-14"):
+        smd = ("SMD")
+        points = int(14)
+
+    #TH headers
+    elif headercheck == ("Pins"):
+        smd = ("TH")
+        points = ("")
+    
     else:
         smd = ("")
         points = ("")
-        totalpoints = ("")      
+
+    #cleans up some underscores
+    if package == ("R_0603"):
+        package = ("R0603") 
+    if package == ("C_0603"):
+        package = ("C0603")
+    if package == ("C_0805"):
+        package = ("C0805")
+
+    #calculate total points
+    totalpoints = (len(group) * points)
+
 
 
         #re.sub(r'.*I', 'I', stri)
