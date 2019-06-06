@@ -48,6 +48,8 @@ if [ "$key" = '' ]; then
 	echo "Moving packages3d back into modules/..."
 	mv /Library/Application\ Support/kicad/packages3d /Library/Application\ Support/kicad/modules/packages3d
 
+	cd ~/Library/Preferences/kicad
+
 	#Backup the old tables
 	echo ""
 	echo "Backing up the existing fp-lib-table and sym-lib-table as fp-lib-table.bak and sym-lib-table.bak"
@@ -59,8 +61,6 @@ if [ "$key" = '' ]; then
 	echo "Copying the new fp-lib-table and sym-lib-table files into ~/Library/Preferences/kicad/"
 	cp /Library/Application\ Support/kicad/template/fp-lib-table ~/Library/Preferences/kicad/fp-lib-table-new
 	cp /Library/Application\ Support/kicad/template/sym-lib-table ~/Library/Preferences/kicad/sym-lib-table-new
-
-	cd ~/Library/Preferences/kicad
 
 	#Extract the 4ms libs 
 	echo ""
