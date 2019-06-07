@@ -86,6 +86,15 @@ if [ "$key" = '' ]; then
 	rm sym-lib-table
 	sed -e '/(sym_lib_table/rsym-lib-table-4ms' sym-lib-table-tmp > sym-lib-table
 
+	#Display difference in tables
+	echo ""
+	echo "Difference between old and new fp-lib-table:"
+	diff fp-lib-table fp-lib-table.bak
+
+	echo ""
+	echo "Difference between old and new sym-lib-table:"
+	diff sym-lib-table sym-lib-table.bak
+
 	echo ""
 	echo "Done!"
 	echo ""
