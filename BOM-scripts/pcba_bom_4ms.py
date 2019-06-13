@@ -146,14 +146,14 @@ for group in grouped:
     refcheck = str(refs[0])
     value = c.getValue()
     specs = c.getField("Specifications")
-    if refcheck == ("R"):
+    if (specs == "") and (refcheck == ("R")):
         value = value.upper()
         manufacturer = ("Yageo")
         part_no = ("RC0603FR-07" + str(value) + "L")
         specs = ("1%, 1/10W, 0603")  
     else:
-        manufacturer = ("")
-        part_no = ("")     
+        manufacturer = c.getField("Manufacturer")
+        part_no = c.getField("Part number")    
     
     #checks if package contains certain letters to decide if its SMD
     smdcheck = str(package[-4:]) #  package at end
