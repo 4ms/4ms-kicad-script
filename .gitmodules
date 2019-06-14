@@ -1,0 +1,4 @@
+[submodule "kicad_mmccoo"]
+	path = kicad_mmccoo
+	url = https://github.com/4ms/kicad_mmccoo.git
+	branch = master
