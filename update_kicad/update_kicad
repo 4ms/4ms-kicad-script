@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
-echo "****************"
-echo "Before running this, download the latest Kicad nightly and mount the dmg"
+echo "Before running this, download the latest Kicad nightly from here:"
 echo "https://kicad-downloads.s3.cern.ch/index.html?prefix=osx/nightly/"
-echo "This script currently does not support the unified dmg or the extras dmg, so make sure to download the nightly."
-echo "This script will do the following:"
-echo " - Copy the files off of the disk image into /Applications/KiCad/ and /Library/Application Support/kicad/"
-echo "   -- If you have a folder called packages3d inside /Library/Application Support/kicad/modules/"
-echo "      then the script will keep that folder but overwrite everything else in /Library/Application Support/kicad/modules/"
-echo " - Pull out any lines containing \"4ms\" in the current fp/sym-lib-table files and merge these lines into the new installation's fp/sym-lib-table"
-echo " - Install the merged fp-lib-table and sym-lib-table";
-echo "   -- All kicad libraries will be disabled"
+echo "This script supports the nightly and the unified dmg."
+echo ""
+echo "Then mount the dmg (double-click it in Finder). It should be at /Volumes/KiCad"
+echo ""
+echo "Then run this script, which will do the following:"
+echo " - It will copy the files off of the disk image into /Applications/KiCad/ and /Library/Application Support/kicad/"
+echo "   -- If the Kicad disk image doesn't have the kicad/modules/packages3d folder (because you downloaded the non-unified version), "
+echo "      AND you have a folder called packages3d inside /Library/Application Support/kicad/modules/"
+echo "      then the script will keep your current packages3d folder but overwrite everything else in /Library/Application Support/kicad/"
+echo "   -- Otherwise, this script will simply overwrite the kicad folder." 
+echo " - This script will pull out any lines containing \"4ms\" in the current fp/sym-lib-table files and merge these lines into the new installation's fp/sym-lib-table"
+echo " - It will install the merged fp-lib-table and sym-lib-table"
+echo "   -- All kicad libraries will be disabled by default."
+echo ""
+echo "Hint: if you have rsync version 3.1.3 or later, you can see nifty progress bars! On OSX do: brew install rsync"
 echo ""
 echo "Ready? Make sure KiCad is not running and the KiCad dmg is mounted."
 echo ""
@@ -17,36 +23,78 @@ echo ""
 read -n1 -rsp "Press space to continue or any other key to cancel" key
 if [ "$key" = '' ]; then
 	echo ""
+
+	rsyncversion="$(rsync --version | head -n1 | cut -d" " -f4)"
+	requiredver="3.1.3"
+	if [ "$(printf '%s\n' "$requiredver" "$rsyncversion" | sort -V | head -n1)" = "$requiredver" ]; then 
+		echo "rsync version 3.1.3 or later found in "$(which rsync)
+		cpcmd="rsync -ah --info=progress2 "
+	else
+		localrsyncversion="$(/usr/local/bin/rsync --version | head -n1 | cut -d" " -f4)"
+		if [ "$(printf '%s\n' "$requiredver" "$localrsyncversion" | sort -V | head -n1)" = "$requiredver" ]; then 
+			echo "rsync version 3.1.3 or later found in /usr/local/bin/."
+			cpcmd="/usr/local/bin/rsync -ah --info=progress2 "
+		else
+			echo "rsync version 3.1.3 or later not found. No progress bar will be shown"
+			cpcmd="cp -R "
+		fi
+	fi
+
+
 	echo "Copying KiCad app..."
-	cp -r /Volumes/KiCad/KiCad /Applications
+	$cpcmd /Volumes/KiCad/KiCad /Applications
 
 	echo ""
-	echo "Copying kicad/template into Application Support/kicad..."
-	cp -r /Volumes/KiCad/kicad/template /Library/Application\ Support/kicad/
+	if [ -d "/Volumes/KiCad/kicad/modules/packages3d" ] 
+	then
+	    echo "packages3d found on the disk image. If any packages3d folder is already installed, it will be overwritten." 
+	    do_overwrite=1
+	else
+	    echo "No packages3d found on the disk image."
+	    if [ -d "/Library/Application\ Support/kicad/packages3d" ] 
+		then
+		    echo "...and packages3d is already installed. It will be kept."
+		    do_overwrite=0
+		else
+		    echo "...and no packages3d found already installed."
+		    do_overwrite=1
+		fi
+	fi
 
-	echo ""
-	echo "Copying kicad/library into Application Support/kicad..."
-	cp -r /Volumes/KiCad/kicad/library /Library/Application\ Support/kicad/
+	if test $do_overwrite -eq 1
+	then
+		echo ""
+		echo "Copying /Volumes/KiCad/kicad into Application Support/kicad..."
+		$cpcmd /Volumes/KiCad/kicad /Library/Application\ Support/
+	else
+		echo ""
+		echo "Copying /Volumes/KiCad/kicad/template into Application Support/kicad..."
+		$cpcmd /Volumes/KiCad/kicad/template /Library/Application\ Support/kicad/
 
-	echo ""
-	echo "Copying kicad/share into Application Support/kicad..."
-	cp -r /Volumes/KiCad/kicad/share /Library/Application\ Support/kicad/
+		echo ""
+		echo "Copying /Volumes/KiCad/kicad/library into Application Support/kicad..."
+		$cpcmd /Volumes/KiCad/kicad/library /Library/Application\ Support/kicad/
 
-	echo ""
-	echo "Copying kicad/help into Application Support/kicad..."
-	cp -r /Volumes/KiCad/kicad/help /Library/Application\ Support/kicad/
+		echo ""
+		echo "Copying /Volumes/KiCad/kicad/share into Application Support/kicad..."
+		$cpcmd /Volumes/KiCad/kicad/share /Library/Application\ Support/kicad/
 
-	echo ""
-	echo "Moving packages3d out of the way..."
-	mv /Library/Application\ Support/kicad/modules/packages3d /Library/Application\ Support/kicad/packages3d
+		echo ""
+		echo "Copying /Volumes/KiCad/kicad/help into Application Support/kicad..."
+		$cpcmd /Volumes/KiCad/kicad/help /Library/Application\ Support/kicad/
 
-	echo ""
-	echo "Copying kicad/modules into Application Support/kicad..."
-	cp -r /Volumes/KiCad/kicad/modules /Library/Application\ Support/kicad/
+		echo ""
+		echo "Moving packages3d out of the way..."
+		mv /Library/Application\ Support/kicad/modules/packages3d /Library/Application\ Support/kicad/packages3d
 
-	echo ""
-	echo "Moving packages3d back into modules/..."
-	mv /Library/Application\ Support/kicad/packages3d /Library/Application\ Support/kicad/modules/packages3d
+		echo ""
+		echo "Copying /Volumes/KiCad/kicad/modules into Application Support/kicad..."
+		$cpcmd /Volumes/KiCad/kicad/modules /Library/Application\ Support/kicad/
+
+		echo ""
+		echo "Moving packages3d back into modules/..."
+		mv /Library/Application\ Support/kicad/packages3d /Library/Application\ Support/kicad/modules/packages3d
+	fi
 
 	cd ~/Library/Preferences/kicad
 
@@ -89,11 +137,16 @@ if [ "$key" = '' ]; then
 	#Display difference in tables
 	echo ""
 	echo "Difference between old and new fp-lib-table:"
-	diff fp-lib-table fp-lib-table.bak
+	diff <(sed -e "s/\"//g" fp-lib-table) <(sed -e "s/\"//g" fp-lib-table.bak)
 
 	echo ""
 	echo "Difference between old and new sym-lib-table:"
-	diff sym-lib-table sym-lib-table.bak
+	diff <(sed -e "s/\"//g" sym-lib-table) <(sed -e "s/\"//g" sym-lib-table.bak)
+
+	echo ""
+	echo "Removing temp files"
+	rm fp-lib-table-tmp fp-lib-table-new fp-lib-table-4ms
+	rm sym-lib-table-tmp sym-lib-table-new sym-lib-table-4ms
 
 	echo ""
 	echo "Done!"
