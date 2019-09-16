@@ -134,9 +134,11 @@ def convert_and_delete_modules(midline, remove_layer, brd):
         'POT-SLIDER-LED-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
         'POT-SLIDER-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
 
-        # ENCODERS:
-        'RGB_ROTARY_ENCODER': 'Faceplate_Hole_Encoder_RGB_NoBushing',
+        # ENCODERS: 
+        'RGB_ROTARY_ENCODER': 'Faceplate_Hole_Encoder_290',
+        'ENC_SPST_12mm': 'Faceplate_Hole_Encoder_290',
         'ROTENC-12MM-BUT': 'Faceplate_Hole_Encoder_290',
+        'ENC_RGB_SPST_12mm': 'Faceplate_Hole_Encoder_290',
 
         # JACKS:
         'PJ301M-12': 'Faceplate_Hole_Jack_3.5mm',
@@ -184,7 +186,7 @@ def convert_and_delete_modules(midline, remove_layer, brd):
 
         'last_item': 'last_item'
     }
-    remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'R_0603', 'C_0603']
+    remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'SOT23-3_PO132', 'R_0603', 'C_0603', 'C_1206']
 
     io = pcbnew.PCB_IO()
     SCALE = 1000000.0
