@@ -207,6 +207,10 @@ for group in grouped:
         package = ("C0603")
     if package == ("C_0805"):
         package = ("C0805")
+    if package == ("C_1206"):
+        package = ("C1206")
+    if package == ("C_1210"):
+        package = ("C1210")
 
     #calculate total points
     totalpoints = (len(group) * points)
