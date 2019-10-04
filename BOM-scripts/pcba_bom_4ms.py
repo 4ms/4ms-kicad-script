@@ -146,7 +146,35 @@ for group in grouped:
     refcheck = str(refs[0])
     value = c.getValue()
     specs = c.getField("Specifications")
-    if (specs == "") and (refcheck == ("R")):
+    #first if statement checks if value is in milliohms - which uses a different part number
+    #no enabled at the moment - manufacturer, part_no, and specs set to blank
+    if (specs == "") and (refcheck == ("R")) and (value.find('m') >= 0):
+        manufacturer = ("")
+        part_no = ("")
+        specs = ("") 
+    #using value.find to check decimal point
+    #if unable to find decimal, return is -1 - so having it =! (-1) means it contains a decimal
+    elif (specs == "") and (refcheck == ("R")) and (value.find('.') != (-1)):
+        value = value.upper()
+        #checks for metric at end of value
+        #assigns ending metric to variable metric
+        if (value.endswith('K')) or (value.endswith('R')) or (value.endswith('M')):
+            metric = (value.strip()[-1])
+        #sets metric to R is value metric is not present
+        else:
+            metric = ('R')
+        decimal = int(value.find('.'))
+        value = value[:decimal] + metric + value[(decimal+1)]
+        manufacturer = ("Yageo")
+        part_no = ("RC0603FR-07" + str(value) + "L")
+        specs = ("1%, 1/10W, 0603") 
+    #if no ecimal or metric is present - 'R' is added to end of value
+    elif (re.search('[a-zA-Z]', value)) == None:
+        value = (value.upper() + 'R')
+        manufacturer = ("Yageo")
+        part_no = ("RC0603FR-07" + str(value) + "L")
+        specs = ("1%, 1/10W, 0603")
+    elif (specs == "") and (refcheck == ("R")):
         value = value.upper()
         manufacturer = ("Yageo")
         part_no = ("RC0603FR-07" + str(value) + "L")
