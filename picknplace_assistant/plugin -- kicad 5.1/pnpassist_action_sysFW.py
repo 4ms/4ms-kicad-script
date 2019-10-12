@@ -190,8 +190,13 @@ def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
                 rct.set_edgecolor(color_pad2)
             ax.add_patch(rct)
 
-    plt.xlim(board_xmin, board_xmax)
-    plt.ylim(board_ymax, board_ymin)
+            #checks for F.Cu layer - if not, plot is mirrored
+        if m.GetLayer() == pcbnew.F_Cu:
+            plt.xlim(board_xmin, board_xmax)
+            plt.ylim(board_ymax, board_ymin)
+        else:
+            plt.xlim(board_xmax, board_xmin)
+            plt.ylim(board_ymax, board_ymin)   
 
     plt.axis('off')
     return msg
