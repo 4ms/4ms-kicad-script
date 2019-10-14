@@ -147,16 +147,16 @@ for group in grouped:
     value = c.getValue()
     specs = c.getField("Specifications")
     #checks for R0603 package
-    if (refcheck == ("R")) and ('0603' in package):
+    if (refcheck == ("R")) and ('0603' in package) and (specs == ""):
             #first if statement checks if value is in milliohms - which uses a different part number
             #no enabled at the moment - manufacturer, part_no, and specs set to blank
-        if (specs == "") and (refcheck == ("R")) and (value.find('m') >= 0):
+        if (refcheck == ("R")) and (value.find('m') >= 0):
             manufacturer = ("")
             part_no = ("")
             specs = ("") 
         #using value.find to check decimal point
         #if unable to find decimal, return is -1 - so having it =! (-1) means it contains a decimal
-        elif (specs == "") and (refcheck == ("R")) and (value.find('.') != (-1)):
+        elif (refcheck == ("R")) and (value.find('.') != (-1)):
             value = value.upper()
             #checks for metric at end of value
             #assigns ending metric to variable metric
@@ -176,7 +176,7 @@ for group in grouped:
             manufacturer = ("Yageo")
             part_no = ("RC0603FR-07" + str(value) + "L")
             specs = ("1%, 1/10W, 0603")
-        elif (specs == "") and (refcheck == ("R")):
+        elif (refcheck == ("R")):
             value = value.upper()
             manufacturer = ("Yageo")
             part_no = ("RC0603FR-07" + str(value) + "L")
