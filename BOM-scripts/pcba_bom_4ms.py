@@ -169,18 +169,18 @@ for group in grouped:
             value = value[:decimal] + metric + value[(decimal+1)]
             manufacturer = ("Yageo")
             part_no = ("RC0603FR-07" + str(value) + "L")
-            specs = ("1%, 1/10W, 0603") 
-        #if no ecimal or metric is present - 'R' is added to end of value
+            specs = (str(value) + ", 1%, 1/10W, 0603")  
+        #if no decimal or metric is present - 'R' is added to end of value
         elif (re.search('[a-zA-Z]', value)) == None:
             value = (value.upper() + 'R')
             manufacturer = ("Yageo")
             part_no = ("RC0603FR-07" + str(value) + "L")
-            specs = ("1%, 1/10W, 0603")
+            specs = (str(value) + ", 1%, 1/10W, 0603")  
         elif (refcheck == ("R")):
             value = value.upper()
             manufacturer = ("Yageo")
             part_no = ("RC0603FR-07" + str(value) + "L")
-            specs = ("1%, 1/10W, 0603")  
+            specs = (str(value) + ", 1%, 1/10W, 0603")  
     else:
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part number")    
@@ -256,7 +256,7 @@ for group in grouped:
     row.append( part_no )
     row.append( refs );
     row.append( len(group) )
-    row.append( str(value) + (", ") + str(specs))
+    row.append( specs )
     row.append( package )
     row.append( smd )
     row.append( points )
