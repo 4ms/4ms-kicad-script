@@ -183,7 +183,7 @@ for group in grouped:
             specs = (str(value) + ", 1%, 1/10W, 0603")  
     else:
         manufacturer = c.getField("Manufacturer")
-        part_no = c.getField("Part number")    
+        part_no = c.getField("Part Number")    
     
     #checks if package contains certain letters to decide if its SMD
     smdcheck = str(package[-4:]) #  package at end
