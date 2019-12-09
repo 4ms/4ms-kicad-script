@@ -145,15 +145,15 @@ for group in grouped:
     #generates 
     refcheck = str(refs[0])
     value = c.getValue()
-    specs = c.getField("Specifications")
+    designation = c.getField("Designation")
     #checks for R0603 package
-    if (refcheck == ("R")) and ('0603' in package) and (specs == ""):
+    if (refcheck == ("R")) and ('0603' in package) and (designation == ""):
             #first if statement checks if value is in milliohms - which uses a different part number
-            #no enabled at the moment - manufacturer, part_no, and specs set to blank
+            #no enabled at the moment - manufacturer, part_no, and designation set to blank
         if (refcheck == ("R")) and (value.find('m') >= 0):
             manufacturer = ("")
             part_no = ("")
-            specs = ("") 
+            designation = ("") 
         #using value.find to check decimal point
         #if unable to find decimal, return is -1 - so having it =! (-1) means it contains a decimal
         elif (refcheck == ("R")) and (value.find('.') != (-1)):
@@ -162,28 +162,29 @@ for group in grouped:
             #assigns ending metric to variable metric
             if (value.endswith('K')) or (value.endswith('R')) or (value.endswith('M')):
                 metric = (value.strip()[-1])
-            #sets metric to R is value metric is not present
+            #sets metric to R if value metric is not present
             else:
                 metric = ('R')
-            decimal = int(value.find('.'))
-            value = value[:decimal] + metric + value[(decimal+1)]
-            manufacturer = ("Yageo")
-            part_no = ("RC0603FR-07" + str(value) + "L")
-            specs = (str(value) + ", 1%, 1/10W, 0603")  
+                decimal = int(value.find('.'))
+                value = value[:decimal] + metric + value[(decimal+1)]
+                manufacturer = ("Yageo")
+                part_no = ("RC0603FR-07" + str(value) + "L")
+                designation = (str(value) + ", 1%, 1/10W, 0603")  
         #if no decimal or metric is present - 'R' is added to end of value
         elif (re.search('[a-zA-Z]', value)) == None:
             value = (value.upper() + 'R')
             manufacturer = ("Yageo")
             part_no = ("RC0603FR-07" + str(value) + "L")
-            specs = (str(value) + ", 1%, 1/10W, 0603")  
+            designation = (str(value) + ", 1%, 1/10W, 0603")  
         elif (refcheck == ("R")):
             value = value.upper()
             manufacturer = ("Yageo")
             part_no = ("RC0603FR-07" + str(value) + "L")
-            specs = (str(value) + ", 1%, 1/10W, 0603")  
+            designation = (str(value) + ", 1%, 1/10W, 0603")  
     else:
         manufacturer = c.getField("Manufacturer")
-        part_no = c.getField("Part Number")    
+        part_no = c.getField("Part Number")
+
     
     #checks if package contains certain letters to decide if its SMD
     smdcheck = str(package[-4:]) #  package at end
@@ -256,7 +257,7 @@ for group in grouped:
     row.append( part_no )
     row.append( refs );
     row.append( len(group) )
-    row.append( specs )
+    row.append( designation )
     row.append( package )
     row.append( smd )
     row.append( points )
