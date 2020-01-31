@@ -135,10 +135,15 @@ def convert_and_delete_modules(midline, remove_layer, brd):
         'POT-SLIDER-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
 
         # ENCODERS: 
-        'RGB_ROTARY_ENCODER': 'Faceplate_Hole_Encoder_290',
         'ENC_SPST_12mm': 'Faceplate_Hole_Encoder_290',
+        'ENC_SPST_12mm_NUDGED': 'Faceplate_Hole_Encoder_290',
+        # Alternative: 
+        #'ENC_SPST_12mm_NUDGED': 'Faceplate_Hole_Encoder_KnurledShaft_Alpha'
+        
         'ROTENC-12MM-BUT': 'Faceplate_Hole_Encoder_290',
-        'ENC_RGB_SPST_12mm': 'Faceplate_Hole_Encoder_290',
+        'RGB_ROTARY_ENCODER': 'Faceplate_Hole_Encoder_RGB_NoBushing',
+        'ENC_RGB_SPST_12mm': 'Faceplate_Hole_Encoder_RGB_NoBushing',
+        'ENC_RGB_SPST_12mm_NUDGED': 'Faceplate_Hole_Encoder_RGB_NoBushing',
 
         # JACKS:
         'PJ301M-12': 'Faceplate_Hole_Jack_3.5mm',
@@ -170,10 +175,11 @@ def convert_and_delete_modules(midline, remove_layer, brd):
         # BUTTONS:
         'BUTTON-LED-PB61303': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
         'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
-        'Button_RgbLED_SPST_TC002': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
+        'Button_RgbLED_SPST_TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
         'Button_LED_PB61303_Adjusted+': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
         'Button_LED_PB61303': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
-        
+        'Button_RgbLED_SPST_PB615303HL-7mm': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
+
         # SLIDE SWITCHES
         'Slide_Switch_SS22D06-G6-H_Runrun': 'Faceplate_Slide_Switch_SS22D06_Runrun',
         'Slide_Switch_Runrun_SS22D06': 'Faceplate_Slide_Switch_SS22D06_Runrun',
