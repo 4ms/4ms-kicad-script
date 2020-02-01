@@ -23,6 +23,7 @@ import sys
 from datetime import date
 import textwrap
 import re
+import partnum_magic
 
 today = date.today()
 wrapper = textwrap.TextWrapper(width=5)
@@ -116,8 +117,6 @@ row = []
 # (see kicad_netlist_reader.py)
 grouped = net.groupComponents(components)
 
-
-
 # Output component information organized by group, aka as collated:
 item = 0
 for group in grouped:
@@ -125,7 +124,6 @@ for group in grouped:
     refs = ""
 
     
-
     # Add the reference of every component in the group and keep a reference
     # to the component so that the other data can be filled in once per group
     for component in group:
@@ -148,39 +146,8 @@ for group in grouped:
     designation = c.getField("Designation")
     #checks for R0603 package
     if (refcheck == ("R")) and ('0603' in package) and (designation == ""):
-            #first if statement checks if value is in milliohms - which uses a different part number
-            #no enabled at the moment - manufacturer, part_no, and designation set to blank
-        if (refcheck == ("R")) and (value.find('m') >= 0):
-            manufacturer = ("")
-            part_no = ("")
-            designation = ("") 
-        #using value.find to check decimal point
-        #if unable to find decimal, return is -1 - so having it =! (-1) means it contains a decimal
-        elif (refcheck == ("R")) and (value.find('.') != (-1)):
-            value = value.upper()
-            #checks for metric at end of value
-            #assigns ending metric to variable metric
-            if (value.endswith('K')) or (value.endswith('R')) or (value.endswith('M')):
-                metric = (value.strip()[-1])
-            #sets metric to R if value metric is not present
-            else:
-                metric = ('R')
-                decimal = int(value.find('.'))
-                value = value[:decimal] + metric + value[(decimal+1)]
-                manufacturer = ("Yageo")
-                part_no = ("RC0603FR-07" + str(value) + "L")
-                designation = (str(value) + ", 1%, 1/10W, 0603")  
-        #if no decimal or metric is present - 'R' is added to end of value
-        elif (re.search('[a-zA-Z]', value)) == None:
-            value = (value.upper() + 'R')
-            manufacturer = ("Yageo")
-            part_no = ("RC0603FR-07" + str(value) + "L")
-            designation = (str(value) + ", 1%, 1/10W, 0603")  
-        elif (refcheck == ("R")):
-            value = value.upper()
-            manufacturer = ("Yageo")
-            part_no = ("RC0603FR-07" + str(value) + "L")
-            designation = (str(value) + ", 1%, 1/10W, 0603")  
+        [manufacturer, part_no, designation] = partnum_magic.deduce_0603_resistor(value)
+
     else:
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number")
