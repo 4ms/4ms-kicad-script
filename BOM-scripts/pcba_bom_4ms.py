@@ -143,7 +143,10 @@ for group in grouped:
     #generates 
     refcheck = str(refs[0])
     value = c.getValue()
-    designation = c.getField("Designation")
+    designation = c.getField("Specifications")
+    if (designation == "" or designation == None):
+        designation = c.getField("Designation")
+
     #checks for R0603 package
     if (refcheck == ("R")) and ('0603' in package) and (designation == ""):
         [manufacturer, part_no, designation] = partnum_magic.deduce_0603_resistor(value)
@@ -151,6 +154,8 @@ for group in grouped:
     else:
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number")
+        if (designation == ""):
+            designation = value
 
     
     #checks if package contains certain letters to decide if its SMD
