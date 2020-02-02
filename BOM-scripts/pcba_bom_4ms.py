@@ -30,8 +30,8 @@ wrapper = textwrap.TextWrapper(width=5)
 
 
 
-def myEqu(self, other):
-    """myEqu is a more advanced equivalence function for components which is
+def groupingMethod(self, other):
+    """groupingMethod is a more advanced equivalence function for components which is
     used by component grouping. Normal operation is to group components based
     on their value and footprint.
 
@@ -61,7 +61,7 @@ def myEqu(self, other):
 # Override the component equivalence operator now - it is important to do this
 # before loading the netlist, otherwise all components will have the original
 # equivalency operator
-kicad_netlist_reader_4ms.comp.__eq__ = myEqu
+kicad_netlist_reader_4ms.comp.__eq__ = groupingMethod
 
 if len(sys.argv) != 3:
     print("Usage ", __file__, "<generic_netlist.xml> <output.csv>", file=sys.stderr)
