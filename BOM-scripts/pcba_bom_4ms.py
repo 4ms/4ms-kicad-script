@@ -85,15 +85,7 @@ except IOError:
 # by <configure> block in kicad_netlist_reader.py
 components = net.getInterestingComponents()
 
-compfields = net.gatherComponentFieldUnion(components)
-partfields = net.gatherLibPartFieldUnion()
-
-# remove Reference, Value, Datasheet, and Footprint, they will come from 'columns' below
-partfields -= set( ['Reference', 'Value', 'Datasheet', 'Footprint'] )
-
-columnset = compfields | partfields     # union
-
-# prepend an initial 'hard coded' list and put the enchillada into list 'columns'
+# 'hard coded' column list
 columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
 
 # Create a new csv writer object to use as the output formatter
@@ -115,8 +107,7 @@ writerow( out, ['PCBA Project:', 'MODULE NAME'] )
 writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', today] )
 writerow( out, ['Component Count:', len(components)] )
-#writerow( out, ['Individual Components:'] )
-writerow( out, [] )                        # blank line
+writerow( out, [] )
 writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
 
 
@@ -133,7 +124,6 @@ for group in grouped:
     del row[:]
     refs = ""
 
-    
     # Add the reference of every component in the group and keep a reference
     # to the component so that the other data can be filled in once per group
     for component in group:
@@ -142,32 +132,32 @@ for group in grouped:
         refs += component.getRef()
         c = component
 
-    # Fill in the component groups common data
-    # columns = ['Item', 'Qty', 'Reference(s)', 'Value', 'LibPart','Footprint', 'Datasheet'] + sorted(list(columnset))
     item += 1
               
-    #deletes '4ms-footprints;' from Footprint name
+    #deletes footprint library name from Footprint name
     fprint = str(c.getFootprint())
     package = re.sub(r".*:", "", fprint)
     
-    #generates 
     refcheck = str(refs[0])
     value = c.getValue()
     designation = c.getField("Specifications")
     if (designation == "" or designation == None):
         designation = c.getField("Designation")
 
-    #checks for R0603 package
-    if (refcheck == ("R")) and ('0603' in package) and (designation == ""):
+    #Automatically fill in part numbers for R0603 package
+    if (refcheck == "R") and ('0603' in package) and (designation == ""):
         [manufacturer, part_no, designation] = partnum_magic.deduce_0603_resistor(value)
 
     else:
         manufacturer = c.getField("Manufacturer")
-        part_no = c.getField("Part Number")
-        if (designation == ""):
-            designation = value
+        part_no = c.getField("Part number")
+        if (designation.startswith(value) == False):
+            if (designation == ""):
+                designation = value
+            else:
+                designation = value + ", " + designation
 
-    
+
     #checks if package contains certain letters to decide if its SMD
     smdcheck = str(package[-4:]) #  package at end
     smdcheck2 = str(package[0:7]) # package at start
@@ -230,10 +220,6 @@ for group in grouped:
     #calculate total points
     totalpoints = (len(group) * points)
 
-
-
-        #re.sub(r'.*I', 'I', stri)
-
     row.append( item )
     row.append( manufacturer )
     row.append( part_no )
@@ -245,9 +231,6 @@ for group in grouped:
     row.append( points )
     row.append( totalpoints )
     row.append( c.getField("Comments"))
-
-
-#word_list = wrapper.wrap(text=value) 
 
     # from column 7 upwards, use the fieldnames to grab the data
     for field in columns[12:]:
