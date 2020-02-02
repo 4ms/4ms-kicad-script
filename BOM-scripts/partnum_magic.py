@@ -1,6 +1,53 @@
 import re
 import string
 
+def deduce_SMD_TH(package):
+    smdcheck = str(package[-4:]) #  package at end
+    smdcheck2 = str(package[0:7]) # package at start
+    headercheck = str(package[0:4]) #TH headers
+    if (   smdcheck == ("0603") 
+        or smdcheck == ("0805") 
+        or smdcheck == ("1206")
+        or smdcheck == ("323F")
+        or smdcheck == ("-123")
+        or smdcheck2 == ("CP_Elec")
+        ):
+        smd = ("SMD")
+        points = int(2)
+ 
+    elif (smdcheck == ("C33X")
+        or smdcheck == ("OT23")
+        ):
+        smd = ("SMD")
+        points = int(3)
+
+    elif smdcheck == ("CC-4"):
+        smd = ("SMD")
+        points = int(4) 
+
+    elif smdcheck2 == ("SOT-363"):
+        smd = ("SMD")
+        points = int(6)
+
+    elif smdcheck2 == ("TSSOP-8"):
+        smd = ("SMD")
+        points = int(8)
+        
+    elif smdcheck2 == ("SOIC-14"):
+        smd = ("SMD")
+        points = int(14)
+
+    #TH headers
+    elif headercheck == ("Pins"):
+        smd = ("TH")
+        points = ("")
+    
+    else:
+        smd = ("")
+        points = ("")
+
+    return [smd, points]
+
 def deduce_resistor_metric(value):
     """
     Returns the metric of the given human-readable resistor value
@@ -139,6 +186,13 @@ def test_metric(value, expected_metric):
     else:
         print "\tPass: " + value + " metric is " + expected_metric_printable
 
+def test_smd_th(package, expected_SMD_TH, expected_points):
+    [smd, points] = deduce_SMD_TH(package)
+    if (smd == expected_SMD_TH and points == expected_points):
+        print "\tPass: " + package + " is " + str(points) + " points " + smd
+    else:
+        print "****\tFAIL: " + package + " expected to be " + str(expected_points) + ", " + expected_SMD_TH + " but was " + str(points) + ", " + smd
+
 def run_tests():
     print "Testing Metrics..."
     test_metric("400", "R")
@@ -200,7 +254,7 @@ def run_tests():
     test_res_value("123R", "RC0603FR-07123RL")
     test_res_value("123.0R", "RC0603FR-07123RL")
     test_res_value("123.1R", "")
-    test_res_value("0.1k", "RC0603FR-07100RL")
+    test_res_value("0.1k", "RC0603FR-07100RL") #Todo: This is failing
 
     test_res_value("4k", "RC0603FR-074KL")
     test_res_value("4K", "RC0603FR-074KL")
@@ -230,12 +284,46 @@ def run_tests():
     test_res_value("123.4k" , "")
     test_res_value("123.4k9" , "")
 
-    test_res_value("1230" , "RC0603FR-071K23L")
+    test_res_value("1230" , "RC0603FR-071K23L") #Todo: This is failing
     test_res_value("1239" , "")
     test_res_value("12349" , "")
     test_res_value("12k34" , "")
     test_res_value("12k349" , "")
     test_res_value("12k345" , "")
+
+    test_smd_th("D_SOD-123", "SMD", 2)
+    test_smd_th("SOT23-3_PO132", "SMD", 3)
+    test_smd_th("SOT23-3_PO123", "SMD", 3)
+    test_smd_th("SOT23-3_PO213", "SMD", 3)
+    test_smd_th("LED_PLCC-4", "SMD", 4)
+    test_smd_th("C_0603", "SMD", 2)
+    test_smd_th("C0603", "SMD", 2)
+    test_smd_th("C_1206", "SMD", 2)
+    test_smd_th("C1206", "SMD", 2)
+    test_smd_th("C_1210", "SMD", 2)
+    test_smd_th("C1210", "SMD", 2)
+    test_smd_th("C_0402", "SMD", 2)
+    test_smd_th("C0402", "SMD", 2)
+    test_smd_th("R_0603", "SMD", 2)
+    test_smd_th("R0603", "SMD", 2)
+    test_smd_th("R_0402", "SMD", 2)
+    test_smd_th("R0402", "SMD", 2)
+    test_smd_th("LQFP-48_7x7mm_P0.5mm", "SMD", 48)
+    test_smd_th("FA-238", "SMD", 4)
+    test_smd_th("Button_RgbLED_SPST_TC002", "TH", 8)
+    test_smd_th("Button_RgbLED_SPST_PB615303HL-7mm", "TH", 8)
+    test_smd_th("TSOT-23-6", "SMD", 6)
+    test_smd_th("L_Taiyo-Yuden_NR-40xx", "SMD", 2)
+    test_smd_th("LED_0603_1608Metric", "SMD", 2)
+    
+    test_smd_th("Pins_2x08_2.54mm_TH_EuroPower", "TH", 16)
+    test_smd_th("Pins_1x02_2.54mm_TH", "TH", 2)
+    test_smd_th("Pins_1x06_2.54mm_TH_SWD", "TH", 6)
+    test_smd_th("Pot_16mm_NoDet_RV16AF-4A", "TH", 3)
+    test_smd_th("Pot_16mm_CtrDet_RV16AF-4A", "TH", 3)
+    test_smd_th("Pot_16mm_21Det_RV16AF-4A", "TH", 3)
+    test_smd_th("Pot_9mm_Knurl_Det", "TH", 5)
+    test_smd_th("EighthInch_PJ398SM", "TH", 3)
 
 
 if __name__ == "__main__":

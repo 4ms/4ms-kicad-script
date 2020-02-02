@@ -23,18 +23,14 @@ import sys
 from datetime import date
 import textwrap
 import re
-import partnum_magic
+from partnum_magic import *
 
 today = date.today()
 wrapper = textwrap.TextWrapper(width=5)
 
-
-
 def groupingMethod(self, other):
     """groupingMethod is a more advanced equivalence function for components which is
-    used by component grouping. Normal operation is to group components based
-    on their value and footprint.
-
+    used by component grouping. 
     For the 4ms BOM we group components based on:
     Value, Specifications, Designation, Manufacturer, Part number, Footprint, Comments
 
@@ -85,7 +81,6 @@ except IOError:
 # by <configure> block in kicad_netlist_reader.py
 components = net.getInterestingComponents()
 
-# 'hard coded' column list
 columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
 
 # Create a new csv writer object to use as the output formatter
@@ -146,7 +141,7 @@ for group in grouped:
 
     #Automatically fill in part numbers for R0603 package
     if (refcheck == "R") and ('0603' in package) and (designation == ""):
-        [manufacturer, part_no, designation] = partnum_magic.deduce_0603_resistor(value)
+        [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
     else:
         manufacturer = c.getField("Manufacturer")
@@ -159,49 +154,7 @@ for group in grouped:
 
 
     #checks if package contains certain letters to decide if its SMD
-    smdcheck = str(package[-4:]) #  package at end
-    smdcheck2 = str(package[0:7]) # package at start
-    headercheck = str(package[0:4]) #TH headers
-    if (   smdcheck == ("0603") 
-        or smdcheck == ("0805") 
-        or smdcheck == ("1206")
-        or smdcheck == ("323F")
-        or smdcheck == ("-123")
-        or smdcheck2 == ("CP_Elec")
-        ):
-        smd = ("SMD")
-        points = int(2)
- 
-    elif (smdcheck == ("C33X")
-        or smdcheck == ("OT23")
-        ):
-        smd = ("SMD")
-        points = int(3)
-
-    elif smdcheck == ("CC-4"):
-        smd = ("SMD")
-        points = int(4) 
-
-    elif smdcheck2 == ("SOT-363"):
-        smd = ("SMD")
-        points = int(6)
-
-    elif smdcheck2 == ("TSSOP-8"):
-        smd = ("SMD")
-        points = int(8)
-        
-    elif smdcheck2 == ("SOIC-14"):
-        smd = ("SMD")
-        points = int(14)
-
-    #TH headers
-    elif headercheck == ("Pins"):
-        smd = ("TH")
-        points = ("")
-    
-    else:
-        smd = ("")
-        points = ("")
+    [smd, points] = deduce_SMD_TH(package)
 
     #cleans up some underscores
     if package == ("R_0603"):
