@@ -35,8 +35,9 @@ def myEqu(self, other):
     used by component grouping. Normal operation is to group components based
     on their value and footprint.
 
-    In this example of a custom equivalency operator we compare the
-    value, the part name and the footprint.
+    For the 4ms BOM we group components based on:
+    Value, Specifications, Designation, Manufacturer, Part number, Footprint, Comments
+
     """
     result = True
     if self.getValue() != other.getValue():
@@ -45,12 +46,21 @@ def myEqu(self, other):
         result = False
     elif self.getFootprint() != other.getFootprint():
         result = False
+    elif self.getField("Specifications") != other.getField("Specifications"):
+        result = False
+    elif self.getField("Designation") != other.getField("Designation"):
+        result = False
+    elif self.getField("Manufacturer") != other.getField("Manufacturer"):
+        result = False
+    elif self.getField("Comments") != other.getField("Comments"):
+        result = False
 
     return result
 
-# Override the component equivalence operator - it is important to do this
+# Grouping of components is done with the equivalence (__eq__) operator.
+# Override the component equivalence operator now - it is important to do this
 # before loading the netlist, otherwise all components will have the original
-# equivalency operator.
+# equivalency operator
 kicad_netlist_reader_4ms.comp.__eq__ = myEqu
 
 if len(sys.argv) != 3:
