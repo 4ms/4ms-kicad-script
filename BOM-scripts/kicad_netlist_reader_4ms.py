@@ -47,7 +47,8 @@ excluded_fields = [
 # regular expressions which match component 'Reference' fields of components that
 # are to be excluded from the BOM.
 excluded_references = [
-    'TP[0-9]+'              # all test points
+    'TP[0-9]+',              # all test points
+    'LOGO'
     ]
 
 
@@ -57,7 +58,8 @@ excluded_values = [
     'MOUNTHOLE',
     'SCOPETEST',
     'MOUNT_HOLE',
-    'SOLDER_BRIDGE.*'
+    'SOLDER_BRIDGE.*',
+    'LOGO*'
     ]
 
 
