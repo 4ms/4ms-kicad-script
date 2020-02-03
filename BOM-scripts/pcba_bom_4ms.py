@@ -136,11 +136,10 @@ for group in grouped:
 
     item += 1
               
-    #deletes footprint library name from Footprint name
-    fprint = str(c.getFootprint())
-    package = re.sub(r".*:", "", fprint)
+    package = get_package(c.getFootprint())
     
-    refcheck = str(refs[0])
+    [smd, points] = deduce_SMD_TH(package)
+    totalpoints = (len(group) * points)
     value = c.getValue()
     designation = c.getField("Specifications")
     if (designation == "" or designation == None):
@@ -159,26 +158,6 @@ for group in grouped:
             else:
                 designation = value + ", " + designation
 
-
-    #checks if package contains certain letters to decide if its SMD
-    [smd, points] = deduce_SMD_TH(package)
-
-    #cleans up some underscores
-    if package == ("R_0603"):
-        package = ("R0603") 
-    if package == ("R_0402"):
-        package = ("R0402") 
-    if package == ("C_0603"):
-        package = ("C0603")
-    if package == ("C_0805"):
-        package = ("C0805")
-    if package == ("C_1206"):
-        package = ("C1206")
-    if package == ("C_1210"):
-        package = ("C1210")
-
-    #calculate total points
-    totalpoints = (len(group) * points)
 
     row.append( item )
     row.append( manufacturer )

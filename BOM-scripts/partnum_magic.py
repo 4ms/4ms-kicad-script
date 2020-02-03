@@ -2,6 +2,10 @@ import re
 import string
 
 def deduce_SMD_TH(package):
+    """
+    checks if package contains certain letters to decide if its SMD
+    """
+
     smdcheck = str(package[-4:]) #  package at end
     smdcheck2 = str(package[0:7]) # package at start
     headercheck = str(package[0:4]) #TH headers
@@ -48,9 +52,24 @@ def deduce_SMD_TH(package):
 
     return [smd, points]
 
+
+def get_package(footprint):
+    """
+    removes footprint library name from footprint name
+    Changes R_ to R and C_ to C (example: R_0603 => R0603)
+    """
+    fprint = str(footprint)
+    package = re.sub(r".*:", "", fprint)
+    package = package.replace('R_0','R0');
+    package = package.replace('C_0','C0');
+    package = package.replace('R_1','R1');
+    package = package.replace('C_1','C1');
+    return package
+
+
 def deduce_resistor_metric(value):
     """
-    Returns the metric of the given human-readable resistor value
+    Returns the metric multiplier of the given human-readable resistor value
     Finds various invalid cases and returns None
     Returns None (invalid), "R", "K", or "M"
     """
@@ -91,7 +110,7 @@ def is_malformed(value, metric):
     But 1k2.3 or 1.2k3 are not
     The only valid metrics allowed are "K", "M" and "R" (not case-sensitive).
     """
-    if len(value) == 0:
+    if len(value) == 0: 
         return True
     elif count_characters("\.", value) > 1:
         return True
@@ -192,6 +211,14 @@ def test_smd_th(package, expected_SMD_TH, expected_points):
         print "\tPass: " + package + " is " + str(points) + " points " + smd
     else:
         print "****\tFAIL: " + package + " expected to be " + str(expected_points) + ", " + expected_SMD_TH + " but was " + str(points) + ", " + smd
+
+def test_get_package(footprint, expected_package):
+    package = get_package(footprint)
+    if (package == expected_package):
+        print "\tPass: " + str(footprint) + " is " + str(package)
+    else:
+        print "****\tFAIL: " + str(footprint) + " expected to be " + str(expected_package) + " but was " + str(package)
+
 
 def run_tests():
     print "Testing Metrics..."
@@ -315,7 +342,7 @@ def run_tests():
     test_smd_th("TSOT-23-6", "SMD", 6)
     test_smd_th("L_Taiyo-Yuden_NR-40xx", "SMD", 2)
     test_smd_th("LED_0603_1608Metric", "SMD", 2)
-    
+
     test_smd_th("Pins_2x08_2.54mm_TH_EuroPower", "TH", 16)
     test_smd_th("Pins_1x02_2.54mm_TH", "TH", 2)
     test_smd_th("Pins_1x06_2.54mm_TH_SWD", "TH", 6)
@@ -325,6 +352,9 @@ def run_tests():
     test_smd_th("Pot_9mm_Knurl_Det", "TH", 5)
     test_smd_th("EighthInch_PJ398SM", "TH", 3)
 
+    test_get_package("4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm", "TSSOP-8_4.4x3mm_Pitch0.65mm")
+    test_get_package("4ms_Resistor:R_0805", "R0805")
+    test_get_package("4ms_Resistor:C_0603", "C0603")
 
 if __name__ == "__main__":
     run_tests()
