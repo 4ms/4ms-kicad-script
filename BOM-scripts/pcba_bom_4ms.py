@@ -23,16 +23,31 @@ import sys
 from datetime import date
 import textwrap
 import re
+import os
 from partnum_magic import *
 
-today = date.today()
-wrapper = textwrap.TextWrapper(width=5)
+
+
 def get_project_info(net):
     full_path = net.getSource()
     [schematic_name, ext] = os.path.splitext(os.path.basename(full_path))
     [revisionpath, sch_file] = os.path.split(full_path)
     [projectpath, revision] = os.path.split(revisionpath)
     return [schematic_name, revision]
+
+
+def combine_specs_and_value(c):
+    value = c.getValue()
+    designation = c.getField("Specifications")
+    if (designation == "" or designation == None):
+        designation = c.getField("Designation")
+    if (designation.upper().startswith(value.upper()) == False):
+        if (designation == ""):
+            designation = value
+        else:
+            designation = value + ", " + designation
+            
+    return designation
 
 def groupingMethod(self, other):
     """groupingMethod is a more advanced equivalence function for components which is
@@ -96,28 +111,22 @@ out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting
 def writerow( acsvwriter, columns ):
     utf8row = []
     for col in columns:
-        utf8row.append( str(col) )  # currently, no change
+        utf8row.append( str(col) )
     acsvwriter.writerow( utf8row )
 
 [schematic_name, revision] = get_project_info(net)
 
 # Output a set of rows as a header providing general information
-#writerow( out, ['Source:', net.getSource()] )
-# NEED TO ADD NAME OF MODULE/PROJECT, COMPANY NAME, EMAIL ADDRESS, AND DISPLAY THE DATE SOMEWHERE BETTER
 writerow( out, ['4ms Company'] )
 writerow( out, ['PCBA Project:', schematic_name, 'Revision: ', revision] )
 writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
-writerow( out, ['DATE:', today] )
+writerow( out, ['DATE:', date.today()] )
 writerow( out, ['Component Count:', len(components)] )
 writerow( out, [] )
 writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
 
 
-# Output all the interesting components individually first:
 row = []
-
-# Get all of the components in groups of matching parts + values
-# (see kicad_netlist_reader.py)
 grouped = net.groupComponents(components)
 
 # Output component information organized by group, aka as collated:
@@ -137,28 +146,20 @@ for group in grouped:
     item += 1
               
     package = get_package(c.getFootprint())
-    
+
     [smd, points] = deduce_SMD_TH(package)
     totalpoints = (len(group) * points)
-    value = c.getValue()
-    designation = c.getField("Specifications")
-    if (designation == "" or designation == None):
-        designation = c.getField("Designation")
 
-    #Automatically fill in part numbers for R0603 package
-    if (refcheck == "R") and ('0603' in package) and (designation == ""):
+    value = c.getValue()
+
+    if (package=='R0603') and (c.getField("Specifications") == ""):
         [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
-    else:
+    else :
+        designation = combine_specs_and_value(c)
         manufacturer = c.getField("Manufacturer")
-        part_no = c.getField("Part number")
-        if (designation.startswith(value) == False):
-            if (designation == ""):
-                designation = value
-            else:
-                designation = value + ", " + designation
-
-
+        part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
+    
     row.append( item )
     row.append( manufacturer )
     row.append( part_no )
@@ -171,10 +172,11 @@ for group in grouped:
     row.append( totalpoints )
     row.append( c.getField("Comments"))
 
-    # from column 7 upwards, use the fieldnames to grab the data
     for field in columns[12:]:
         row.append( net.getGroupField(group, field) );
 
     writerow( out, row  )
 
 f.close()
+
+
