@@ -27,6 +27,12 @@ from partnum_magic import *
 
 today = date.today()
 wrapper = textwrap.TextWrapper(width=5)
+def get_project_info(net):
+    full_path = net.getSource()
+    [schematic_name, ext] = os.path.splitext(os.path.basename(full_path))
+    [revisionpath, sch_file] = os.path.split(full_path)
+    [projectpath, revision] = os.path.split(revisionpath)
+    return [schematic_name, revision]
 
 def groupingMethod(self, other):
     """groupingMethod is a more advanced equivalence function for components which is
@@ -93,12 +99,13 @@ def writerow( acsvwriter, columns ):
         utf8row.append( str(col) )  # currently, no change
     acsvwriter.writerow( utf8row )
 
+[schematic_name, revision] = get_project_info(net)
 
 # Output a set of rows as a header providing general information
 #writerow( out, ['Source:', net.getSource()] )
 # NEED TO ADD NAME OF MODULE/PROJECT, COMPANY NAME, EMAIL ADDRESS, AND DISPLAY THE DATE SOMEWHERE BETTER
 writerow( out, ['4ms Company'] )
-writerow( out, ['PCBA Project:', 'MODULE NAME'] )
+writerow( out, ['PCBA Project:', schematic_name, 'Revision: ', revision] )
 writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', today] )
 writerow( out, ['Component Count:', len(components)] )
