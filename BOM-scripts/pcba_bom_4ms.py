@@ -100,6 +100,7 @@ except IOError:
 # by <configure> block in kicad_netlist_reader.py
 components = net.getInterestingComponents()
 
+#FixMe: Don't use this list of columns twice
 columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
 
 # Create a new csv writer object to use as the output formatter
@@ -169,6 +170,7 @@ for group in grouped:
     row.append( totalpoints )
     row.append( c.getField("Comments"))
 
+    #FixMe: test if this line is doing anything
     for field in columns[12:]:
         row.append( net.getGroupField(group, field) );
 
