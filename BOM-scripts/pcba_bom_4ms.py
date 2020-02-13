@@ -27,14 +27,12 @@ import os
 from partnum_magic import *
 
 
-
 def get_project_info(net):
     full_path = net.getSource()
     [schematic_name, ext] = os.path.splitext(os.path.basename(full_path))
     [revisionpath, sch_file] = os.path.split(full_path)
     [projectpath, revision] = os.path.split(revisionpath)
     return [schematic_name, revision]
-
 
 def combine_specs_and_value(c):
     value = c.getValue()
@@ -80,10 +78,10 @@ def groupingMethod(self, other):
 # equivalency operator
 kicad_netlist_reader_4ms.comp.__eq__ = groupingMethod
 
+
 if len(sys.argv) != 3:
     print("Usage ", __file__, "<generic_netlist.xml> <output.csv>", file=sys.stderr)
     sys.exit(1)
-
 
 # Generate an instance of a generic netlist, and load the netlist tree from
 # the command line option. If the file doesn't exist, execution will stop
@@ -125,7 +123,6 @@ writerow( out, ['Component Count:', len(components)] )
 writerow( out, [] )
 writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
 
-
 row = []
 grouped = net.groupComponents(components)
 
@@ -144,7 +141,7 @@ for group in grouped:
         c = component
 
     item += 1
-              
+
     package = get_package(c.getFootprint())
 
     [smd, points] = deduce_SMD_TH(package)
@@ -178,5 +175,3 @@ for group in grouped:
     writerow( out, row  )
 
 f.close()
-
-
