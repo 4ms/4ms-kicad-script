@@ -1,7 +1,8 @@
+#coding=utf-8
 from partnum_magic import *
 
 if __name__ == "__main__":
-    print "Testing Metrics..."
+    print("Testing Metrics...")
     test_metric("400", "R")
     test_metric("400R", "R")
     test_metric("400r", "R")
@@ -23,8 +24,10 @@ if __name__ == "__main__":
     test_metric("1M4", "M")
     test_metric("1R4", "R")
 
-    print ""
-    print "Testing value deduction..."
+    test_metric("30Ω", "R")
+
+    print("")
+    print("Testing value deduction...")
 
     test_res_value("1m", "")
     test_res_value("50m", "")
@@ -97,6 +100,8 @@ if __name__ == "__main__":
     test_res_value("12k34" , "")
     test_res_value("12k349" , "")
     test_res_value("12k345" , "")
+
+    test_res_value("30Ω", "RC0603FR-0730RL") #Todo: This is failing
 
     test_smd_th("D_SOD-123", "SMD", 2)
     test_smd_th("SOT23-3_PO132", "SMD", 3)
