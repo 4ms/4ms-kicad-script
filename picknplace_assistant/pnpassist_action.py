@@ -1,11 +1,14 @@
 import pcbnew
 import re
 import os
+import sys
+
+# on some osx installations, numpy and matplotlib both work from this dir:
+sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
+
 import errno
 import numpy as np
 
-import sys
-sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, Circle, Ellipse, FancyBboxPatch
 from matplotlib.backends.backend_pdf import PdfPages
@@ -13,79 +16,43 @@ import wx
 
 import textwrap
 
-class displayDialog(wx.Dialog):
-    """
-    The default frame
-    http://stackoverflow.com/questions/3566603/how-do-i-make-wx-textctrl-multi-line-text-update-smoothly
-    """
+from dialog import dialog_base
 
-    #----------------------------------------------------------------------
-    #def __init__(self):
-    #    """Constructor"""
-    #    wx.Frame.__init__(self, None, title="Display Frame", style=wx.DEFAULT_FRAME_STYLE, wx.ICON_INFORMATION)
-    #    panel = wx.Panel(self)
-    def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, id=-1, title="PNP Assist output")#
-        #, style=wx.DEFAULT_DIALOG_STYLE, wx.ICON_INFORMATION) 
-        #, style=wx.DEFAULT_DIALOG_STYLE, wx.ICON_INFORMATION)
-        #, pos=DefaultPosition, size=DefaultSize, style = wx.DEFAULT_FRAME_STYLE & (~wx.MAXIMIZE_BOX), name="fname")
-        #, wx.ICON_INFORMATION) #, title="Annular Check", style=wx.DEFAULT_FRAME_STYLE, wx.ICON_INFORMATION)    
-        #
-        
-        #self.SetIcon(PyEmbeddedImage(round_ico_b64_data).GetIcon())
+def get_shortened_path(filepath, num_dirs_back=3):
+    pathstring = ""
+    fullpath = filepath
+    for _ in range(num_dirs_back): 
+        fullpath, path = os.path.split(fullpath)
+        if (_ == 0):
+            pathstring = path
+        else:
+            pathstring = path + "/" + pathstring
+        if fullpath == '/':
+            break
 
-        #wx.IconFromBitmap(wx.Bitmap("icon.ico", wx.BITMAP_TYPE_ANY)))
-        self.panel = wx.Panel(self)     
-        self.title = wx.StaticText(self.panel, label="PNP Assist debug:")
-        #self.result = wx.StaticText(self.panel, label="")
-        #self.result.SetForegroundColour('#FF0000')
-        self.button = wx.Button(self.panel, label="Close")
-        #self.lblname = wx.StaticText(self.panel, label="Your name:")
-        #self.editname = wx.TextCtrl(self.panel, size=(140, -1))
-        self.editname = wx.TextCtrl(self.panel, size = (600, 500), style = wx.TE_MULTILINE|wx.TE_READONLY)
+    return ".../" + pathstring
 
 
-        # Set sizer for the frame, so we can change frame size to match widgets
-        self.windowSizer = wx.BoxSizer()
-        self.windowSizer.Add(self.panel, 1, wx.ALL | wx.EXPAND)        
+class PnpAssistDialog(dialog_base.MainDialog):
+    def __init__(self):
+        pcbnew_frame = \
+            filter(lambda w: w.GetTitle().startswith('Pcbnew'), wx.GetTopLevelWindows())[0]
+        dialog_base.MainDialog.__init__(self, pcbnew_frame)
 
-        # Set sizer for the panel content
-        self.sizer = wx.GridBagSizer(5, 0)
-        self.sizer.Add(self.title, (0, 0))
-        #self.sizer.Add(self.result, (1, 0))
-        #self.sizer.Add(self.lblname, (1, 0))
-        self.sizer.Add(self.editname, (1, 0))
-        self.sizer.Add(self.button, (2, 0), (1, 2), flag=wx.EXPAND)
-
-        # Set simple sizer for a nice border
-        self.border = wx.BoxSizer()
-        self.border.Add(self.sizer, 1, wx.ALL | wx.EXPAND, 5)
-        
-        # Use the sizers
-        self.panel.SetSizerAndFit(self.border)  
-        self.SetSizerAndFit(self.windowSizer)  
-        #self.result.SetLabel(msg)
-        # Set event handlers
-        #self.Show()
-        self.button.Bind(wx.EVT_BUTTON, self.OnClose)
-        self.Bind(wx.EVT_CLOSE,self.OnClose)
-
-    def OnClose(self,e):
-        #wx.LogMessage("c")
-        e.Skip()
-        self.Close()
-
-    #def OnButton(self, e):
-    #    self.result.SetLabel(self.editname.GetValue())
-    def setMsg(self, t_msg):
-        self.editname.SetValue(t_msg)
-
+    def doCreatePDFs(self, event):
+        event.Skip()
+    
+    def doCancel(self, event):
+        event.Skip()
 
 def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
+    """
+    Generate board drawing
+    :param layer: include only parts for given layer. None means all layers
+    """
     msg = ""
     unsupported_pads = []
     qty, value, footpr, highlight_refs = bom_row
-    # global ax
 
     plt.figure(figsize=(5.8, 8.2))
     ax = plt.subplot("111", aspect="equal")
@@ -113,9 +80,16 @@ def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
     rct.set_linewidth(3)
     ax.add_patch(rct)
 
-    # add title
+    # add page title
+    pretty_filepath = get_shortened_path(pcb.GetFileName(), 8)
+    ax.text(board_xmin + .5 * (board_xmax - board_xmin), board_ymin - 3.0,
+            "%s" % pretty_filepath,
+            horizontalalignment='center', verticalalignment='bottom')
+
+    # add component title
+    layername = "Front" if layer==pcbnew.F_Cu else "Back" 
     ax.text(board_xmin + .5 * (board_xmax - board_xmin), board_ymin - 0.5,
-            "%dx %s, %s" % (qty, value, footpr), 
+            "%s: %dx %s, %s" % (layername, qty, value, footpr), 
             horizontalalignment='center', verticalalignment='bottom')
 
     # add ref list
@@ -125,7 +99,7 @@ def create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu):
 
     # draw parts
     for m in pcb.GetModules():
-        if m.GetLayer() != layer:
+        if (layer is not None) and (m.GetLayer() != layer):
             continue
         ref, center = m.GetReference(), np.asarray(m.GetCenter()) * 1e-6
         highlight = ref in highlight_refs
@@ -203,7 +177,7 @@ def natural_sort(l):
 def generate_bom(pcb, filter_layer=None):
     """
     Generate BOM from pcb layout.
-    :param filter_layer: include only parts for given layer
+    :param filter_layer: include only parts for given layer. None means all layers
     :return: BOM table (qty, value, footprint, refs)
     """
 
@@ -246,6 +220,8 @@ class pnpassist( pcbnew.ActionPlugin ):
         self.name = "PNP Assistant"
         self.category = "PNP"
         self.description = "Create a PDF showing which parts go where"
+        self.show_toolbar_button = True
+        self.icon_file_name = os.path.join(os.path.dirname(__file__), 'mechanical-arm.png')
 
     def Run( self ):
         # build BOM
@@ -253,68 +229,55 @@ class pnpassist( pcbnew.ActionPlugin ):
         msg+="\n"
         pcb = pcbnew.GetBoard()
 
-        pcbfilename, kicadpcb_ext = os.path.splitext(pcb.GetFileName())
-        pathname = os.path.dirname(pcbfilename)
+        dlg = PnpAssistDialog()
+        res = dlg.ShowModal()
 
-        # Front side PDF
-        filename = os.path.basename(pcbfilename) + "_front_picknplace.pdf"
-        fname_out = pathname + "/bom/" + filename
+        if res == wx.ID_OK:
 
-        # make the ./bom directory
-        if not os.path.exists(os.path.dirname(fname_out)):
-            try:
-                os.makedirs(os.path.dirname(fname_out))
-            except OSError as exc: # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
+            dest_dir = dlg.m_textPath.GetValue()
 
-        frame = displayDialog(None)
-        frame.Center()
-        frame.setMsg("This will take a moment, click \"Close\" and please wait...")
-        frame.ShowModal()
-        frame.Destroy()
+            pcbfilename, kicadpcb_ext = os.path.splitext(pcb.GetFileName())
+            pathname = os.path.dirname(pcbfilename)
+            dest_path = pathname + "/" + dest_dir
+            if not os.path.exists(dest_path):
+                try:
+                    os.makedirs(dest_path)
+                except OSError as exc: # Guard against race condition
+                    if exc.errno != errno.EEXIST:
+                        raise
+            
+            which_sides = dlg.m_radioBox1.Selection
+            BOTH_COMBINED = 0
+            FRONT_ONLY = 1
+            BACK_ONLY = 2
+           
+            if (which_sides == BOTH_COMBINED):
+                filename = os.path.basename(pcbfilename) + "_picknplace.pdf"
+            elif (which_sides == BACK_ONLY):
+                filename = os.path.basename(pcbfilename) + "_back_picknplace.pdf"
+            else:
+                filename = os.path.basename(pcbfilename) + "_front_picknplace.pdf"
 
-        bom_table = generate_bom(pcb, filter_layer=pcbnew.F_Cu)
-        with PdfPages(fname_out) as pdf:
-            for i, bom_row in enumerate(bom_table):
-                msg+="Plotting page (%d/%d)" % (i+1, len(bom_table))
-                msg+="\n"
-                msg+=create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu)
-                pdf.savefig()
-                #plt.close('') # This throws an error with wx when run interactively
+            fname_out = dest_path + filename
 
-        msg+="Front side written to %s" % fname_out
-        msg+="\n"
+            bom_table_front = generate_bom(pcb, filter_layer=pcbnew.F_Cu)
+            bom_table_back = generate_bom(pcb, filter_layer=pcbnew.B_Cu)
+            with PdfPages(fname_out) as pdf:
+                if (which_sides == BOTH_COMBINED) or (which_sides == FRONT_ONLY):
+                    for i, bom_row in enumerate(bom_table_front):
+                        msg+="Plotting page PCB Front (%d/%d)" % (i+1, len(bom_table_front))
+                        msg+="\n"
+                        msg+=create_board_figure(pcb, bom_row, layer=pcbnew.F_Cu)
+                        pdf.savefig()
 
-        # Back side PDF
-        filename = os.path.basename(pcbfilename) + "_back_picknplace.pdf"
-        fname_out = pathname + "/bom/" + filename
+                if (which_sides == BOTH_COMBINED) or (which_sides == BACK_ONLY):
+                    for i, bom_row in enumerate(bom_table_back):
+                        msg+="Plotting page PCB Back (%d/%d)" % (i+1, len(bom_table_back))
+                        msg+="\n"
+                        msg+=create_board_figure(pcb, bom_row, layer=pcbnew.B_Cu)
+                        pdf.savefig()
 
-        # make the ./bom directory
-        if not os.path.exists(os.path.dirname(fname_out)):
-            try:
-                os.makedirs(os.path.dirname(fname_out))
-            except OSError as exc: # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
-
-        bom_table = generate_bom(pcb, filter_layer=pcbnew.B_Cu)
-        with PdfPages(fname_out) as pdf:
-            for i, bom_row in enumerate(bom_table):
-                msg+="Plotting page (%d/%d)" % (i+1, len(bom_table))
-                msg+="\n"
-                msg+=create_board_figure(pcb, bom_row, layer=pcbnew.B_Cu)
-                pdf.savefig()
-                #plt.close('') # This throws an error with wx when run interactively
-
-        msg+="Back side written to %s" % fname_out
-        msg+="\n"
-
-        frame = displayDialog(None)
-        frame.Center()
-        frame.setMsg(msg)
-        frame.ShowModal()
-        frame.Destroy()
-
+            msg+="PDF written to %s" % fname_out
+            msg+="\n"
 
 pnpassist().register()
