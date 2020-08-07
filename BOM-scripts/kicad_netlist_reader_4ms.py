@@ -622,7 +622,7 @@ class netlist():
 
         # Sort first by ref as this makes for easier to read BOM's
         def f(v):
-            return re.sub(r'([A-z]+)[0-9]+', r'\1', v) + '%08i' % int(re.sub(r'[A-z]+([0-9]+)', r'\1', v))
+            return re.sub(r'([^0-9]+)[0-9]+', r'\1', v) + '%08i' % int(re.sub(r'[^0-9]+([0-9]+)', r'\1', v))
         ret.sort(key=lambda g: f(g.getRef()))
 
         return ret
@@ -665,7 +665,7 @@ class netlist():
         # Each group is a list of components, we need to sort each list first
         # to get them in order as this makes for easier to read BOM's
         def f(v):
-            return re.sub(r'([A-z]+)[0-9]+', r'\1', v) + '%08i' % int(re.sub(r'[A-z]+([0-9]+)', r'\1', v))
+            return re.sub(r'([^0-9]+)[0-9]+', r'\1', v) + '%08i' % int(re.sub(r'[^0-9]+([0-9]+)', r'\1', v))
         for g in groups:
             g = sorted(g, key=lambda g: f(g.getRef()))
 
