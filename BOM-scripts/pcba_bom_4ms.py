@@ -150,6 +150,7 @@ for group in grouped:
 
     value = c.getValue()
 
+
     if (package=='R0603') and (c.getField("Specifications") == ""):
         [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
@@ -158,6 +159,9 @@ for group in grouped:
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
     
+    if (c.getField("JLCPCBI ID")):
+        part_no = c.getField("JLCPCBI ID")
+
     row.append( item )
     row.append( manufacturer )
     row.append( part_no )
