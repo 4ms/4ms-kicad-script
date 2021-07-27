@@ -69,7 +69,7 @@ class makefp_boundbox( pcbnew.ActionPlugin ):
         import faceplate_footprint_lib
         footprint_lib = faceplate_footprint_lib.get_lib_location()
 
-        railmount_fp = "Faceplate_Rail_Mount_Slot"
+        railmount_fp = "Faceplate_Rail_Mount_Slot_Plated"
 
         SCALE = 1000000.0
         msg=""
