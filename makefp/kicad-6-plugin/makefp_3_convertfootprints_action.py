@@ -105,7 +105,7 @@ footprint_convert={
 
     'last_item': 'last_item'
 }
-remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'SOT23-3_PO132', 'R_0603', 'C_0603', 'C_1206']
+remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'SOT23-3_PO132', 'R_0603', 'C_0603', 'C_1206', 'C_0805']
 
 def find_pcb_outline_bbox(board):
     """Get the bounding box around all edge cuts drawings"""
@@ -133,7 +133,10 @@ def get_fp_name(fp):
     try:
         footpr = str(fp.GetFPID().GetLibItemName())
     except:
-        footpr = str(fp.GetFPID().GetFootprintName())
+        try:
+            footpr = str(fp.GetFPID().GetFootprintName())
+        except:
+            footpr = None
     return footpr
 
 def remove_all_footprints_on_layer(layername, brd):
@@ -144,7 +147,7 @@ def remove_all_footprints_on_layer(layername, brd):
             if get_fp_name(m).startswith("Faceplate_"):
                 continue
             result = brd.Remove(m)
-            msg+="Removed {}".format(result)
+            msg+="Removed {}, ".format(result)
     return msg
 
 
@@ -152,13 +155,12 @@ def remove_nonfp_footprints(brd):
     msg=""
     fps = brd.GetFootprints()
     for m in fps:
-        try:
-            footpr = str(m.GetFPID().GetLibItemName())
-        except:
-            footpr = str(m.GetFPID().GetFootprintName())
+        footpr = get_fp_name(m)
+        if footpr is None:
+            continue
 
         if footpr in remove_fps:
-            brd.Remove(m)
+            brd.Remove(m) #<<< this causes a crash!
             msg+="Removed footprint on Exclude List: {}".format(footpr)
     return msg
     
@@ -174,8 +176,11 @@ def add_fp(center, footpr, brd):
         print(msg)
         return msg
 
-def convert_faceplate_footprints(midline, brd):
+def convert_faceplate_footprints(brd):
     msg=""
+
+    midline = find_pcb_outline_bbox(brd).Centre().x
+
     fps = brd.GetFootprints()
     for m in fps:
         center = m.GetPosition()
@@ -224,15 +229,23 @@ class makefp_convertfootprints( pcbnew.ActionPlugin ):
         msg="Loading Board\n"
         board = pcbnew.GetBoard()
 
-        bbox = find_pcb_outline_bbox(board)
-        center = bbox.Centre()
-
         # gndnet = find_net("GND")
         #remove all other nets
         #remove_all_nets_but("GND")
-        msg+=remove_all_footprints_on_layer("F.Cu", board)
-        msg+=remove_nonfp_footprints(board)
-        msg+=convert_faceplate_footprints(center.x, board)
+
+        #TODO: repeat this until it returns ''
+        #Workaround: use kicad's filter selection tool to select all tracks and vias and zones
+        #also delete all graphics and text
+        #msg+=remove_all_footprints_on_layer("F.Cu", board)
+
+        #Crashes, but doesn't crash if you do board.Remove(m) one at a time from console
+        #Workaround: hide back footprints in Kicad, then select all and delete
+        #then one-by-one select any remaining back layer components (caps, resistors, etc)
+        #msg+=remove_nonfp_footprints(board)
+
+
+        msg+=convert_faceplate_footprints(board)
+
         msg+=remove_faceplate_footprints(board)
 
         msg+="\n"
