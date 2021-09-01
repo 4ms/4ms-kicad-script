@@ -2,6 +2,7 @@ import os
 import sys
 import csv
 import re
+from cpl_fix_rotations import ReadDB, FixRotations
 output_fields = ["Designator","Mid X","Mid Y","Layer","Rotation"]
 
 def writeCSV(comp_data, csv_filename):
@@ -48,11 +49,15 @@ if __name__ == "__main__":
             print("No output file specified, will output to: " + output_filename)
     else:
         print("""
-Please specify a Kicad .pos file (footprint position file) as the first argument.
+Converts kicad pos csv to JLCPCB format.
+Specify a Kicad .pos file (footprint position file) as the first argument.
 Optionally, you may also specify an output file name.
 
-python3 pos_file_convery.py KicadProject-all-pos.csv
+Example: 
+python3 pos_file_convery.py path/to/MyProject-all-pos.csv path/to/MyProject-JLCPCB-cpl.csv
 """)
     
-    doConvert(input_filename, output_filename)
+    #doConvert(input_filename, output_filename)
+    db = ReadDB("cpl_rotations_db.csv")
+    FixRotations(input_filename, output_filename, db)
 
