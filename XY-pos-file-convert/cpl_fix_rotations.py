@@ -18,7 +18,7 @@
 import csv
 import re
 import sys
-from jlc_kicad_tools.logger import Log
+# from jlc_kicad_tools.logger import Log
 
 # JLC requires columns to be named a certain way.
 HEADER_REPLACEMENT_TABLE={
@@ -29,7 +29,7 @@ HEADER_REPLACEMENT_TABLE={
   "Side": "Layer"
 }
 
-_LOGGER = Log()
+# _LOGGER = Log()
 
 def ReadDB(filename):
   db = {}
@@ -40,7 +40,7 @@ def ReadDB(filename):
         continue
       else:
         db[re.compile(row[0])] = int(row[1])
-  _LOGGER.logger.info("Read {} rules from {}".format(len(db), filename))
+  #_LOGGER.logger.info("Read {} rules from {}".format(len(db), filename))
   return db
 
 def FixRotations(input_filename, output_filename, db):
@@ -64,16 +64,16 @@ def FixRotations(input_filename, output_filename, db):
           elif row[i] == "Side":
             side_index = i
         if package_index is None:
-          _LOGGER.logger.warning("Failed to find 'Package' column in the csv file")
+          #_LOGGER.logger.warning("Failed to find 'Package' column in the csv file")
           return False
         if rotation_index is None:
-          _LOGGER.logger.warning("Failed to find 'Rot' column in the csv file")
+          #_LOGGER.logger.warning("Failed to find 'Rot' column in the csv file")
           return False
         if side_index is None:
-          _LOGGER.logger.warning("Failed to find 'Side' column in the csv file")
+          #_LOGGER.logger.warning("Failed to find 'Side' column in the csv file")
           return False
         if posx_index is None:
-          _LOGGER.logger.warning("Failed to find 'PosX' column in the csv file")
+          # _LOGGER.logger.warning("Failed to find 'PosX' column in the csv file")
           return False
         # Replace column names with labels JLC wants.
         for i in range(len(row)):
@@ -87,8 +87,8 @@ def FixRotations(input_filename, output_filename, db):
           if pattern.match(row[package_index]):
             print("Footprint {} matched {}. Applying {} deg correction"
                 .format(row[package_index], pattern.pattern, correction))
-            _LOGGER.logger.info("Footprint {} matched {}. Applying {} deg correction"
-                .format(row[package_index], pattern.pattern, correction))
+            #_LOGGER.logger.info("Footprint {} matched {}. Applying {} deg correction"
+                #.format(row[package_index], pattern.pattern, correction))
             if row[side_index].strip() == "bottom":
                 rotation = (rotation - correction) % 360
             else:
