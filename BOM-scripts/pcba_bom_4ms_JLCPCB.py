@@ -101,7 +101,7 @@ except IOError:
 components = net.getInterestingComponents()
 
 #FixMe: Don't use this list of columns twice
-columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
+columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Footprint', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
 
 # Create a new csv writer object to use as the output formatter
 out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
@@ -122,7 +122,11 @@ writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', date.today()] )
 writerow( out, ['Component Count:', len(components)] )
 writerow( out, [] )
-writerow( out, ['Item#', 'LCSC Part #', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Comment', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
+writerow( out, ['Item#', 'JLCPCB Part #', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Comment', 'Footprint', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
+#TODO: JLCPCB rejected output of this script.
+# [x] Try changing Package header name to Footprint
+# [x] Try changing LCSC Part # to JLCPCB Part #
+# [ ] Remove all columns not in the JLCPCB example: all but Comment	Designator	Footprint	JLCPCB Part #
 
 row = []
 grouped = net.groupComponents(components)
