@@ -50,14 +50,17 @@ if __name__ == "__main__":
     else:
         print("""
 Converts kicad pos csv to JLCPCB format.
-Specify a Kicad .pos file (footprint position file) as the first argument.
+Specify a Kicad pos CSV file (footprint position file) as the first argument.
 Optionally, you may also specify an output file name.
 
 Example: 
 python3 pos_file_convery.py path/to/MyProject-all-pos.csv path/to/MyProject-JLCPCB-cpl.csv
+
 """)
+        quit()
     
     #doConvert(input_filename, output_filename)
-    db = ReadDB("cpl_rotations_db.csv")
+    script_path = os.path.abspath(os.path.dirname(__file__)) #os.path.realpath(__file__)
+    db = ReadDB(script_path+"/cpl_rotations_db.csv")
     FixRotations(input_filename, output_filename, db)
 
