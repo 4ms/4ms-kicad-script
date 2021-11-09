@@ -1,11 +1,10 @@
 #
-# Example python script to generate a BOM from a KiCad generic netlist
-#
-# Example: Sorted and Grouped CSV BOM
+# Python script to generate a BOM from a KiCad generic netlist
+# Generates a format compatible with JLCPCB assembly services
 #
 """
     @package
-    Generate a csv BOM list.
+    Generate a csv BOM list compatible with JLCPCB.
     Components are sorted by ref and grouped by value
     Fields are (if exist)
     Item, Qty, Reference(s), Value, LibPart, Footprint, Datasheet
@@ -100,8 +99,8 @@ except IOError:
 # by <configure> block in kicad_netlist_reader.py
 components = net.getInterestingComponents()
 
-#FixMe: Don't use this list of columns twice
-columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Footprint', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
+#columns = ['Item#', 'JLCPCB Part #', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Comment', 'Footprint', 'SMD/TH', 'Points', 'Total Points']
+columns = ['Comment', 'Designator', 'Footprint', 'JLCPCB Part #']
 
 # Create a new csv writer object to use as the output formatter
 out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
@@ -116,23 +115,12 @@ def writerow( acsvwriter, columns ):
 [schematic_name, revision] = get_project_info(net)
 
 # Output a set of rows as a header providing general information
-writerow( out, ['4ms Company'] )
-writerow( out, ['PCBA Project:', schematic_name, 'Revision: ', revision] )
-writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
-writerow( out, ['DATE:', date.today()] )
-writerow( out, ['Component Count:', len(components)] )
-writerow( out, [] )
-writerow( out, ['Item#', 'JLCPCB Part #', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Comment', 'Footprint', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
-#TODO: JLCPCB rejected output of this script.
-# [x] Try changing Package header name to Footprint
-# [x] Try changing LCSC Part # to JLCPCB Part #
-# [ ] Remove all columns not in the JLCPCB example: all but Comment	Designator	Footprint	JLCPCB Part #
+writerow( out, columns ) 
 
 row = []
 grouped = net.groupComponents(components)
 
 # Output component information organized by group, aka as collated:
-item = 0
 for group in grouped:
     del row[:]
     refs = ""
@@ -143,24 +131,19 @@ for group in grouped:
         if len(refs) > 0:
             refs += ", "
         refs += component.getRef()
+        # c is the last component in the group
+        # FIXME: there could be bad data if all components in group don't have the same value, footprint, manufacturer, part number, JLCPCB ID, etc
         c = component
-
-    item += 1
 
     package = get_package(c.getFootprint())
 
-    [smd, points] = deduce_SMD_TH(package)
-    totalpoints = (len(group) * points)
-
     value = c.getValue()
 
-
     if (package=='R0603') and (c.getField("Specifications") == ""):
-        [manufacturer, part_no, designation] = deduce_0603_resistor(value)
+        [_, part_no, designation] = deduce_0603_resistor(value)
 
     else :
         designation = combine_specs_and_value(c)
-        manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
     
     if (c.getField("JLCPCB ID")):
@@ -168,22 +151,10 @@ for group in grouped:
     else:
         jlcpcb_id = ""
 
-    row.append( item )
-    row.append( jlcpcb_id )
-    row.append( manufacturer )
-    row.append( part_no )
+    row.append( designation + " " + part_no)
     row.append( refs );
-    row.append( len(group) )
-    row.append( designation )
     row.append( package )
-    row.append( smd )
-    row.append( points )
-    row.append( totalpoints )
-    row.append( c.getField("Comments"))
-
-    #FixMe: test if this line is doing anything
-    for field in columns[12:]:
-        row.append( net.getGroupField(group, field) );
+    row.append( jlcpcb_id )
 
     writerow( out, row  )
 
