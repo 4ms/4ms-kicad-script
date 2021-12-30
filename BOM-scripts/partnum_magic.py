@@ -157,7 +157,7 @@ def deduce_0603_resistor(value):
     elif (metric_pos < 0 ):
         manuf_value = manuf_value + metric
 
-    manuf_value = string.rstrip(manuf_value, "0")
+    manuf_value.rstrip("0")
 
     if count_digits(manuf_value) > 3:
         return ["", "", ""]
