@@ -75,7 +75,6 @@ class makefp_boundbox( pcbnew.ActionPlugin ):
         msg=""
 
         board = pcbnew.GetBoard()
-        io = pcbnew.PCB_IO()
 
         # Find the pcb outline and a list of the drawings on the edgecuts layer
         pcboutline, edgecuts_dwgs = find_pcb_outline_bbox(board)
@@ -138,19 +137,19 @@ class makefp_boundbox( pcbnew.ActionPlugin ):
         railmount_bottomleft = pcbnew.wxPoint(bottomleft.x + 0.295*25.4*SCALE, bottomleft.y - 0.118*25.4*SCALE)
         railmount_bottomright = pcbnew.wxPoint(bottomright.x - 0.295*25.4*SCALE, bottomright.y - 0.118*25.4*SCALE)
 
-        mod = io.FootprintLoad(footprint_lib, railmount_fp)
+        mod = pcbnew.FootprintLoad(footprint_lib, railmount_fp)
         mod.SetPosition(railmount_topleft)
         board.Add(mod)
 
-        mod = io.FootprintLoad(footprint_lib, railmount_fp)
+        mod = pcbnew.FootprintLoad(footprint_lib, railmount_fp)
         mod.SetPosition(railmount_topright)
         board.Add(mod)
 
-        mod = io.FootprintLoad(footprint_lib, railmount_fp)
+        mod = pcbnew.FootprintLoad(footprint_lib, railmount_fp)
         mod.SetPosition(railmount_bottomleft)
         board.Add(mod)
 
-        mod = io.FootprintLoad(footprint_lib, railmount_fp)
+        mod = pcbnew.FootprintLoad(footprint_lib, railmount_fp)
         mod.SetPosition(railmount_bottomright)
         board.Add(mod)
 
