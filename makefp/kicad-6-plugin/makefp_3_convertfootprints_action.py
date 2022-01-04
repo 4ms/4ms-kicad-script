@@ -13,8 +13,6 @@ import wx
 import faceplate_footprint_lib
 footprint_lib = faceplate_footprint_lib.get_lib_location()
 
-io = pcbnew.PCB_IO()
-
 SCALE = 1000000.0
 
 footprint_convert={
@@ -167,7 +165,7 @@ def remove_nonfp_footprints(brd):
 def add_fp(center, footpr, brd):
         msg="Found Back layer footprint: {} at {}mm,{}mm. Changing to {}".format(footpr, center.x/SCALE, center.y/SCALE, footprint_convert[footpr])
         msg+="\n"
-        faceplate_mod = io.FootprintLoad(footprint_lib, footprint_convert[footpr])
+        faceplate_mod = pcbnew.FootprintLoad(footprint_lib, footprint_convert[footpr])
         faceplate_mod.SetPosition(center)
         # pads = faceplate_mod.Pads()
         # for pad in pads:
