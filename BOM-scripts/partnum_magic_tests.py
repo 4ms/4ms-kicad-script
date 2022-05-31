@@ -1,6 +1,41 @@
 #coding=utf-8
 from partnum_magic import *
 
+### Test Functions
+
+def test_res_value(value, expected_partno):
+    [manufacturer, part_no, designation] = deduce_0603_resistor(value)
+    if (expected_partno == part_no):
+        print ("\tpass: " + value + " ==> " + part_no)
+    else:
+        print ("***\tFAIL: " + value + " ==> " + part_no + " Expected " + expected_partno)
+
+def test_metric(value, expected_metric):
+    if (expected_metric == None):
+        expected_metric_printable = "None"
+    else:
+        expected_metric_printable = expected_metric
+
+    if (deduce_resistor_metric(value) != expected_metric):
+        print ("****\tFAIL: " + value + " should be " + expected_metric_printable)
+    else:
+        print ("\tPass: " + value + " metric is " + expected_metric_printable)
+
+def test_smd_th(package, expected_SMD_TH, expected_points):
+    [smd, points] = deduce_SMD_TH(package)
+    if (smd == expected_SMD_TH and points == expected_points):
+        print ("\tPass: " + package + " is " + str(points) + " points " + smd)
+    else:
+        print ("****\tFAIL: " + package + " expected to be " + str(expected_points) + ", " + expected_SMD_TH + " but was " + str(points) + ", " + smd)
+
+def test_get_package(footprint, expected_package):
+    package = get_package(footprint)
+    if (package == expected_package):
+        print ("\tPass: " + str(footprint) + " is " + str(package))
+    else:
+        print ("****\tFAIL: " + str(footprint) + " expected to be " + str(expected_package) + " but was " + str(package))
+
+
 if __name__ == "__main__":
     print("Testing Metrics...")
     test_metric("400", "R")
