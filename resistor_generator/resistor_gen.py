@@ -47,6 +47,14 @@ multiplier_list = [
 
 package_list = ["0201", "0402", "0603", "0805", "1206"]
 
+wattage_dict = {
+    "0201": "1/20W",
+    "0402": "1/16W",
+    "0603": "1/10W",
+    "0805": "1/8W",
+    "1206": "1/4W",
+}
+
 tolerance_list = ["1%", "0.1%"]
 
 template_file = "resistor_template_kicad_sym"
@@ -78,16 +86,25 @@ def get_short_value(value):
     else:
         return "ValueTooLarge"
 
-def gen_res(value_ohms, package, tolerance):
+# 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
+# 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L
+def gen_res(value_ohms, package, tolerance, tpl_data):
     value_with_units = get_value_with_units(value_ohms)
     value_short = get_short_value(value_ohms)
-    tolstr = "B" if tolerance=="0.1%" else "F"
-    with open(template_file) as f:
-        symdata = f.read()
-        symdata = symdata.replace(r'%VAL%', value_with_units)
-        symdata = symdata.replace(r'%VALSHORT%', value_short)
-        symdata = symdata.replace(r'%PKG%', package)
-        symdata = symdata.replace(r'%TOL%', tolstr)
+    wattage = wattage_dict[package]
+    if tolerance=="0.1%":
+        partnum = "RT%PKG%BRD07%VALSHORT%L"
+        opttol = "_" + tolerance
+    else:
+        partnum = "RC%PKG%FR-07%VALSHORT%L"
+        opttol = ""
+    symdata = tpl_data.replace(r'%PARTNUM%', partnum)
+    symdata = symdata.replace(r'%VAL%', value_with_units)
+    symdata = symdata.replace(r'%VALSHORT%', value_short)
+    symdata = symdata.replace(r'%PKG%', package)
+    symdata = symdata.replace(r'%OPTTOL%', opttol)
+    symdata = symdata.replace(r'%TOL%', tolerance)
+    symdata = symdata.replace(r'%WATTS%', wattage)
     return symdata
 
 
@@ -95,6 +112,10 @@ def gen_res(value_ohms, package, tolerance):
 if __name__ == "__main__":
     showusage = False
     outfile = ""
+    errstr = ""
+    minmult = 1
+    maxmult = 1000000
+
     if len(sys.argv) > 1:
         outfile = sys.argv[1]
     else:
@@ -146,13 +167,23 @@ if __name__ == "__main__":
     package size. Yageo RC-series resistor part numbers will be added
     to each symbol's Part Number field.
 
-    {libfilename} is the output file name. Required 
+    {libfilename} is the output file name. Required. If you want Kicad to recognize the file, end it with .kicad_sym
     {package} can be 0201, 0402, 0603, 0805, or 1206 (default 0603)
     {tolerance} can be 1% or 0.1% (default 1%)
     {min_mult} is lowest power of 10 for which to generate values (default 1}
     {max_mult} is highest power of 10 for which to generate values (default 1000000}
-        
+       
+    If you specify the libfilename as 'print-partnums' then instead of saving to a file, the part numbers only
+    will be output to stdout.
         """)
+
+    elif outfile=="print-partnums":
+        tpl = "%PARTNUM%"
+        for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
+            for v in E96_base_values:
+                val = m * v
+                print(gen_res(val, package, tolerance, tpl))
+
     else:
         print(f"Generating values for {package} {tolerance} from {get_value_with_units(1.01 * minmult)} to {get_value_with_units(9.76 * maxmult)}")
 
@@ -161,14 +192,16 @@ if __name__ == "__main__":
         footer = """)
 """
         libdata = header
-        for m in multiplier_list:
-            if m < minmult:
-                continue
-            if m > maxmult:
-                continue
-            for v in E96_base_values:
-                val = m * v
-                libdata += gen_res(val, package, tolerance)
-        libdata += footer
-        with open(outfile, "w") as f:
-            f.write(libdata)
+        with open(template_file) as tpl:
+            tpl_data = tpl.read()
+            for m in multiplier_list:
+                if m < minmult:
+                    continue
+                if m > maxmult:
+                    continue
+                for v in E96_base_values:
+                    val = m * v
+                    libdata += gen_res(val, package, tolerance, tpl_data)
+            libdata += footer
+            with open(outfile, "w") as f:
+                f.write(libdata)
