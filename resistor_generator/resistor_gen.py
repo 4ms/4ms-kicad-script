@@ -1,4 +1,5 @@
 import sys
+import csv
 
 E96_base_values = [
     1.00,	1.02,	1.05,
@@ -58,6 +59,7 @@ wattage_dict = {
 tolerance_list = ["1%", "0.1%"]
 
 template_file = "resistor_template_kicad_sym"
+jlc_file = "JLCPCB-ChipResistorSMT-20220531.csv"
 
 def get_value_with_units(value):
     if value < 1000:
@@ -86,6 +88,16 @@ def get_short_value(value):
     else:
         return "ValueTooLarge"
 
+
+def read_csv(csv_filename):
+    comp_data = []
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            comp_data.append(row)
+    return comp_data
+
+
 # 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
 # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L
 def gen_res(value_ohms, package, tolerance, tpl_data):
@@ -106,7 +118,6 @@ def gen_res(value_ohms, package, tolerance, tpl_data):
     symdata = symdata.replace(r'%TOL%', tolerance)
     symdata = symdata.replace(r'%WATTS%', wattage)
     return symdata
-
 
 
 if __name__ == "__main__":
@@ -191,6 +202,9 @@ if __name__ == "__main__":
 """
         footer = """)
 """
+
+        jlc = read_csv(jlc_file)
+
         libdata = header
         with open(template_file) as tpl:
             tpl_data = tpl.read()
