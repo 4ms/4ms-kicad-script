@@ -90,8 +90,8 @@ def get_short_value(value):
 
 
 def get_jlcpcb_id(jlc, value_with_units, package, tolerance):
-    id = ""
-    val = " " + value_with_units.strip("R").strip("Ω").lower() + "�"
+    id = "?"
+    val = " " + value_with_units.strip("R").strip("Ω").lower() + "�" #Hex code fffd appears as a separator in the source csv file
     pack = " " + package + " "
     tol = tolerance + " "
     for comp in jlc:
@@ -211,6 +211,7 @@ if __name__ == "__main__":
                 print(gen_res(jlc, val, package, tolerance, tpl))
 
     elif outfile=="print-bom":
+        print('"Comment", "Designator", "Footprint", "JLCPCB Part #"')
         i = 0
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
             for v in E96_base_values:
@@ -244,4 +245,72 @@ if __name__ == "__main__":
                 f.write(libdata)
 
 
-#Problems:
+# Not found:
+# 2.16
+# 11.2
+# 11.7
+# 14.2
+# 19
+# 21.6
+# 22.5
+# 26
+# 33.1
+# 35.6
+# 40.1
+# 41.2
+# 57.5
+# 88.6
+# 112
+# 114
+# 204
+# 216
+# 225
+# 231
+# 254
+# 401
+# 463
+# 844
+# 886
+# 952
+# 2.16k
+# 11.2k
+# 21.6k
+# 22.5k
+# 40.1k
+# 88.6k
+# 112k
+# 114k
+# 204k
+# 216k
+# 225k
+# 231k
+# 254k
+# 401k
+# 463k
+# 844k
+# 886k
+# 952k
+# 1.13M
+# 1.18M
+# 1.65M
+# 1.78M
+# 1.82M
+# 2.05M
+# 2.16M
+# 2.49M
+# 2.61M
+# 2.67M
+# 3.16M
+# 3.48M
+# 4.12M
+# 4.53M
+# 4.87M
+# 5.11M
+# 5.23M
+# 5.49M
+# 5.76M
+# 7.15M
+# 8.06M
+# 8.87M
+# 9.31M
+# 
