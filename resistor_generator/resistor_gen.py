@@ -63,7 +63,7 @@ jlc_file = "JLCPCB-ChipResistorSMT-20220531.csv"
 
 def get_value_with_units(value):
     if value < 1000:
-        return str(value)[:4].rstrip('0').rstrip('.') + "R"
+        return str(value)[:4].rstrip('0').rstrip('.') + "Ω"
     elif value < 1000000:
         return str(value/1000)[:4].rstrip('0').rstrip('.') + "k"
     elif value < 1000000000:
@@ -91,7 +91,7 @@ def get_short_value(value):
 
 def get_jlcpcb_id(jlc, value_with_units, package, tolerance):
     id = ""
-    val = " " + value_with_units.strip("R").lower() + "�"
+    val = " " + value_with_units.strip("R").strip("Ω").lower() + "�"
     pack = " " + package + " "
     tol = tolerance + " "
     for comp in jlc:
@@ -174,6 +174,12 @@ if __name__ == "__main__":
             errstr = "max_mult must be greater than or equal to min_mult"
             showusage = True
 
+    try:
+        with open(jlc_file) as db:
+            jlc = db.readlines()
+    except:
+        jlc = []
+
     if showusage:
         if errstr:
             print("\nERROR: " + errstr)
@@ -202,7 +208,6 @@ if __name__ == "__main__":
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
             for v in E96_base_values:
                 val = m * v
-                jlc = []
                 print(gen_res(jlc, val, package, tolerance, tpl))
 
     elif outfile=="print-bom":
@@ -210,7 +215,6 @@ if __name__ == "__main__":
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
             for v in E96_base_values:
                 val = m * v
-                jlc = []
                 tpl = f"\"%VAL% %PKG% %TOL%\", \"R{i}\", \"R%PKG%\",  \"%JLCPCBID%\""
                 i = i + 1
                 print(gen_res(jlc, val, package, tolerance, tpl))
@@ -223,8 +227,6 @@ if __name__ == "__main__":
         footer = """)
 """
 
-        with open(jlc_file) as db:
-            jlc = db.readlines()
 
         libdata = header
         with open(template_file) as tpl:
@@ -240,3 +242,6 @@ if __name__ == "__main__":
             libdata += footer
             with open(outfile, "w") as f:
                 f.write(libdata)
+
+
+#Problems:
