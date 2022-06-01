@@ -23,7 +23,7 @@
     (property "Display" "%VAL%%OPTTOL%" (id 7) (at 3.81 0 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "JLCPCB ID" "" (id 8) (at 3.81 0 90)
+    (property "JLCPCB ID" "%JLCPCBID%" (id 8) (at 3.81 0 90)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "ki_keywords" "%VAL% %PKG% %TOL%" (id 9) (at 0 0 0)

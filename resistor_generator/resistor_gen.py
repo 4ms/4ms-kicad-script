@@ -89,27 +89,32 @@ def get_short_value(value):
         return "ValueTooLarge"
 
 
-def read_csv(csv_filename):
-    comp_data = []
-    with open(csv_filename, newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            comp_data.append(row)
-    return comp_data
+def get_jlcpcb_id(jlc, value_with_units, package, tolerance):
+    id = ""
+    val = " " + value_with_units.strip("R").lower() + "�"
+    pack = " " + package + " "
+    tol = tolerance + " "
+    for comp in jlc:
+        if (val in comp) and (pack in comp) and (tol in comp):
+            id = comp.split(",")[0].strip('"')
+            break
+    return id
 
 
-# 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
-# 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L
-def gen_res(value_ohms, package, tolerance, tpl_data):
+def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     value_with_units = get_value_with_units(value_ohms)
     value_short = get_short_value(value_ohms)
     wattage = wattage_dict[package]
+    # 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
+    # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L
     if tolerance=="0.1%":
         partnum = "RT%PKG%BRD07%VALSHORT%L"
         opttol = "_" + tolerance
     else:
         partnum = "RC%PKG%FR-07%VALSHORT%L"
         opttol = ""
+    jlc_id = get_jlcpcb_id(jlc, value_with_units, package, tolerance)
+
     symdata = tpl_data.replace(r'%PARTNUM%', partnum)
     symdata = symdata.replace(r'%VAL%', value_with_units)
     symdata = symdata.replace(r'%VALSHORT%', value_short)
@@ -117,6 +122,7 @@ def gen_res(value_ohms, package, tolerance, tpl_data):
     symdata = symdata.replace(r'%OPTTOL%', opttol)
     symdata = symdata.replace(r'%TOL%', tolerance)
     symdata = symdata.replace(r'%WATTS%', wattage)
+    symdata = symdata.replace(r'%JLCPCBID%', jlc_id)
     return symdata
 
 
@@ -184,16 +190,30 @@ if __name__ == "__main__":
     {min_mult} is lowest power of 10 for which to generate values (default 1}
     {max_mult} is highest power of 10 for which to generate values (default 1000000}
        
-    If you specify the libfilename as 'print-partnums' then instead of saving to a file, the part numbers only
-    will be output to stdout.
-        """)
+    If you specify the libfilename as 'print-partnums' then instead of saving
+    to a file, the part numbers only will be output to stdout.
+
+    If you specify the libfilename as 'print-bom' then instead of saving to a
+    file, then a JLCPCB compatible BOM csv will be output to stdout. 
+    """)
 
     elif outfile=="print-partnums":
         tpl = "%PARTNUM%"
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
             for v in E96_base_values:
                 val = m * v
-                print(gen_res(val, package, tolerance, tpl))
+                jlc = []
+                print(gen_res(jlc, val, package, tolerance, tpl))
+
+    elif outfile=="print-bom":
+        i = 0
+        for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
+            for v in E96_base_values:
+                val = m * v
+                jlc = []
+                tpl = f"\"%VAL% %PKG% %TOL%\", \"R{i}\", \"R%PKG%\",  \"%JLCPCBID%\""
+                i = i + 1
+                print(gen_res(jlc, val, package, tolerance, tpl))
 
     else:
         print(f"Generating values for {package} {tolerance} from {get_value_with_units(1.01 * minmult)} to {get_value_with_units(9.76 * maxmult)}")
@@ -203,7 +223,8 @@ if __name__ == "__main__":
         footer = """)
 """
 
-        jlc = read_csv(jlc_file)
+        with open(jlc_file) as db:
+            jlc = db.readlines()
 
         libdata = header
         with open(template_file) as tpl:
@@ -215,7 +236,7 @@ if __name__ == "__main__":
                     continue
                 for v in E96_base_values:
                     val = m * v
-                    libdata += gen_res(val, package, tolerance, tpl_data)
+                    libdata += gen_res(jlc, val, package, tolerance, tpl_data)
             libdata += footer
             with open(outfile, "w") as f:
                 f.write(libdata)
