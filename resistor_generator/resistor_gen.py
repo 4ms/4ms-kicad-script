@@ -245,7 +245,7 @@ if __name__ == "__main__":
                 f.write(libdata)
 
 
-# Not found:
+# 0603 1% Not found:
 # 2.16
 # 11.2
 # 11.7
@@ -313,4 +313,3 @@ if __name__ == "__main__":
 # 8.06M
 # 8.87M
 # 9.31M
-# 
