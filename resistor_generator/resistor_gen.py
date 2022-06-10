@@ -162,30 +162,34 @@ def get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance):
             break
     return id
 
+def get_yageo_partnum(tolerance, package, value_short):
+    # 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
+    # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L
+    if tolerance=="0.1%":
+        return "RT"+package+"BRD07"+value_short+"L"
+    else:
+        return "RC"+package+"FR-07"+value_short+"L"
+
 
 def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     value_with_units = get_value_with_units(value_ohms)
     value_short = get_short_value(value_ohms)
     wattage = wattage_dict[package]
-    # 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
-    # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L
+    yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
     if tolerance=="0.1%":
-        partnum = "RT%PKG%BRD07%VALSHORT%L"
         opttol = "_" + tolerance
     else:
-        partnum = "RC%PKG%FR-07%VALSHORT%L"
         opttol = ""
 
-    symdata = tpl_data.replace(r'%PARTNUM%', partnum)
+    symdata = tpl_data
     symdata = symdata.replace(r'%VAL%', value_with_units)
     symdata = symdata.replace(r'%VALSHORT%', value_short)
     symdata = symdata.replace(r'%PKG%', package)
     symdata = symdata.replace(r'%OPTTOL%', opttol)
     symdata = symdata.replace(r'%TOL%', tolerance)
     symdata = symdata.replace(r'%WATTS%', wattage)
+    symdata = symdata.replace(r'%PARTNUM%', yageo_partnum)
 
-    yageo_partnum = partnum.replace(r'%PKG%', package)
-    yageo_partnum = yageo_partnum.replace(r'%VALSHORT%', value_short)
     jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance)
 
     symdata = symdata.replace(r'%JLCPCBID%', jlc_id)
@@ -288,8 +292,22 @@ if __name__ == "__main__":
                 if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                     print(gen_res(jlc, val, package, tolerance, tpl))
 
+    elif outfile=="print-missing":
+        i = 0
+        for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
+            for v in E96_plus_E24_values:
+                val = m * v
+                i = i + 1
+                if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
+                    value_with_units = get_value_with_units(val)
+                    value_short = get_short_value(val)
+                    yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
+                    jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance)
+                    if jlc_id == "?":
+                        print(value_with_units, package, tolerance, yageo_partnum) 
+
     else:
-        print(f"Generating values for {package} {tolerance} from {get_value_with_units(1.01 * minmult)} to {get_value_with_units(9.76 * maxmult)}")
+        print(f"Generating values for {package} {tolerance} from {get_value_with_units(1.0 * minmult)} to {get_value_with_units(9.76 * maxmult)}")
 
         header = """(kicad_symbol_lib (version 20211014) (generator kicad_symbol_editor)
 """
@@ -314,70 +332,102 @@ if __name__ == "__main__":
 
 
 # 0603 1% Not found:
-# 2.16
-# 11.2
-# 11.7
-# 14.2
-# 19
-# 21.6
-# 22.5
-# 26
-# 33.1
-# 35.6
-# 40.1
-# 41.2
-# 57.5
-# 88.6
-# 112
-# 114
-# 204
-# 216
-# 225
-# 231
-# 254
-# 401
-# 463
-# 844
-# 886
-# 952
-# 2.16k
-# 11.2k
-# 21.6k
-# 22.5k
-# 40.1k
-# 88.6k
-# 112k
-# 114k
-# 204k
-# 216k
-# 225k
-# 231k
-# 254k
-# 401k
-# 463k
-# 844k
-# 886k
-# 952k
-# 1.13M
-# 1.18M
-# 1.65M
-# 1.78M
-# 1.82M
-# 2.05M
-# 2.16M
-# 2.49M
-# 2.61M
-# 2.67M
-# 3.16M
-# 3.48M
-# 4.12M
-# 4.53M
-# 4.87M
-# 5.11M
-# 5.23M
-# 5.49M
-# 5.76M
-# 7.15M
-# 8.06M
-# 8.87M
-# 9.31M
+# 2.16Ω 0603 1% RC0603FR-072R16L
+# 11.2Ω 0603 1% RC0603FR-0711R2L
+# 11.7Ω 0603 1% RC0603FR-0711R7L
+# 14.2Ω 0603 1% RC0603FR-0714R2L
+# 19Ω 0603 1% RC0603FR-0719RL
+# 21.6Ω 0603 1% RC0603FR-0721R6L
+# 22.5Ω 0603 1% RC0603FR-0722R5L
+# 26Ω 0603 1% RC0603FR-0726RL
+# 33.1Ω 0603 1% RC0603FR-0733R1L
+# 35.6Ω 0603 1% RC0603FR-0735R6L
+# 40.1Ω 0603 1% RC0603FR-0740R1L
+# 42.1Ω 0603 1% RC0603FR-0742R1L
+# 57.5Ω 0603 1% RC0603FR-0757R5L
+# 88.6Ω 0603 1% RC0603FR-0788R6L
+# 112Ω 0603 1% RC0603FR-07112RL
+# 114Ω 0603 1% RC0603FR-07114RL
+# 204Ω 0603 1% RC0603FR-07204RL
+# 216Ω 0603 1% RC0603FR-07216RL
+# 225Ω 0603 1% RC0603FR-07225RL
+# 231Ω 0603 1% RC0603FR-07231RL
+# 254Ω 0603 1% RC0603FR-07254RL
+# 401Ω 0603 1% RC0603FR-07401RL
+# 463Ω 0603 1% RC0603FR-07463RL
+# 509Ω 0603 1% RC0603FR-07509RL
+# 819Ω 0603 1% RC0603FR-07819RL
+# 844Ω 0603 1% RC0603FR-07844RL
+# 886Ω 0603 1% RC0603FR-07886RL
+# 952Ω 0603 1% RC0603FR-07952RL
+# 2.16k 0603 1% RC0603FR-072K16L
+# 11.2k 0603 1% RC0603FR-0711K2L
+# 21.6k 0603 1% RC0603FR-0721K6L
+# 22.5k 0603 1% RC0603FR-0722K5L
+# 40.1k 0603 1% RC0603FR-0740K1L
+# 88.6k 0603 1% RC0603FR-0788K6L
+# 112k 0603 1% RC0603FR-07112KL
+# 114k 0603 1% RC0603FR-07114KL
+# 204k 0603 1% RC0603FR-07204KL
+# 216k 0603 1% RC0603FR-07216KL
+# 225k 0603 1% RC0603FR-07225KL
+# 231k 0603 1% RC0603FR-07231KL
+# 254k 0603 1% RC0603FR-07254KL
+# 401k 0603 1% RC0603FR-07401KL
+# 463k 0603 1% RC0603FR-07463KL
+# 509k 0603 1% RC0603FR-07509KL
+# 819k 0603 1% RC0603FR-07819KL
+# 844k 0603 1% RC0603FR-07844KL
+# 886k 0603 1% RC0603FR-07886KL
+# 952k 0603 1% RC0603FR-07952KL
+# 2.16M 0603 1% RC0603FR-072M16L
+#
+# 1Ω to 4.64Ω 0603 0.1%
+# 11.2Ω 0603 0.1% RT0603BRD0711R2L
+# 11.7Ω 0603 0.1% RT0603BRD0711R7L
+# 14.2Ω 0603 0.1% RT0603BRD0714R2L
+# 19Ω 0603 0.1% RT0603BRD0719RL
+# 21.6Ω 0603 0.1% RT0603BRD0721R6L
+# 22.5Ω 0603 0.1% RT0603BRD0722R5L
+# 26Ω 0603 0.1% RT0603BRD0726RL
+# 33.1Ω 0603 0.1% RT0603BRD0733R1L
+# 35.6Ω 0603 0.1% RT0603BRD0735R6L
+# 40.1Ω 0603 0.1% RT0603BRD0740R1L
+# 42.1Ω 0603 0.1% RT0603BRD0742R1L
+# 57.5Ω 0603 0.1% RT0603BRD0757R5L
+# 88.6Ω 0603 0.1% RT0603BRD0788R6L
+# 112Ω 0603 0.1% RT0603BRD07112RL
+# 114Ω 0603 0.1% RT0603BRD07114RL
+# 204Ω 0603 0.1% RT0603BRD07204RL
+# 216Ω 0603 0.1% RT0603BRD07216RL
+# 225Ω 0603 0.1% RT0603BRD07225RL
+# 231Ω 0603 0.1% RT0603BRD07231RL
+# 254Ω 0603 0.1% RT0603BRD07254RL
+# 401Ω 0603 0.1% RT0603BRD07401RL
+# 463Ω 0603 0.1% RT0603BRD07463RL
+# 509Ω 0603 0.1% RT0603BRD07509RL
+# 819Ω 0603 0.1% RT0603BRD07819RL
+# 844Ω 0603 0.1% RT0603BRD07844RL
+# 886Ω 0603 0.1% RT0603BRD07886RL
+# 952Ω 0603 0.1% RT0603BRD07952RL
+# 2.16k 0603 0.1% RT0603BRD072K16L
+# 11.2k 0603 0.1% RT0603BRD0711K2L
+# 21.6k 0603 0.1% RT0603BRD0721K6L
+# 22.5k 0603 0.1% RT0603BRD0722K5L
+# 40.1k 0603 0.1% RT0603BRD0740K1L
+# 88.6k 0603 0.1% RT0603BRD0788K6L
+# 112k 0603 0.1% RT0603BRD07112KL
+# 114k 0603 0.1% RT0603BRD07114KL
+# 204k 0603 0.1% RT0603BRD07204KL
+# 216k 0603 0.1% RT0603BRD07216KL
+# 225k 0603 0.1% RT0603BRD07225KL
+# 231k 0603 0.1% RT0603BRD07231KL
+# 254k 0603 0.1% RT0603BRD07254KL
+# 401k 0603 0.1% RT0603BRD07401KL
+# 463k 0603 0.1% RT0603BRD07463KL
+# 509k 0603 0.1% RT0603BRD07509KL
+# 819k 0603 0.1% RT0603BRD07819KL
+# 844k 0603 0.1% RT0603BRD07844KL
+# 886k 0603 0.1% RT0603BRD07886KL
+# 952k 0603 0.1% RT0603BRD07952KL
+# _script/resistor_generator ❯    
