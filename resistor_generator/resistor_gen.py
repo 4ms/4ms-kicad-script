@@ -46,6 +46,7 @@ extra_E24_base_values = [
 ]
 
 E96_plus_E24_values = E96_base_values + extra_E24_base_values
+E96_plus_E24_values.sort()
 
 multiplier_list = [
     1,
