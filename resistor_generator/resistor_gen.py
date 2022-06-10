@@ -57,7 +57,54 @@ multiplier_list = [
     1000000
 ]
 
-package_list = ["0201", "0402", "0603", "0805", "1206"]
+min_value = {
+    "1%": {
+        "0201": 1,
+        "0402": 1,
+        "0603": 1,
+        "0805": 1,
+        "1206": 1,
+        "1210": 1,
+        "2010": 1,
+        "2512": 1,
+    },
+    "0.1%": {
+        "0201": 9999999,
+        "0402": 4.7,
+        "0603": 1,
+        "0805": 1,
+        "1206": 1,
+        "1210": 4.7,
+        "2010": 4.7,
+        "2512": 4.7,
+    },
+}
+
+max_value = {
+    "1%": {
+        "0201": 10000000,
+        "0402": 10000000,
+        "0603": 10000000,
+        "0805": 10000000,
+        "1206": 10000000,
+        "1210": 10000000,
+        "2010": 10000000,
+        "2512": 10000000,
+    },
+    "0.1%": {
+        "0201": 0,
+        "0402": 240000,
+        "0603": 1000000,
+        "0805": 1500000,
+        "1206": 1500000,
+        "1210": 1000000,
+        "2010": 1000000,
+        "2512": 1000000,
+    },
+}
+
+
+package_list = ["0201", "0402", "0603", "0805", "1206", "1210", "2010", "2512"]
 
 wattage_dict = {
     "0201": "1/20W",
@@ -65,6 +112,9 @@ wattage_dict = {
     "0603": "1/10W",
     "0805": "1/8W",
     "1206": "1/4W",
+    "1210": "1/2W",
+    "2010": "3/4W",
+    "2512": "1W",
 }
 
 tolerance_list = ["1%", "0.1%"]
@@ -219,7 +269,8 @@ if __name__ == "__main__":
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
             for v in E96_plus_E24_values:
                 val = m * v
-                print(gen_res(jlc, val, package, tolerance, tpl))
+                if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
+                    print(gen_res(jlc, val, package, tolerance, tpl))
 
     elif outfile=="print-bom":
         print('"Comment", "Designator", "Footprint", "JLCPCB Part #"')
@@ -229,7 +280,8 @@ if __name__ == "__main__":
                 val = m * v
                 tpl = f"\"%VAL% %PKG% %TOL%\", \"R{i}\", \"R%PKG%\",  \"%JLCPCBID%\""
                 i = i + 1
-                print(gen_res(jlc, val, package, tolerance, tpl))
+                if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
+                    print(gen_res(jlc, val, package, tolerance, tpl))
 
     else:
         print(f"Generating values for {package} {tolerance} from {get_value_with_units(1.01 * minmult)} to {get_value_with_units(9.76 * maxmult)}")
@@ -248,7 +300,9 @@ if __name__ == "__main__":
                     continue
                 for v in E96_plus_E24_values:
                     val = m * v
-                    libdata += gen_res(jlc, val, package, tolerance, tpl_data)
+                    if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
+                        libdata += gen_res(jlc, val, package, tolerance, tpl_data)
+
             libdata += footer
             with open(outfile, "w") as f:
                 f.write(libdata)
