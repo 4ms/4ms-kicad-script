@@ -151,13 +151,13 @@ def get_short_value(value):
         return "ValueTooLarge"
 
 
-def get_jlcpcb_id(jlc, value_with_units, package, tolerance):
+def get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance):
     id = "?"
     val = " " + value_with_units.strip("R").strip("Ω").lower() + "�" #Hex code fffd appears as a separator in the source csv file
     pack = " " + package + " "
     tol = tolerance + " "
     for comp in jlc:
-        if (val in comp) and (pack in comp) and (tol in comp):
+        if (yageo_partnum in comp) or ((val in comp) and (pack in comp) and (tol in comp)):
             id = comp.split(",")[0].strip('"')
             break
     return id
@@ -175,7 +175,6 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     else:
         partnum = "RC%PKG%FR-07%VALSHORT%L"
         opttol = ""
-    jlc_id = get_jlcpcb_id(jlc, value_with_units, package, tolerance)
 
     symdata = tpl_data.replace(r'%PARTNUM%', partnum)
     symdata = symdata.replace(r'%VAL%', value_with_units)
@@ -184,6 +183,11 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     symdata = symdata.replace(r'%OPTTOL%', opttol)
     symdata = symdata.replace(r'%TOL%', tolerance)
     symdata = symdata.replace(r'%WATTS%', wattage)
+
+    yageo_partnum = partnum.replace(r'%PKG%', package)
+    yageo_partnum = yageo_partnum.replace(r'%VALSHORT%', value_short)
+    jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance)
+
     symdata = symdata.replace(r'%JLCPCBID%', jlc_id)
     return symdata
 
