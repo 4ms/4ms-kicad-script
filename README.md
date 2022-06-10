@@ -8,6 +8,8 @@ Here are some utilities for working with Kicad.
 
   * BOM-scripts: EEschema plugins that produce a BOM properly formatted for a PCBA service.
 
+  * resistor_generator: Generate a library of standard resistor values (E96+E24) for a given package and tolerance. Searches JLCPCB's database to populate a JLCPCB part number field, and also generates a valid Yageo part number.
+
   * lib_scripts: a series of scripts used to create a KiCad symbol library from a BOM CSV file and a group of schematics that share common parts. Originally written for the [OpenVentilator](https://gitlab.com/openventilator/openventilator) project. When importing projects into Kicad from other EDA software, a library is created for each imported project, so these scripts are handy for essentially merging all the individual project libraries into a single shared library (and throw in some useful information from a BOM file while it's at it). We also have used these scripts to create the latest 4ms symbol libraries (atomic part library) since we have all MPN etc information in the BOM files.
 
   * lib_scripts/symLibConversion: This script does some of the rote search-and-replacement when updating a legacy 4ms library schematic to the new atomic libraries.
