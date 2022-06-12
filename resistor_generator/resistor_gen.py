@@ -165,31 +165,49 @@ def get_jlcpcb_id_and_matchtype(jlcdb, yageo_partnum, value_ohms, package, toler
     if tolerance == "0.1%":
         alt_yageo_partnum = yageo_partnum.replace("BRE", "BRD")
         alt_resistortoday_partnum = yageo_partnum.replace("RT", "PTFR").replace("BRE07", "B").strip("L").ljust(13, "0")
-        fuaval = ""
+        val4dig = ""
         if value_ohms < 100:
-            fuaval = str(value_ohms).replace(".", "R").ljust(4, "0")
+            val4dig = str(value_ohms).replace(".", "R").ljust(4, "0")
         elif value_ohms < 1000:
-            fuaval = str(value_ohms)[:3].ljust(4, "0")
+            val4dig = str(value_ohms)[:3].ljust(4, "0")
         elif value_ohms < 10000:
-            fuaval = str(value_ohms)[:3].ljust(3, "0") + "1"
+            val4dig = str(value_ohms)[:3].ljust(3, "0") + "1"
         elif value_ohms < 100000:
-            fuaval = str(value_ohms)[:3].ljust(3, "0") + "2"
+            val4dig = str(value_ohms)[:3].ljust(3, "0") + "2"
         elif value_ohms < 1000000:
-            fuaval = str(value_ohms)[:3].ljust(3, "0") + "3"
+            val4dig = str(value_ohms)[:3].ljust(3, "0") + "3"
         elif value_ohms < 10000000:
-            fuaval = str(value_ohms)[:3].ljust(3, "0") + "4"
-        alt_fua_partnum = "TD" + package[2]+package[3] + "G" + fuaval + "B"
+            val4dig = str(value_ohms)[:3].ljust(3, "0") + "4"
+        alt_fua_partnum = "TD" + package[2]+package[3] + "G" + val4dig + "B"
+        alt_bournes_partnum = "CRT" + package + "-BY-"+val4dig+"GLF"
+        alt_AR_partnum = "AR" + package[2]+package[3] + "BTD"+val4dig
+        alt2_AR_partnum = "AR" + package[2]+package[3] + "BTC"+val4dig
+        alt_uniroyal_partnum = "TC" + package[2]+package[3] + "50B"+ val4dig + "TCC"
 
     else:
-        alt_yageo_partnum = ""
-        alt_resistortoday_partnum = ""
-        alt_fua_partnum = ""
+        alt_yageo_partnum = "not found"
+        alt_resistortoday_partnum = "not found"
+        alt_fua_partnum = "not found"
+        alt_bournes_partnum = "not found"
+        alt_AR_partnum = "not found"
+        alt2_AR_partnum = "not found"
+        alt_uniroyal_partnum = "not found"
 
     val = " " + get_value_with_units(value_ohms).strip("R").strip("Ω").lower() + "�" #Hex code fffd appears as a separator in the source csv file
     pack = " " + package + " "
     tol = "�" + tolerance + " "
     for comp in jlcdb:
-        if yageo_partnum in comp  or (tolerance=="0.1%" and (alt_yageo_partnum in comp or alt_resistortoday_partnum in comp or alt_fua_partnum in comp)):
+        if yageo_partnum in comp  or (
+            tolerance=="0.1%" and  (
+                    alt_yageo_partnum in comp or
+                    alt_resistortoday_partnum in comp or
+                    alt_fua_partnum in comp or
+                    alt_bournes_partnum in comp or
+                    alt_AR_partnum in comp or
+                    alt2_AR_partnum in comp or
+                    alt_uniroyal_partnum in comp
+                    )):
+
         # if alt_fua_partnum in comp:
             yageo_match = comp.split(",")[0].strip('"')
             found_yageopn_match = True
