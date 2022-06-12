@@ -151,16 +151,33 @@ def get_short_value(value):
         return "ValueTooLarge"
 
 
-def get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance):
-    id = "?"
+def get_jlcpcb_id_by_yageo_pn(jlc, yageo_partnum):
+    # Find exact Yageo part number match
+    for comp in jlc:
+        if yageo_partnum in comp:
+            return comp.split(",")[0].strip('"')
+    return "?"
+
+def get_jlcpcb_id_by_val_pack_tol(jlc, value_with_units, package, tolerance):
     val = " " + value_with_units.strip("R").strip("Ω").lower() + "�" #Hex code fffd appears as a separator in the source csv file
     pack = " " + package + " "
-    tol = tolerance + " "
+    tol = "�" + tolerance + " "
     for comp in jlc:
-        if (yageo_partnum in comp) or ((val in comp) and (pack in comp) and (tol in comp)):
-            id = comp.split(",")[0].strip('"')
-            break
-    return id
+        if (val in comp) and (pack in comp) and (tol in comp):
+            return comp.split(",")[0].strip('"')
+
+    return "?"
+
+
+def get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance):
+    # Find exact Yageo part number match
+    id = get_jlcpcb_id_by_yageo_pn(jlc, yageo_partnum)
+    if id != "?":
+        return id
+
+    # Find match on value, package, tolerance
+    return get_jlcpcb_id_by_val_pack_tol(jlc, value_with_units, package, tolerance)
+
 
 def get_yageo_partnum(tolerance, package, value_short):
     # 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
@@ -271,6 +288,10 @@ if __name__ == "__main__":
 
     If you specify the libfilename as 'print-bom' then instead of saving to a
     file, then a JLCPCB compatible BOM csv will be output to stdout. 
+
+    `print-missing` will print items with no JLCPCB ID
+
+    `print-non-yageo` will print items with a JLCPCB ID that was matched by value/package/tolerance instead of Yageo P/N
     """)
 
     elif outfile=="print-partnums":
@@ -293,11 +314,9 @@ if __name__ == "__main__":
                     print(gen_res(jlc, val, package, tolerance, tpl))
 
     elif outfile=="print-missing":
-        i = 0
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
             for v in E96_plus_E24_values:
                 val = m * v
-                i = i + 1
                 if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                     value_with_units = get_value_with_units(val)
                     value_short = get_short_value(val)
@@ -305,6 +324,20 @@ if __name__ == "__main__":
                     jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance)
                     if jlc_id == "?":
                         print(value_with_units, package, tolerance, yageo_partnum) 
+
+    elif outfile == "print-non-yageo":
+        for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
+            for v in E96_plus_E24_values:
+                val = m * v
+                if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
+                    value_short = get_short_value(val)
+                    yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
+                    jlc_id = get_jlcpcb_id_by_yageo_pn(jlc, yageo_partnum)
+                    if jlc_id == "?":
+                        #search by tol, then if that's found print it out
+                        pass
+
+
 
     else:
         print(f"Generating values for {package} {tolerance} from {get_value_with_units(1.0 * minmult)} to {get_value_with_units(9.76 * maxmult)}")
