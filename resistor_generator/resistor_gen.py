@@ -151,39 +151,73 @@ def get_short_value(value):
         return "ValueTooLarge"
 
 
-def get_jlcpcb_id_by_yageo_pn(jlc, yageo_partnum):
-    # Find exact Yageo part number match
-    for comp in jlc:
-        if yageo_partnum in comp:
-            return comp.split(",")[0].strip('"')
-    return "?"
 
-def get_jlcpcb_id_by_val_pack_tol(jlc, value_with_units, package, tolerance):
-    val = " " + value_with_units.strip("R").strip("Ω").lower() + "�" #Hex code fffd appears as a separator in the source csv file
+def get_jlcpcb_id_and_matchtype(jlcdb, yageo_partnum, value_ohms, package, tolerance):
+    """ Returns a tuple of the matching JLCPCB_ID and the method used to find that ID
+        The method is either "yageo", "specs" or "not found"
+        If no matches are found the JLCPCB ID will be "?"
+    """
+    found_yageopn_match = False
+    found_specs_match = False
+    yageo_match = ""
+    specs_match = ""
+
+    if tolerance == "0.1%":
+        alt_yageo_partnum = yageo_partnum.replace("BRE", "BRD")
+        alt_resistortoday_partnum = yageo_partnum.replace("RT", "PTFR").replace("BRE07", "B").strip("L").ljust(13, "0")
+        fuaval = ""
+        if value_ohms < 100:
+            fuaval = str(value_ohms).replace(".", "R").ljust(4, "0")
+        elif value_ohms < 1000:
+            fuaval = str(value_ohms)[:3].ljust(4, "0")
+        elif value_ohms < 10000:
+            fuaval = str(value_ohms)[:3].ljust(3, "0") + "1"
+        elif value_ohms < 100000:
+            fuaval = str(value_ohms)[:3].ljust(3, "0") + "2"
+        elif value_ohms < 1000000:
+            fuaval = str(value_ohms)[:3].ljust(3, "0") + "3"
+        elif value_ohms < 10000000:
+            fuaval = str(value_ohms)[:3].ljust(3, "0") + "4"
+        alt_fua_partnum = "TD" + package[2]+package[3] + "G" + fuaval + "B"
+
+    else:
+        alt_yageo_partnum = ""
+        alt_resistortoday_partnum = ""
+        alt_fua_partnum = ""
+
+    val = " " + get_value_with_units(value_ohms).strip("R").strip("Ω").lower() + "�" #Hex code fffd appears as a separator in the source csv file
     pack = " " + package + " "
     tol = "�" + tolerance + " "
-    for comp in jlc:
-        if (val in comp) and (pack in comp) and (tol in comp):
-            return comp.split(",")[0].strip('"')
+    for comp in jlcdb:
+        if yageo_partnum in comp  or (tolerance=="0.1%" and (alt_yageo_partnum in comp or alt_resistortoday_partnum in comp or alt_fua_partnum in comp)):
+        # if alt_fua_partnum in comp:
+            yageo_match = comp.split(",")[0].strip('"')
+            found_yageopn_match = True
+        elif (val in comp) and (pack in comp) and (tol in comp):
+            specs_match = comp.split(",")[0].strip('"')
+            found_specs_match = True
 
-    return "?"
+        if found_yageopn_match and found_specs_match:
+            break
+
+    if found_yageopn_match:
+        return yageo_match, "yageo"
+    elif found_specs_match:
+        return specs_match, "specs"
+    else:
+        return "?", "not found"
 
 
-def get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance):
-    # Find exact Yageo part number match
-    id = get_jlcpcb_id_by_yageo_pn(jlc, yageo_partnum)
-    if id != "?":
-        return id
-
-    # Find match on value, package, tolerance
-    return get_jlcpcb_id_by_val_pack_tol(jlc, value_with_units, package, tolerance)
-
+def get_jlcpcb_id(jlc, yageo_partnum, value_ohms, package, tolerance):
+    id, _ = get_jlcpcb_id_and_matchtype(jlc, yageo_partnum, value_ohms, package, tolerance)
+    return id
 
 def get_yageo_partnum(tolerance, package, value_short):
     # 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
-    # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L
+    # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L (0603: 111)
+    # RT0603BRE071K02L (0603: 56)
     if tolerance=="0.1%":
-        return "RT"+package+"BRD07"+value_short+"L"
+        return "RT"+package+"BRE07"+value_short+"L"
     else:
         return "RC"+package+"FR-07"+value_short+"L"
 
@@ -207,7 +241,7 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     symdata = symdata.replace(r'%WATTS%', wattage)
     symdata = symdata.replace(r'%PARTNUM%', yageo_partnum)
 
-    jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance)
+    jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_ohms, package, tolerance)
 
     symdata = symdata.replace(r'%JLCPCBID%', jlc_id)
     return symdata
@@ -321,21 +355,27 @@ if __name__ == "__main__":
                     value_with_units = get_value_with_units(val)
                     value_short = get_short_value(val)
                     yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
-                    jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance)
+                    jlc_id = get_jlcpcb_id(jlc, yageo_partnum, val, package, tolerance)
                     if jlc_id == "?":
                         print(value_with_units, package, tolerance, yageo_partnum) 
 
-    elif outfile == "print-non-yageo":
+    elif outfile == "print-non-yageo" or outfile == "print-yageo":
+        cnt = 0
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
             for v in E96_plus_E24_values:
                 val = m * v
                 if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                     value_short = get_short_value(val)
+                    value_with_units = get_value_with_units(val)
                     yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
-                    jlc_id = get_jlcpcb_id_by_yageo_pn(jlc, yageo_partnum)
-                    if jlc_id == "?":
-                        #search by tol, then if that's found print it out
-                        pass
+                    jlc_id, method = get_jlcpcb_id_and_matchtype(jlc, yageo_partnum, val, package, tolerance)
+                    if outfile=="print-non-yageo" and method == "specs":
+                        print(value_with_units, package, tolerance, jlc_id)
+                        cnt = cnt + 1
+                    elif outfile=="print-yageo" and method == "yageo":
+                        print(value_with_units, package, tolerance, jlc_id)
+                        cnt = cnt + 1
+        print(f"Found: {cnt}")
 
 
 
