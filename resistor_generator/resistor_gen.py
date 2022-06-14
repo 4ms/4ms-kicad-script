@@ -339,26 +339,25 @@ if __name__ == "__main__":
         print("""
     Usage: python3 resistor_gen.py libfilename {package} {tolerance} {min_mult} {max_mult} 
 
-    Generates a Kicad 6 symbol library or E96+E24 resistors for a given
-    package size. Yageo RC-series resistor part numbers will be added
-    to each symbol's Part Number field.
+    Generates a Kicad 6 symbol library of E96+E24 resistors for a given
+    package size and tolerance. Yageo RC-series resistor part numbers will be added
+    to each symbol's Part Number field (RT-series for 0.1%).
 
+    Parameters:
     {libfilename} is the output file name. Required. If you want Kicad to recognize the file, end it with .kicad_sym
     {package} can be 0201, 0402, 0603, 0805, or 1206 (default 0603)
     {tolerance} can be 1% or 0.1% (default 1%)
-    {min_mult} is lowest power of 10 for which to generate values (default 1}
-    {max_mult} is highest power of 10 for which to generate values (default 1000000}
+    {min_mult} is lowest power of 10 for which to generate values (default 1}. This is inclusive, so if min_mult is 100, values starting at 100Ω will be output.
+    {max_mult} is highest power of 10 for which to generate values (default 1000000}. This is inclusive, so if max_mult is 1000, then values up to 9.76k will be output.
        
-    If you specify the libfilename as 'print-partnums' then instead of saving
-    to a file, the part numbers only will be output to stdout.
+    There are some special commands that can be specified instead of libfilename. These are probably only useful for debugging or fine-tuning the algorithm that deduces the JLCPCB ID. These all output to stdout instead of a file. The other parameters (package, tolerance, etc) have the same meaning.
 
-    If you specify the libfilename as 'print-bom' then instead of saving to a
-    file, then a JLCPCB compatible BOM csv will be output to stdout. 
+    print-partnums: print the Yageo part numbers. Useful for importing into mouser to verify the part numbers are orderable.
+    print-bom: print a JLCPCB compatible BOM csv file. Useful for verifying the JLCPCB IDs are accurate.
+    print-missing: print items with no JLCPCB ID
+    print-matched-partnum: print items with a JLCPCB ID that was matched by an automatically generated vendor part number (e.g. Yageo P/N)
+    print-matched-specs: will print items with a JLCPCB ID that was matched by value/package/tolerance instead of part number
 
-    `print-missing` will print items with no JLCPCB ID
-
-    `print-matched-partnum` will print items with a JLCPCB ID that was matched by an automatically generated vendor part number (e.g. Yageo P/N)
-    `print-matched-specs` will print items with a JLCPCB ID that was matched by value/package/tolerance instead of part number
     """)
 
     elif outfile=="print-partnums":
