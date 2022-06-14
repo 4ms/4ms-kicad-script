@@ -150,21 +150,106 @@ def get_short_value(value):
     else:
         return "ValueTooLarge"
 
+def get_4dig_value(value_ohms):
+    if value_ohms < 100:
+        return str(value_ohms).replace(".", "R").ljust(4, "0")
+    elif value_ohms < 1000:
+        return str(value_ohms)[:3].ljust(4, "0")
+    elif value_ohms < 10000:
+        return str(value_ohms)[:3].ljust(3, "0") + "1"
+    elif value_ohms < 100000:
+        return str(value_ohms)[:3].ljust(3, "0") + "2"
+    elif value_ohms < 1000000:
+        return str(value_ohms)[:3].ljust(3, "0") + "3"
+    elif value_ohms < 10000000:
+        return str(value_ohms)[:3].ljust(3, "0") + "4"
 
-def get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance):
-    id = "?"
-    val = " " + value_with_units.strip("R").strip("Ω").lower() + "�" #Hex code fffd appears as a separator in the source csv file
+
+def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
+    """ Returns a tuple of the matching JLCPCB_ID and the method used to find that ID
+        The method is either "partnum", "specs" or "not found"
+        If no matches are found the JLCPCB ID will be "?"
+    """
+
+    # Default values
+    found_partnum_match = False
+    found_specs_match = False
+    partnum_match = ""
+    specs_match = ""
+    partnum_match_fields = ""
+    specs_match_fields = ""
+    alt_yageo_partnum = "not found"
+    alt_resistortoday_partnum = "not found"
+    alt_fua_partnum = "not found"
+    alt_bournes_partnum = "not found"
+    alt_AR_partnum = "not found"
+    alt2_AR_partnum = "not found"
+    alt_uniroyal_partnum = "not found"
+
+    # Calc Yageo part number (primary matching technique)
+    value_short = get_short_value(value_ohms)
+    yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
+
+    # For 0.1% resistors, JLCPCB has a scattering of manufacturers, so we need to look for many different part numbers
+    if tolerance == "0.1%":
+        val4dig = get_4dig_value(value_ohms)
+        alt_yageo_partnum = yageo_partnum.replace("BRD", "BRE")
+        alt_resistortoday_partnum = yageo_partnum.replace("RT", "PTFR").replace("BRE07", "B").strip("L").ljust(13, "0")
+        alt_fua_partnum = "TD" + package[2]+package[3] + "G" + val4dig + "B"
+        alt_bournes_partnum = "CRT" + package + "-BY-"+val4dig+"GLF"
+        alt_AR_partnum = "AR" + package[2]+package[3] + "BTD"+val4dig
+        alt2_AR_partnum = "AR" + package[2]+package[3] + "BTC"+val4dig
+        alt_uniroyal_partnum = "TC" + package[2]+package[3] + "50B"+ val4dig + "TCC"
+
+    # For searching by specifications, we match particular format of the Description field in the JLCPCB CSV file. 
+    # This may need to be updated for future csv files
+    val = " " + get_value_with_units(value_ohms).strip("R").strip("Ω").lower() + "�" #Hex code fffd appears as a separator in the source csv file
     pack = " " + package + " "
-    tol = tolerance + " "
-    for comp in jlc:
-        if (yageo_partnum in comp) or ((val in comp) and (pack in comp) and (tol in comp)):
-            id = comp.split(",")[0].strip('"')
+    tol = "�" + tolerance + " "
+
+    # Scan all lines in the file, checking for matching strings
+    for comp in jlcdb:
+        # First, check if there's a part number match
+        if yageo_partnum in comp  or (
+            tolerance=="0.1%" and  (
+                    alt_yageo_partnum in comp or
+                    alt_resistortoday_partnum in comp or
+                    alt_fua_partnum in comp or
+                    alt_bournes_partnum in comp or
+                    alt_AR_partnum in comp or
+                    alt2_AR_partnum in comp or
+                    alt_uniroyal_partnum in comp
+                    )):
+            partnum_match = comp.split(",")[0].strip('"')
+            found_partnum_match = True
+            partnum_match_fields = comp.split(",")[8].strip('"')
+
+        # Failing a part number match, check for a specification match
+        elif (val in comp) and (pack in comp) and (tol in comp):
+            specs_match = comp.split(",")[0].strip('"')
+            found_specs_match = True
+            specs_match_fields = comp.split(",")[8].strip('"')
+
+        if found_partnum_match and found_specs_match:
             break
+
+    # Part number matches are consider the best type of matches, so return that item if we matched one
+    # Otherwise, return the item that matched on specifications
+    if found_partnum_match:
+        return partnum_match, "partnum", partnum_match_fields
+    elif found_specs_match:
+        return specs_match, "specs", specs_match_fields
+    else:
+        return "?", "not found", "not found"
+
+
+def get_jlcpcb_id(jlc, value_ohms, package, tolerance):
+    id, _, _ = get_jlcpcb_id_and_matchtype(jlc, value_ohms, package, tolerance)
     return id
 
 def get_yageo_partnum(tolerance, package, value_short):
     # 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
-    # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L
+    # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L 
     if tolerance=="0.1%":
         return "RT"+package+"BRD07"+value_short+"L"
     else:
@@ -180,6 +265,7 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
         opttol = "_" + tolerance
     else:
         opttol = ""
+    jlc_id = get_jlcpcb_id(jlc, value_ohms, package, tolerance)
 
     symdata = tpl_data
     symdata = symdata.replace(r'%VAL%', value_with_units)
@@ -189,9 +275,6 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     symdata = symdata.replace(r'%TOL%', tolerance)
     symdata = symdata.replace(r'%WATTS%', wattage)
     symdata = symdata.replace(r'%PARTNUM%', yageo_partnum)
-
-    jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance)
-
     symdata = symdata.replace(r'%JLCPCBID%', jlc_id)
     return symdata
 
@@ -271,6 +354,11 @@ if __name__ == "__main__":
 
     If you specify the libfilename as 'print-bom' then instead of saving to a
     file, then a JLCPCB compatible BOM csv will be output to stdout. 
+
+    `print-missing` will print items with no JLCPCB ID
+
+    `print-matched-partnum` will print items with a JLCPCB ID that was matched by an automatically generated vendor part number (e.g. Yageo P/N)
+    `print-matched-specs` will print items with a JLCPCB ID that was matched by value/package/tolerance instead of part number
     """)
 
     elif outfile=="print-partnums":
@@ -293,18 +381,42 @@ if __name__ == "__main__":
                     print(gen_res(jlc, val, package, tolerance, tpl))
 
     elif outfile=="print-missing":
-        i = 0
+        cnt = 0
+        total = 0
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
             for v in E96_plus_E24_values:
                 val = m * v
-                i = i + 1
                 if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                     value_with_units = get_value_with_units(val)
                     value_short = get_short_value(val)
                     yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
-                    jlc_id = get_jlcpcb_id(jlc, yageo_partnum, value_with_units, package, tolerance)
+                    jlc_id = get_jlcpcb_id(jlc, val, package, tolerance)
                     if jlc_id == "?":
                         print(value_with_units, package, tolerance, yageo_partnum) 
+                        cnt = cnt + 1
+                    total = total + 1
+        print(f"Missing: {cnt} of {total}")
+
+    elif outfile == "print-matched-specs" or outfile == "print-matched-partnum":
+        cnt = 0
+        total = 0
+        for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
+            for v in E96_plus_E24_values:
+                val = m * v
+                if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
+                    value_with_units = get_value_with_units(val)
+                    jlc_id, method, specs = get_jlcpcb_id_and_matchtype(jlc, val, package, tolerance)
+                    specs = specs.replace("Thin Film Resistor ","").replace("-55","").replace("~+155","").replace(" Chip Resistor - Surface Mount ROHS","").replace("150V","").replace("100V","").replace("25ppm/K","").replace("25ppm/","").replace("50ppm/","").replace("10ppm/","").replace("10ppm/K","").replace("~+125","").replace("100mW","").replace("125mW","").replace("1/8W","").replace("1/4W","").replace("�"," ")
+                    if outfile=="print-matched-specs" and method == "specs":
+                        print(value_with_units, package, tolerance, jlc_id, specs)
+                        cnt = cnt + 1
+                    elif outfile=="print-matched-partnum" and method == "partnum":
+                        print(value_with_units, package, tolerance, jlc_id, specs)
+                        cnt = cnt + 1
+                    total = total + 1
+        print(f"Found: {cnt} of {total}")
+
+
 
     else:
         print(f"Generating values for {package} {tolerance} from {get_value_with_units(1.0 * minmult)} to {get_value_with_units(9.76 * maxmult)}")
@@ -331,103 +443,3 @@ if __name__ == "__main__":
                 f.write(libdata)
 
 
-# 0603 1% Not found:
-# 2.16Ω 0603 1% RC0603FR-072R16L
-# 11.2Ω 0603 1% RC0603FR-0711R2L
-# 11.7Ω 0603 1% RC0603FR-0711R7L
-# 14.2Ω 0603 1% RC0603FR-0714R2L
-# 19Ω 0603 1% RC0603FR-0719RL
-# 21.6Ω 0603 1% RC0603FR-0721R6L
-# 22.5Ω 0603 1% RC0603FR-0722R5L
-# 26Ω 0603 1% RC0603FR-0726RL
-# 33.1Ω 0603 1% RC0603FR-0733R1L
-# 35.6Ω 0603 1% RC0603FR-0735R6L
-# 40.1Ω 0603 1% RC0603FR-0740R1L
-# 42.1Ω 0603 1% RC0603FR-0742R1L
-# 57.5Ω 0603 1% RC0603FR-0757R5L
-# 88.6Ω 0603 1% RC0603FR-0788R6L
-# 112Ω 0603 1% RC0603FR-07112RL
-# 114Ω 0603 1% RC0603FR-07114RL
-# 204Ω 0603 1% RC0603FR-07204RL
-# 216Ω 0603 1% RC0603FR-07216RL
-# 225Ω 0603 1% RC0603FR-07225RL
-# 231Ω 0603 1% RC0603FR-07231RL
-# 254Ω 0603 1% RC0603FR-07254RL
-# 401Ω 0603 1% RC0603FR-07401RL
-# 463Ω 0603 1% RC0603FR-07463RL
-# 509Ω 0603 1% RC0603FR-07509RL
-# 819Ω 0603 1% RC0603FR-07819RL
-# 844Ω 0603 1% RC0603FR-07844RL
-# 886Ω 0603 1% RC0603FR-07886RL
-# 952Ω 0603 1% RC0603FR-07952RL
-# 2.16k 0603 1% RC0603FR-072K16L
-# 11.2k 0603 1% RC0603FR-0711K2L
-# 21.6k 0603 1% RC0603FR-0721K6L
-# 22.5k 0603 1% RC0603FR-0722K5L
-# 40.1k 0603 1% RC0603FR-0740K1L
-# 88.6k 0603 1% RC0603FR-0788K6L
-# 112k 0603 1% RC0603FR-07112KL
-# 114k 0603 1% RC0603FR-07114KL
-# 204k 0603 1% RC0603FR-07204KL
-# 216k 0603 1% RC0603FR-07216KL
-# 225k 0603 1% RC0603FR-07225KL
-# 231k 0603 1% RC0603FR-07231KL
-# 254k 0603 1% RC0603FR-07254KL
-# 401k 0603 1% RC0603FR-07401KL
-# 463k 0603 1% RC0603FR-07463KL
-# 509k 0603 1% RC0603FR-07509KL
-# 819k 0603 1% RC0603FR-07819KL
-# 844k 0603 1% RC0603FR-07844KL
-# 886k 0603 1% RC0603FR-07886KL
-# 952k 0603 1% RC0603FR-07952KL
-# 2.16M 0603 1% RC0603FR-072M16L
-#
-# 1Ω to 4.64Ω 0603 0.1%
-# 11.2Ω 0603 0.1% RT0603BRD0711R2L
-# 11.7Ω 0603 0.1% RT0603BRD0711R7L
-# 14.2Ω 0603 0.1% RT0603BRD0714R2L
-# 19Ω 0603 0.1% RT0603BRD0719RL
-# 21.6Ω 0603 0.1% RT0603BRD0721R6L
-# 22.5Ω 0603 0.1% RT0603BRD0722R5L
-# 26Ω 0603 0.1% RT0603BRD0726RL
-# 33.1Ω 0603 0.1% RT0603BRD0733R1L
-# 35.6Ω 0603 0.1% RT0603BRD0735R6L
-# 40.1Ω 0603 0.1% RT0603BRD0740R1L
-# 42.1Ω 0603 0.1% RT0603BRD0742R1L
-# 57.5Ω 0603 0.1% RT0603BRD0757R5L
-# 88.6Ω 0603 0.1% RT0603BRD0788R6L
-# 112Ω 0603 0.1% RT0603BRD07112RL
-# 114Ω 0603 0.1% RT0603BRD07114RL
-# 204Ω 0603 0.1% RT0603BRD07204RL
-# 216Ω 0603 0.1% RT0603BRD07216RL
-# 225Ω 0603 0.1% RT0603BRD07225RL
-# 231Ω 0603 0.1% RT0603BRD07231RL
-# 254Ω 0603 0.1% RT0603BRD07254RL
-# 401Ω 0603 0.1% RT0603BRD07401RL
-# 463Ω 0603 0.1% RT0603BRD07463RL
-# 509Ω 0603 0.1% RT0603BRD07509RL
-# 819Ω 0603 0.1% RT0603BRD07819RL
-# 844Ω 0603 0.1% RT0603BRD07844RL
-# 886Ω 0603 0.1% RT0603BRD07886RL
-# 952Ω 0603 0.1% RT0603BRD07952RL
-# 2.16k 0603 0.1% RT0603BRD072K16L
-# 11.2k 0603 0.1% RT0603BRD0711K2L
-# 21.6k 0603 0.1% RT0603BRD0721K6L
-# 22.5k 0603 0.1% RT0603BRD0722K5L
-# 40.1k 0603 0.1% RT0603BRD0740K1L
-# 88.6k 0603 0.1% RT0603BRD0788K6L
-# 112k 0603 0.1% RT0603BRD07112KL
-# 114k 0603 0.1% RT0603BRD07114KL
-# 204k 0603 0.1% RT0603BRD07204KL
-# 216k 0603 0.1% RT0603BRD07216KL
-# 225k 0603 0.1% RT0603BRD07225KL
-# 231k 0603 0.1% RT0603BRD07231KL
-# 254k 0603 0.1% RT0603BRD07254KL
-# 401k 0603 0.1% RT0603BRD07401KL
-# 463k 0603 0.1% RT0603BRD07463KL
-# 509k 0603 0.1% RT0603BRD07509KL
-# 819k 0603 0.1% RT0603BRD07819KL
-# 844k 0603 0.1% RT0603BRD07844KL
-# 886k 0603 0.1% RT0603BRD07886KL
-# 952k 0603 0.1% RT0603BRD07952KL
-# _script/resistor_generator ❯    
