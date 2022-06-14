@@ -19,9 +19,6 @@ from __future__ import print_function
 import kicad_netlist_reader_4ms
 import csv
 import sys
-from datetime import date
-import textwrap
-import re
 import os
 from partnum_magic import *
 

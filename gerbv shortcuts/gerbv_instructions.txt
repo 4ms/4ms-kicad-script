@@ -1,0 +1,18 @@
+These scripts and template files work with the gEDA version of gerbv. They are not for KiCAD.
+
+Make a dir called .gerbv in your home dir, and copy the files in templates/ into it:
+
+```
+mkdir -p ~/.gerbv
+cp templates/* ~/.gerbv/
+```
+
+Run the one of the scripts in bin/ while in a directory containing gerber files.
+Use `gerbv_fpkicad` if you want it to make the layer colors look like a faceplate, and don't have a back side silk file, or `gerbv_kicad` if you want the layer colors to look like a PCB and have all the layer files for a 2-sided board. 
+The script will create a gerbv project file named something like `gerbv_QCDEXP-FACEPLATE.gvp`. After the project file is created, you can just open the gerbv project by calling:
+
+```
+gerbv -p gerbv_QCDEXP-FACEPLATE.gvp
+```
+
+

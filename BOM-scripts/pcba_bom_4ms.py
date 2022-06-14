@@ -21,8 +21,6 @@ import kicad_netlist_reader_4ms
 import csv
 import sys
 from datetime import date
-import textwrap
-import re
 import os
 from partnum_magic import *
 
@@ -159,8 +157,8 @@ for group in grouped:
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
     
-    if (c.getField("JLCPCBI ID")):
-        part_no = c.getField("JLCPCBI ID")
+    # if (c.getField("JLCPCB ID")):
+    #     part_no = c.getField("JLCPCB ID")
 
     row.append( item )
     row.append( manufacturer )

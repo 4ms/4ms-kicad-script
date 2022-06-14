@@ -18,6 +18,6 @@ already exist. The new library files can be split into various part types based
 on Reference prefix (i.e. R = Resistor.lib, C = Capacitor.lib, D = Diode.lib,
 etc..)
 
-These scripts were used to create the 4ms lib-sym libraries.  The scripts in
+These scripts were used to create the 4ms symbol libraries.  The scripts in
 the symLibConversion/ directory will help update a schematic using the old
-lib-sch libraries.
+Kicad 5 libraries.
