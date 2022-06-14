@@ -1,9 +1,29 @@
-## 4ms Kicad Scripts
+# 4ms Kicad Scripts
+***All of these scripts are Works In Progress. Use at your own risk!!***
+Scripts that 4ms uses for KiCAD.
 
-Here are some utilities for working with Kicad.
 
-**All of these scripts are Works In Progress. Use at your own risk!!**
 
+## Installing the 4ms scripts as python plugins
+
+You can add these scripts to the PCB editor in KiCad 5 or higher.
+
+    Quit Kicad
+
+    Find the file which ends in the name “XXX_action.py” This is a script that has been modified to work as a plug-in.
+
+    Copy this plugin file to the plugin directory:
+        macOS/OSX: /User/[your username]/Library/Preferences/kicad/scripting/plugins/
+        Windows: C:\Users[your username]\AppData\Roaming\kicad\scripting\
+        Linux: /usr/share/kicad/scripting/plugins/ or ~/.kicad-plugins
+
+## Running a script:
+
+Open PCBnew and run the script by selecting it from the Tools > External Plugins… menu
+
+Or in the latest versions you can go to PCBnew Preferences and enable plugins to show on the toolbar
+
+## Scripts
   * makefp: PCB plugins (python scripts) to create a Eurorack faceplate from a PCB. Automatically determines smallest standard size that will fit, creates an outline and rail mounting slots, replaces all panel components with holes (using a look-up table that you must edit if you're not using standard 4ms libraries), removes all SMT components and traces, and creates a copper GND plane on the back (connecting all holes to it). It's not perfect and often requires some manual clean-up.
 
   * BOM-scripts: EEschema plugins that produce a BOM properly formatted for a PCBA service.
