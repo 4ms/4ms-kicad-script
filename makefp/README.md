@@ -3,6 +3,9 @@
 These plugins convert a PCB file to a Eurorack-compatible faceplate. You must
 manually add your own artwork on the silk and/or copper layers.
 
+This works with Kicad 6. It does not work with Kicad 5 or earlier. It has not
+been tested with Kicad nightlies (6.99).
+
 ## How to install:
 
   * These scripts use the 4ms KiCad library for faceplate holes. You must have
