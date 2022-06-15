@@ -31,12 +31,6 @@ been tested with Kicad nightlies (6.99).
 	ln -s /full/path/to/4ms-kicad-script/makefp/kicad-6-plugin/* /full/path/to/KiCad/6.0/scripting/plugins/
 	```
 
-	On Windows, run as Admin (thanks @electron271)
-
-	```
-	mklink X:\full\path\to\4ms-kicad-script\makefp\kicad-6-plugin\* X:\full\path\to\KiCad\6.0\scripting\plugins\
-	```
-
 
 ## How to use:
 
