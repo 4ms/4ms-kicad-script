@@ -21,9 +21,21 @@ been tested with Kicad nightlies (6.99).
   * Install the plugin files by copying all *.py files in the makefp directory
 	to the Kicad 6 plugin directory. To find the latter, open Kicad PCB Editor
 	and select `Tools` > `External Plugins` >`Reveal Plugin Folder`.
-	Alternatively, you can create symlinks instead of copying (useful if you're
-	using git to update the repository and want the plugins updated without
-	having to re-copy them).
+
+
+  * As an alternative to the last step, you can create symlinks instead of
+	copying (useful if you're using git to update the repository and want the
+	plugins updated without having to re-copy them). Example on linux or macOS:
+
+	```
+	ln -s /full/path/to/4ms-kicad-script/makefp/kicad-6-plugin/* /full/path/to/KiCad/6.0/scripting/plugins/
+	```
+
+	On Windows, run as Admin (thanks @electron271)
+
+	```
+	mklink X:\full\path\to\4ms-kicad-script\makefp\kicad-6-plugin\* X:\full\path\to\KiCad\6.0\scripting\plugins\
+	```
 
 
 ## How to use:
