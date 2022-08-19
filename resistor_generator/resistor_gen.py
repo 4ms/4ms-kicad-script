@@ -433,7 +433,7 @@ if __name__ == "__main__":
                 if m < minmult or m > maxmult:
                     continue
                 for v in E96_plus_E24_values:
-                    val = m * v
+                    val = round(m * v, 3)
                     if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                         libdata += gen_res(jlc, val, package, tolerance, tpl_data)
 
