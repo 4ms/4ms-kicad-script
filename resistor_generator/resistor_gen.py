@@ -45,6 +45,17 @@ extra_E24_base_values = [
     6.80, 8.20, 9.10
 ]
 
+E24_base_values = [
+    1.0, 1.1, 1.2, 
+    1.3, 1.5, 1.6, 
+    1.8, 2.0, 2.2, 
+    2.4, 2.7, 3.0,
+    3.3, 3.6, 3.9,
+    4.3, 4.7, 5.1,
+    5.6, 6.2, 6.8,
+    7.5, 8.2, 9.1
+]
+
 E96_plus_E24_values = E96_base_values + extra_E24_base_values
 E96_plus_E24_values.sort()
 
@@ -59,6 +70,10 @@ multiplier_list = [
 ]
 
 min_value = {
+    "5%": {
+        "TH0.250": 1,
+        "TH0.125": 1,
+    },
     "1%": {
         "0201": 1,
         "0402": 1,
@@ -72,8 +87,8 @@ min_value = {
     "0.1%": {
         "0201": 9999999,
         "0402": 4.7,
-        "0603": 10,
-        "0805": 10,
+        "0603": 1,
+        "0805": 1,
         "1206": 10,
         "1210": 10,
         "2010": 10,
@@ -82,6 +97,10 @@ min_value = {
 }
 
 max_value = {
+    "5%": {
+        "TH0.250": 10000000,
+        "TH0.125": 10000000,
+    },
     "1%": {
         "0201": 10000000,
         "0402": 10000000,
@@ -96,7 +115,7 @@ max_value = {
         "0201": 0,
         "0402": 240000,
         "0603": 1000000,
-        "0805": 1000000,
+        "0805": 1500000,
         "1206": 1000000,
         "1210": 1000000,
         "2010": 1000000,
@@ -105,7 +124,7 @@ max_value = {
 }
 
 
-package_list = ["0201", "0402", "0603", "0805", "1206", "1210", "2010", "2512"]
+package_list = ["0201", "0402", "0603", "0805", "1206", "1210", "2010", "2512", "TH0.125", "TH0.250"]
 
 wattage_dict = {
     "0201": "1/20W",
@@ -116,9 +135,11 @@ wattage_dict = {
     "1210": "1/2W",
     "2010": "3/4W",
     "2512": "1W",
+    "TH0.250": "1/4W",
+    "TH0.125": "1/8W",
 }
 
-tolerance_list = ["1%", "0.1%"]
+tolerance_list = ["5%", "1%", "0.1%"]
 
 template_file = "resistor_template_kicad_sym"
 jlc_file = "JLCPCB-ChipResistorSMT-20220531.csv"
@@ -178,7 +199,7 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
     specs_match = ""
     partnum_match_fields = ""
     specs_match_fields = ""
-    alt_yageo_partnum = "not found"
+    alt_manuf_partnum = "not found"
     alt_resistortoday_partnum = "not found"
     alt_fua_partnum = "not found"
     alt_bournes_partnum = "not found"
@@ -187,14 +208,13 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
     alt_uniroyal_partnum = "not found"
 
     # Calc Yageo part number (primary matching technique)
-    value_short = get_short_value(value_ohms)
-    yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
+    manuf_partnum  = get_manuf_partnum(tolerance, package, value_ohms)
 
     # For 0.1% resistors, JLCPCB has a scattering of manufacturers, so we need to look for many different part numbers
     if tolerance == "0.1%":
         val4dig = get_4dig_value(value_ohms)
-        alt_yageo_partnum = yageo_partnum.replace("BRD", "BRE")
-        alt_resistortoday_partnum = yageo_partnum.replace("RT", "PTFR").replace("BRE07", "B").strip("L").ljust(13, "0")
+        alt_manuf_partnum = manuf_partnum.replace("BRD", "BRE")
+        alt_resistortoday_partnum = manuf_partnum.replace("RT", "PTFR").replace("BRE07", "B").strip("L").ljust(13, "0")
         alt_fua_partnum = "TD" + package[2]+package[3] + "G" + val4dig + "B"
         alt_bournes_partnum = "CRT" + package + "-BY-"+val4dig+"GLF"
         alt_AR_partnum = "AR" + package[2]+package[3] + "BTD"+val4dig
@@ -210,9 +230,9 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
     # Scan all lines in the file, checking for matching strings
     for comp in jlcdb:
         # First, check if there's a part number match
-        if yageo_partnum in comp  or (
+        if manuf_partnum in comp  or (
             tolerance=="0.1%" and  (
-                    alt_yageo_partnum in comp or
+                    alt_manuf_partnum in comp or
                     alt_resistortoday_partnum in comp or
                     alt_fua_partnum in comp or
                     alt_bournes_partnum in comp or
@@ -247,35 +267,43 @@ def get_jlcpcb_id(jlc, value_ohms, package, tolerance):
     id, _, _ = get_jlcpcb_id_and_matchtype(jlc, value_ohms, package, tolerance)
     return id
 
-def get_yageo_partnum(tolerance, package, value_short):
+def get_manuf_partnum(tolerance, package, value_ohms):
     # 1% Yageo ~$0.005/ea e.g. 1.02k is  RC0603FR-071K02L
     # 0.1% Yageo 25ppm/C ~$0.04/ea e.g. 1.02k is RT0603BRD071K02L 
     if tolerance=="0.1%":
-        return "RT"+package+"BRD07"+value_short+"L"
+        return "RT"+package+"BRD07"+get_short_value(value_ohms)+"L"
+    elif tolerance == "1%":
+        return "RC"+package+"FR-07"+get_short_value(value_ohms)+"L"
+    elif package == "TH0.125":
+        return "299-"+ get_value_with_units(value_ohms).strip("Ω") +"-RC"
+    elif package == "TH0.250":
+        return "291-"+ get_value_with_units(value_ohms).strip("Ω") +"-RC"
     else:
-        return "RC"+package+"FR-07"+value_short+"L"
+        return "Unknown"
 
 
 def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     value_with_units = get_value_with_units(value_ohms)
     value_short = get_short_value(value_ohms)
     wattage = wattage_dict[package]
-    yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
-    if tolerance=="0.1%":
-        opttol = "_" + tolerance
-    else:
-        opttol = ""
-    jlc_id = get_jlcpcb_id(jlc, value_ohms, package, tolerance)
+    manuf_partnum  = get_manuf_partnum(tolerance, package, value_ohms)
+    manuf = "Xicon" if package.startswith("TH") else "Yageo"
+    opttol = "_" + tolerance if tolerance == "0.1%" else ""
+    footprint = "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" if package.startswith("TH") else "R_"+package 
+
+    jlc_id = "" if package.startswith("TH") else get_jlcpcb_id(jlc, value_ohms, package, tolerance)
 
     symdata = tpl_data
     symdata = symdata.replace(r'%VAL%', value_with_units)
     symdata = symdata.replace(r'%VALSHORT%', value_short)
     symdata = symdata.replace(r'%PKG%', package)
+    symdata = symdata.replace(r'%FOOTPRINT%', footprint)
     symdata = symdata.replace(r'%OPTTOL%', opttol)
     symdata = symdata.replace(r'%TOL%', tolerance)
     symdata = symdata.replace(r'%WATTS%', wattage)
-    symdata = symdata.replace(r'%PARTNUM%', yageo_partnum)
+    symdata = symdata.replace(r'%PARTNUM%', manuf_partnum)
     symdata = symdata.replace(r'%JLCPCBID%', jlc_id)
+    symdata = symdata.replace(r'%MANUF%', manuf)
     return symdata
 
 
@@ -333,6 +361,8 @@ if __name__ == "__main__":
     except:
         jlc = []
 
+    base_values = E24_base_values if package.startswith("TH") else E96_plus_E24_values
+
     if showusage:
         if errstr:
             print("\nERROR: " + errstr)
@@ -363,7 +393,7 @@ if __name__ == "__main__":
     elif outfile=="print-partnums":
         tpl = "%PARTNUM%"
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
-            for v in E96_plus_E24_values:
+            for v in base_values:
                 val = m * v
                 if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                     print(gen_res(jlc, val, package, tolerance, tpl))
@@ -372,7 +402,7 @@ if __name__ == "__main__":
         print('"Comment", "Designator", "Footprint", "JLCPCB Part #"')
         i = 0
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
-            for v in E96_plus_E24_values:
+            for v in base_values:
                 val = m * v
                 tpl = f"\"%VAL% %PKG% %TOL%\", \"R{i}\", \"R%PKG%\",  \"%JLCPCBID%\""
                 i = i + 1
@@ -383,15 +413,14 @@ if __name__ == "__main__":
         cnt = 0
         total = 0
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
-            for v in E96_plus_E24_values:
+            for v in base_values:
                 val = m * v
                 if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                     value_with_units = get_value_with_units(val)
-                    value_short = get_short_value(val)
-                    yageo_partnum  = get_yageo_partnum(tolerance, package, value_short)
+                    manuf_partnum  = get_manuf_partnum(tolerance, package, val)
                     jlc_id = get_jlcpcb_id(jlc, val, package, tolerance)
                     if jlc_id == "?":
-                        print(value_with_units, package, tolerance, yageo_partnum) 
+                        print(value_with_units, package, tolerance, manuf_partnum) 
                         cnt = cnt + 1
                     total = total + 1
         print(f"Missing: {cnt} of {total}")
@@ -400,7 +429,7 @@ if __name__ == "__main__":
         cnt = 0
         total = 0
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
-            for v in E96_plus_E24_values:
+            for v in base_values:
                 val = m * v
                 if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                     value_with_units = get_value_with_units(val)
@@ -432,7 +461,7 @@ if __name__ == "__main__":
             for m in multiplier_list:
                 if m < minmult or m > maxmult:
                     continue
-                for v in E96_plus_E24_values:
+                for v in base_values:
                     val = round(m * v, 3)
                     if val >= min_value[tolerance][package] and val <= max_value[tolerance][package]:
                         libdata += gen_res(jlc, val, package, tolerance, tpl_data)
