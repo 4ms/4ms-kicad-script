@@ -57,7 +57,6 @@ def find_width_to_hp(pcbwidth):
         if width>pcbwidth:
             #print("HP={}".format(hp))
             return hp,width
-            break;
 
 class makefp_boundbox( pcbnew.ActionPlugin ):
     def defaults( self ):
