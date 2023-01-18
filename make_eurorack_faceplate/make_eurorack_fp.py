@@ -287,6 +287,25 @@ def make_faceplate_outline(board):
     mod.SetPosition(railmount_bottomright)
     board.Add(mod)
 
+    railconn_fp = "Rail_Connection_%dHP" % int(fphp)
+    try:
+        railconn = pcbnew.FootprintLoad(footprint_lib, railconn_fp)
+        railconn.SetPosition(make_vec((fpleft+fpright)/2, fptop + 4.5*SCALE))
+        # railconn.SetLayer(pcbnew.B_Cu)
+        # railconn.Flip(make_vec((fpleft+fpright)/2, fptop + 4.5*SCALE), true)
+        # railconn.SetLayerAndFlip(pcbnew.B_Cu)
+        board.Add(railconn)
+
+        railconn = pcbnew.FootprintLoad(footprint_lib, railconn_fp)
+        railconn.SetPosition(make_vec((fpleft+fpright)/2, fpbottom - 4.5*SCALE))
+        # railconn.SetLayer(pcbnew.B_Cu)
+        # railconn.Flip(make_vec((fpleft+fpright)/2, fptop + 4.5*SCALE), True)
+        # railconn.SetLayerAndFlip(pcbnew.B_Cu)
+        board.Add(railconn)
+    except:
+        msg += "Rail connection footprint for %d HP not found" % int(fphp)
+
+
 def get_fp_name(fp):
     try:
         footpr = str(fp.GetFPID().GetLibItemName())
