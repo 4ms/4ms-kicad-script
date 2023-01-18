@@ -5,44 +5,6 @@ footprint_lib = faceplate_footprint_lib.get_lib_location()
 msg = ""
 SCALE = 1000000.0
 
-def make_vec(x, y):
-    test = pcbnew.PCB_SHAPE(pcbnew.GetBoard())
-    try:
-        #Kicad 7
-        vec = pcbnew.VECTOR2I(int(x), int(y))
-        test.SetStart(vec)
-    except:
-        #Kicad 6
-        vec = pcbnew.wxPoint(int(x), int(y))
-        test.SetStart(vec)
-    return vec
-
-# Calculate the HP
-def find_width_to_hp(pcbwidth):
-    HPs = ((1, 5.00), 
-    (1.5, 7.50), 
-    (2, 9.80), 
-    (3, 15.0),
-    (4, 20.0),
-    (6, 30.0),
-    (8, 40.30),
-    (10, 50.50),
-    (12, 60.60),
-    (14, 70.80),
-    (16, 80.90),
-    (18, 91.30),
-    (20, 101.30),
-    (21, 106.30),
-    (22, 111.40),
-    (24, 121.50),
-    (26, 131.60),
-    (28, 141.90),
-    (42, 213.00))
-
-    for hp, width in HPs:
-        if width>pcbwidth:
-            return hp,width
-
 footprint_convert={
     # POTS
     'TRIM-T73YE': 'Faceplate_Hole_Trim_3.175mm_With_Mask_Opening',
@@ -141,6 +103,47 @@ remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'SOT23-3_PO132', 'R
               'DIP-8pin_TH', 'R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal', 'C_Disc_P2.54mm', 'CP_Radial_P2.5mm', 'D_DO-35_P7.62mm_Horizontal', 'C_Disc_P5.08mm',
               '4msLogo_15.5x6.6mm', '4ms-logo-4', '4msLogo_3.8x1.7mm']
 
+
+# Calculate the HP
+def find_width_to_hp(pcbwidth):
+    HPs = ((1, 5.00), 
+    (1.5, 7.50), 
+    (2, 9.80), 
+    (3, 15.0),
+    (4, 20.0),
+    (6, 30.0),
+    (8, 40.30),
+    (10, 50.50),
+    (12, 60.60),
+    (14, 70.80),
+    (16, 80.90),
+    (18, 91.30),
+    (20, 101.30),
+    (21, 106.30),
+    (22, 111.40),
+    (24, 121.50),
+    (26, 131.60),
+    (28, 141.90),
+    (42, 213.00))
+
+    for hp, width in HPs:
+        if width>pcbwidth:
+            return hp,width
+
+
+def make_vec(x, y):
+    test = pcbnew.PCB_SHAPE(pcbnew.GetBoard())
+    try:
+        #Kicad 7
+        vec = pcbnew.VECTOR2I(int(x), int(y))
+        test.SetStart(vec)
+    except:
+        #Kicad 6
+        vec = pcbnew.wxPoint(int(x), int(y))
+        test.SetStart(vec)
+    return vec
+
+
 def find_pcb_outline_bbox(board):
     """Get the bounding box around all edge cuts drawings, and list of edge cuts drawings"""
     edgecuts_dwgs = []
@@ -162,16 +165,17 @@ def move_drawings(dwgs_list, dest_layernum):
         d.SetLayer(dest_layernum)
 
 
-
 def delete_tracks_on_layer(layernum, board):
     for d in board.GetTracks():
         if (d.GetLayer() == layernum):
             board.Remove(d)
 
+
 def delete_graphics_on_layer(layernum, board):
     for d in board.GetDrawings():
         if (d.GetLayer() == layernum):
             board.Remove(d)
+
 
 def delete_all_tracks_and_graphics(board):
     global msg
@@ -215,7 +219,6 @@ def make_faceplate_outline(board):
 
     # Move the previous edge cuts to comments layer
     move_drawings(edgecuts_dwgs, pcbnew.Cmts_User)
-
 
     # Set the fp width to the smallest standard HP size that's larger than the pcb width
     pcbwidth = pcboutline.GetWidth()
@@ -294,6 +297,7 @@ def get_fp_name(fp):
             footpr = None
     return footpr
 
+
 def remove_all_footprints_on_layer(layername, brd):
     msg=""
     fps = brd.GetFootprints()
@@ -319,14 +323,15 @@ def remove_nonfp_footprints(brd):
             msg+="Removed footprint on Remove List: {}".format(footpr)
     return msg
     
+
 def add_fp(center, footpr, brd):
     msg="Found Back layer footprint: {} at {}mm,{}mm. Changing to {}".format(footpr, center.x/SCALE, center.y/SCALE, footprint_convert[footpr])
     msg+="\n"
     faceplate_mod = pcbnew.FootprintLoad(footprint_lib, footprint_convert[footpr])
     faceplate_mod.SetPosition(center)
     brd.Add(faceplate_mod)
-    print(msg)
     return msg
+
 
 def convert_faceplate_footprints(brd):
     msg=""
@@ -356,6 +361,7 @@ def convert_faceplate_footprints(brd):
 
     return msg
 
+
 def remove_faceplate_footprints(brd):
     msg=""
     fps = brd.GetFootprints()
@@ -374,6 +380,7 @@ def remove_faceplate_footprints(brd):
 
     return msg
 
+
 def find_net(netname_str, brd):
     nets = brd.GetNetsByName()
     try:
@@ -391,6 +398,7 @@ def set_all_pads_to_net(net, brd):
         pads = m.Pads()
         for pad in pads:
             pad.SetNet(net)
+
 
 def make_ground_zone(board):
     global msg
@@ -418,7 +426,6 @@ def make_ground_zone(board):
     shape_poly_set.Append(rightside, bottomside)
     shape_poly_set.Append(rightside, topside)
     zone_container.SetPadConnection(pcbnew.ZONE_CONNECTION_FULL)
-
 
 
 class make_eurorack_fp( pcbnew.ActionPlugin ):
