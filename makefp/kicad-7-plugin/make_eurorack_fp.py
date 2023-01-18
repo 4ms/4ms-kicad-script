@@ -315,7 +315,9 @@ def add_fp(center, footpr, brd):
 def convert_faceplate_footprints(brd):
     msg=""
 
-    midline = find_pcb_outline_bbox(brd).Centre().x
+    # Find the pcb outline and a list of the drawings on the edgecuts layer
+    pcboutline, _ = find_pcb_outline_bbox(brd)
+    midline = pcboutline.Centre().x
 
     fps = brd.GetFootprints()
     for m in fps:
@@ -383,7 +385,7 @@ def make_ground_zone(board):
 
     set_all_pads_to_net(gndnet, board)
 
-    pcboutline = find_pcb_outline_bbox(board)
+    pcboutline, _ = find_pcb_outline_bbox(board)
 
     pcboutline.Inflate(-1 * pcbnew.FromMils(10))
     leftside = pcboutline.GetLeft()
