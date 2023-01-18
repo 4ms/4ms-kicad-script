@@ -5,6 +5,18 @@ footprint_lib = faceplate_footprint_lib.get_lib_location()
 msg = ""
 SCALE = 1000000.0
 
+def make_vec(x, y):
+    test = pcbnew.PCB_SHAPE(pcbnew.GetBoard())
+    try:
+        #Kicad 7
+        vec = pcbnew.VECTOR2I(int(x), int(y))
+        test.SetStart(vec)
+    except:
+        #Kicad 6
+        vec = pcbnew.wxPoint(int(x), int(y))
+        test.SetStart(vec)
+    return vec
+
 # Calculate the HP
 def find_width_to_hp(pcbwidth):
     HPs = ((1, 5.00), 
@@ -93,6 +105,7 @@ footprint_convert={
     'LED-T1X2': 'Faceplate_Hole_LED_3mm',
     'LED-T1': 'Faceplate_Hole_LED_3mm',
     'LED_3mm_C1A2': 'Faceplate_Hole_LED_3mm',
+    'LED_3mm_C1A2_Polarity_Indicator': 'Faceplate_Hole_LED_3mm',
 
     # FLIP SWITCHES
     'Switch_Toggle_SPDT_Mini_SolderLug': 'Switch_Toggle_Mini_6.35mm_With_Mask_Opening',
@@ -120,7 +133,13 @@ footprint_convert={
     'last_item': 'last_item'
 }
 
-remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'SOT23-3_PO132', 'R_0603', 'C_0603', 'C_1206', 'C_0805']
+remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'SOT23-3_PO132', 'R_0402', 'R_0603', 'C_0402', 'C_0603', 'C_1206', 'C_0805','CP_Elec_5x5.3', 'R_0805_2012Metric',
+              'TSSOP-8_4.4x3mm_Pitch0.65mm', 'TSSOP-14_4.4x5mm_P0.65mm', 'SSOP-10_3.9x4.9mm_P1.00mm','TSSOP-28_4.4x9.7mm_Pitch0.65mm',
+              'D_SOD-323F', 'TSOT-23-5', 'D_SOD-123', 'D_SMA', 'FA-238', 'NetTie-2_SMD_Pad0.5mm', 'Button_Tact_PTS540', 'L_Taiyo-Yuden_NR-40xx', 
+              'BGA-54_8.0x8.0mm_P0.8', 'BGA-144_07X07MM_P0.5', 'TSOT-23-6',
+              'Pins_2x05_2.54mm_TH_Europower', 'Pins_2x04_2.54mm_TH', 'Pins_1x04_2.54mm_TH_SWD', 'Pins_1x03_2.54mm_TH_AudioOutsRGndL', 'Pins_1x03_2.54mm_TH_AudioInsRGndL', 'Pins_2x08_2.54mm_TH_EuroPower', 'Socket_2x05_2.54mm_TH', 'Pins_1x03_2.54mm_TH', 'Pins_1x02_2.54mm_TH',
+              'DIP-8pin_TH', 'R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal', 'C_Disc_P2.54mm', 'CP_Radial_P2.5mm', 'D_DO-35_P7.62mm_Horizontal', 'C_Disc_P5.08mm',
+              '4msLogo_15.5x6.6mm', '4ms-logo-4', '4msLogo_3.8x1.7mm']
 
 def find_pcb_outline_bbox(board):
     """Get the bounding box around all edge cuts drawings, and list of edge cuts drawings"""
@@ -213,10 +232,10 @@ def make_faceplate_outline(board):
     fptop = fpbottom - 128.5*SCALE
 
     # Calculate the four corners
-    bottomleft = pcbnew.VECTOR2I(int(fpleft), int(fpbottom))
-    bottomright = pcbnew.VECTOR2I(int(fpright), int(fpbottom))
-    topleft = pcbnew.VECTOR2I(int(fpleft), int(fptop))
-    topright = pcbnew.VECTOR2I(int(fpright), int(fptop))
+    bottomleft = make_vec(int(fpleft), int(fpbottom))
+    bottomright = make_vec(int(fpright), int(fpbottom))
+    topleft = make_vec(int(fpleft), int(fptop))
+    topright = make_vec(int(fpright), int(fptop))
 
     # Draw the board outline segments
     bottomline = pcbnew.PCB_SHAPE(board)
@@ -244,10 +263,10 @@ def make_faceplate_outline(board):
     rightline.SetEnd(bottomright)
 
     #add rail mount slots
-    railmount_topleft = pcbnew.VECTOR2I(int(topleft.x + 0.295*25.4*SCALE), int(topleft.y + 0.118*25.4*SCALE))
-    railmount_topright = pcbnew.VECTOR2I(int(topright.x - 0.295*25.4*SCALE), int(topright.y + 0.118*25.4*SCALE))
-    railmount_bottomleft = pcbnew.VECTOR2I(int(bottomleft.x + 0.295*25.4*SCALE), int(bottomleft.y - 0.118*25.4*SCALE))
-    railmount_bottomright = pcbnew.VECTOR2I(int(bottomright.x - 0.295*25.4*SCALE), int(bottomright.y - 0.118*25.4*SCALE))
+    railmount_topleft = make_vec(int(topleft.x + 0.295*25.4*SCALE), int(topleft.y + 0.118*25.4*SCALE))
+    railmount_topright = make_vec(int(topright.x - 0.295*25.4*SCALE), int(topright.y + 0.118*25.4*SCALE))
+    railmount_bottomleft = make_vec(int(bottomleft.x + 0.295*25.4*SCALE), int(bottomleft.y - 0.118*25.4*SCALE))
+    railmount_bottomright = make_vec(int(bottomright.x - 0.295*25.4*SCALE), int(bottomright.y - 0.118*25.4*SCALE))
 
     mod = pcbnew.FootprintLoad(footprint_lib, railmount_fp)
     mod.SetPosition(railmount_topleft)
@@ -296,8 +315,8 @@ def remove_nonfp_footprints(brd):
             continue
 
         if footpr in remove_fps:
-            brd.Remove(m) #<<< this causes a crash!
-            msg+="Removed footprint on Exclude List: {}".format(footpr)
+            brd.Remove(m) 
+            msg+="Removed footprint on Remove List: {}".format(footpr)
     return msg
     
 def add_fp(center, footpr, brd):
@@ -305,9 +324,6 @@ def add_fp(center, footpr, brd):
     msg+="\n"
     faceplate_mod = pcbnew.FootprintLoad(footprint_lib, footprint_convert[footpr])
     faceplate_mod.SetPosition(center)
-    # pads = faceplate_mod.Pads()
-    # for pad in pads:
-    #   pad.SetNet(net)
     brd.Add(faceplate_mod)
     print(msg)
     return msg
@@ -321,14 +337,15 @@ def convert_faceplate_footprints(brd):
 
     fps = brd.GetFootprints()
     for m in fps:
-        center = m.GetPosition()
-        try:
-            footpr = str(m.GetFPID().GetLibItemName())
-        except:
-            footpr = str(m.GetFPID().GetFootprintName())
+        footpr = get_fp_name(m)
+        # try:
+        #     footpr = str(m.GetFPID().GetLibItemName())
+        # except:
+        #     footpr = str(m.GetFPID().GetFootprintName())
 
         if footpr in footprint_convert:
             # Reflect over midline y-axis
+            center = m.GetPosition()
             new_x = midline - (center.x - midline)
             center.x = new_x
             msg+=add_fp(center, footpr, brd)
@@ -343,10 +360,11 @@ def remove_faceplate_footprints(brd):
     msg=""
     fps = brd.GetFootprints()
     for m in fps:
-        try:
-            footpr = str(m.GetFPID().GetLibItemName())
-        except:
-            footpr = str(m.GetFPID().GetFootprintName())
+        footpr = get_fp_name(m)
+        # try:
+        #     footpr = str(m.GetFPID().GetLibItemName())
+        # except:
+        #     footpr = str(m.GetFPID().GetFootprintName())
 
         if footpr in footprint_convert:
             brd.Remove(m)
@@ -355,7 +373,6 @@ def remove_faceplate_footprints(brd):
         msg+="Footprint Removed: {}".format(footpr)+"\n"
 
     return msg
-
 
 def find_net(netname_str, brd):
     nets = brd.GetNetsByName()
@@ -395,7 +412,7 @@ def make_ground_zone(board):
 
     msg+="Creating copper pour on GND: top={} bottom={} left={} right={}".format(topside/SCALE, bottomside/SCALE, leftside/SCALE, rightside/SCALE)
 
-    zone_container = board.AddArea(None, gndnet.GetNetCode(), pcbnew.B_Cu, pcbnew.VECTOR2I(leftside, topside), pcbnew.ZONE_FILL_MODE_POLYGONS)
+    zone_container = board.AddArea(None, gndnet.GetNetCode(), pcbnew.B_Cu, make_vec(leftside, topside), pcbnew.ZONE_FILL_MODE_POLYGONS)
     shape_poly_set = zone_container.Outline()
     shape_poly_set.Append(leftside, bottomside)
     shape_poly_set.Append(rightside, bottomside)
@@ -419,6 +436,7 @@ class make_eurorack_fp( pcbnew.ActionPlugin ):
         make_faceplate_outline(board)
         msg+=convert_faceplate_footprints(board)
         msg+=remove_faceplate_footprints(board)
+        msg+=remove_nonfp_footprints(board)
         make_ground_zone(board)
 
 make_eurorack_fp().register()
