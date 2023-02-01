@@ -1,10 +1,11 @@
 #
-# Python script to generate a BOM from a KiCad generic netlist
-# Generates a format compatible with JLCPCB assembly services
+# Example python script to generate a BOM from a KiCad generic netlist
+#
+# Example: Sorted and Grouped CSV BOM
 #
 """
     @package
-    Generate a csv BOM list compatible with JLCPCB.
+    Generate a csv BOM list.
     Components are sorted by ref and grouped by value
     Fields are (if exist)
     Item, Qty, Reference(s), Value, LibPart, Footprint, Datasheet
@@ -19,6 +20,7 @@ from __future__ import print_function
 import kicad_netlist_reader_4ms
 import csv
 import sys
+from datetime import date
 import os
 from partnum_magic import *
 
@@ -96,8 +98,8 @@ except IOError:
 # by <configure> block in kicad_netlist_reader.py
 components = net.getInterestingComponents()
 
-#columns = ['Item#', 'JLCPCB Part #', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Comment', 'Footprint', 'SMD/TH', 'Points', 'Total Points']
-columns = ['Comment', 'Designator', 'Footprint', 'JLCPCB Part #']
+#FixMe: Don't use this list of columns twice
+columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'Stage of Production', 'Layer', 'Comments']
 
 # Create a new csv writer object to use as the output formatter
 out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
@@ -112,12 +114,22 @@ def writerow( acsvwriter, columns ):
 [schematic_name, revision] = get_project_info(net)
 
 # Output a set of rows as a header providing general information
-writerow( out, columns ) 
+writerow( out, ['4ms Company'] )
+writerow( out, ['PCBA Project:', schematic_name, 'Revision: ', revision] )
+writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
+writerow( out, ['DATE:', date.today()] )
+writerow( out, ['Component Count:', len(components)] )
+writerow( out, [] )
+writerow( out, ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'Stage of Production', 'Layer', 'Comments', 'Supplied by:'])
+
+
 
 row = []
 grouped = net.groupComponents(components)
 
 # Output component information organized by group, aka as collated:
+item = 0
+
 for group in grouped:
     del row[:]
     refs = ""
@@ -128,31 +140,43 @@ for group in grouped:
         if len(refs) > 0:
             refs += ", "
         refs += component.getRef()
-        # c is the last component in the group
-        # FIXME: there could be bad data if all components in group don't have the same value, footprint, manufacturer, part number, JLCPCB ID, etc
         c = component
+
+    item += 1
 
     package = get_package(c.getFootprint())
 
     value = c.getValue()
 
+
     if (package=='R0603') and (c.getField("Specifications") == ""):
-        [_, part_no, designation] = deduce_0603_resistor(value)
+        [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
     else :
         designation = combine_specs_and_value(c)
+        manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
     
-    if (c.getField("JLCPCB ID")):
-        jlcpcb_id = c.getField("JLCPCB ID")
-    else:
-        jlcpcb_id = ""
+    # if (c.getField("JLCPCB ID")):
+    #     part_no = c.getField("JLCPCB ID")
 
-    row.append( designation + " " + part_no)
+    row.append( item )
+    row.append( manufacturer )
+    row.append( part_no )
     row.append( refs );
+    row.append( len(group) )
+    row.append( designation )
     row.append( package )
-    row.append( jlcpcb_id )
+    row.append( c.getField("Stage of Production"))
+    row.append( c.getField("Comments"))
+
+    #FixMe: test if this line is doing anything
+    for field in columns[12:]:
+        row.append( net.getGroupField(group, field) );
 
     writerow( out, row  )
+writerow( out, ['Assembly'])
+writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
+
 
 f.close()

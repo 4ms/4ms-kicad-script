@@ -1,6 +1,6 @@
 import re
 import string
-
+"""
 def deduce_SMD_TH(package):
     """
     checks if package contains certain letters to decide if its SMD
@@ -51,7 +51,7 @@ def deduce_SMD_TH(package):
         points = ("")
 
     return [smd, points]
-
+"""
 
 def get_package(footprint):
     """
