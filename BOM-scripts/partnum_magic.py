@@ -2,9 +2,9 @@ import re
 import string
 """
 def deduce_SMD_TH(package):
-    """
-    checks if package contains certain letters to decide if its SMD
-    """
+
+    #checks if package contains certain letters to decide if its SMD
+
 
     smdcheck = str(package[-4:]) #  package at end
     smdcheck2 = str(package[0:7]) # package at start

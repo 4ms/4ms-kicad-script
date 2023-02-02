@@ -99,7 +99,7 @@ except IOError:
 components = net.getInterestingComponents()
 
 #FixMe: Don't use this list of columns twice
-columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'Stage of Production', 'Layer', 'Comments']
+columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'Production Stage', 'Layer', 'Comments']
 
 # Create a new csv writer object to use as the output formatter
 out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
@@ -120,7 +120,7 @@ writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', date.today()] )
 writerow( out, ['Component Count:', len(components)] )
 writerow( out, [] )
-writerow( out, ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'Stage of Production', 'Layer', 'Comments', 'Supplied by:'])
+writerow( out, ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'Production Stage', 'Layer', 'Comments', 'Supplied by:'])
 
 
 
@@ -133,7 +133,7 @@ item = 0
 for group in grouped:
     del row[:]
     refs = ""
-
+    
     # Add the reference of every component in the group and keep a reference
     # to the component so that the other data can be filled in once per group
     for component in group:
@@ -142,15 +142,20 @@ for group in grouped:
         refs += component.getRef()
         c = component
 
+         
     item += 1
 
     package = get_package(c.getFootprint())
 
     value = c.getValue()
 
+    stage = getField("Production Stage")
+
+
 
     if (package=='R0603') and (c.getField("Specifications") == ""):
         [manufacturer, part_no, designation] = deduce_0603_resistor(value)
+
 
     else :
         designation = combine_specs_and_value(c)
@@ -167,7 +172,7 @@ for group in grouped:
     row.append( len(group) )
     row.append( designation )
     row.append( package )
-    row.append( c.getField("Stage of Production"))
+    row.append( c.getField("Production Stage"))
     row.append( c.getField("Comments"))
 
     #FixMe: test if this line is doing anything
