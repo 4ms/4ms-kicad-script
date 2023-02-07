@@ -123,7 +123,31 @@ writerow( out, [] )
 writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
 
 row = []
+
+# We have been using this to group:
 grouped = net.groupComponents(components)
+
+# But it's not working always. So we should fix it or else make our own grouping algorithm. Like this:
+# Must sort components by every field that constitutes the same part (value, footprint, part number, stage, etc..)
+current_group_partno = ""
+for comp in components:
+    #comp is a dictionary like {'ref': 'R1', 'value': '10k-Rcc-11133', ...}
+    #Check if comp['partno'] and other fields are different than the current group
+    #if so, then close out the current group (write it to grouped list) and open a new group
+    #   Also, check if some fields match but others don't, and flag an error 
+    #regardless of the above, append the ref to refs
+
+for group in grouped:
+    #make combined_group, which is a list of dictionaries
+    #[{'refs': 'R1, R2', 'package': 'R_0603', 'value': '10k', 'stage': 'Board',....},
+    # {'refs': 'C1, C2', 'package': 'C_0603', 'value': '1nF', 'stage': 'Board',....},
+    # {'refs': 'POT222', 'package': '16mm..', 'value': '...', 'stage': 'Faceplate',....},
+    # ..
+    # ]
+
+
+#Then, we sort combined_group
+#sorted_combined_group = sorted(combined_group, key=lambda row: 0 if row['stage'] == 'Board' else 1 if row['stage']=='Facplate' else 2
 
 # Output component information organized by group, aka as collated:
 item = 0
@@ -133,11 +157,10 @@ for group in grouped:
 
     # Add the reference of every component in the group and keep a reference
     # to the component so that the other data can be filled in once per group
-    for component in group:
+    for c in group:
         if len(refs) > 0:
             refs += ", "
-        refs += component.getRef()
-        c = component
+        refs += c.getRef()
 
     item += 1
 
