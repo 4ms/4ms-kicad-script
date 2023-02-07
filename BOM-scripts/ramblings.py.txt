@@ -1,0 +1,190 @@
+4ms-kicad-script/BOM-scripts ❯ python3                                                                                      git:master
+Python 3.9.6 (default, Oct 18 2022, 12:41:40) 
+[Clang 14.0.0 (clang-1400.0.29.202)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> grouped = [['R1', 'R2', 'R3'], ['C1', 'C3']]
+>>> for group in grouped:
+...     for c in group:
+...             print(f"C = {c}")
+... 
+C = R1
+C = R2
+C = R3
+C = C1
+C = C3
+>>> for group in grouped:
+...    print("Start of gorup")
+...    for c in group:
+...             print(f"C = {c}")
+  File "<stdin>", line 4
+    print(f"C = {c}")
+TabError: inconsistent use of tabs and spaces in indentation
+>>> for group in grouped:
+...     print("Start of gorup")
+...     for c in group:
+...             print(f"C = {c}")
+... 
+Start of gorup
+C = R1
+C = R2
+C = R3
+Start of gorup
+C = C1
+C = C3
+>>> grouped = [[{ref: 'R1', fp: 'R_0603'}, 'R2', 'R3'], ['C1', 'C3']]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'ref' is not defined
+>>> grouped = [[{'ref': 'R1', 'fp': 'R_0603'}, 'R2', 'R3'], ['C1', 'C3']]
+>>> def dog():
+...     for group in grouped:
+...             print("Start of gorup")
+...             for c in group:
+...                     print(f"C = {c}")
+... 
+>>> dog()
+Start of gorup
+C = {'ref': 'R1', 'fp': 'R_0603'}
+C = R2
+C = R3
+Start of gorup
+C = C1
+C = C3
+>>> combined_group = [{'refs': 'R1, R2, R3', 'fp': 'R_0603', stage: 4}, {'refs: 'C1, C3', 'fp': 'C_0402', 'stage': 3]
+  File "<stdin>", line 1
+    combined_group = [{'refs': 'R1, R2, R3', 'fp': 'R_0603', stage: 4}, {'refs: 'C1, C3', 'fp': 'C_0402', 'stage': 3]
+                                                                                 ^
+SyntaxError: invalid syntax
+>>> combined_group = [{'refs': 'R1, R2, R3', 'fp': 'R_0603', stage: 4}, {'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 3]
+  File "<stdin>", line 1
+    combined_group = [{'refs': 'R1, R2, R3', 'fp': 'R_0603', stage: 4}, {'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 3]
+                                                                                                                     ^
+SyntaxError: closing parenthesis ']' does not match opening parenthesis '{'
+>>> combined_group = [{'refs': 'R1, R2, R3', 'fp': 'R_0603', stage: 4}, {'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 3}]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'stage' is not defined
+>>> combined_group = [{'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 4}, {'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 3}]
+>>> combined_group
+[{'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 4}, {'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 3}]
+>>> combined_group.sort(
+
+>>> sorted(combined_group, key=lambda d: d['stage'])
+[{'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 3}, {'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 4}]
+>>> sorted(combined_group, key=lambda sdf: sdf['stage'])
+[{'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 3}, {'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 4}]
+>>> sorted(combined_group, key=lambda x: -1*x['stage'])
+[{'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 4}, {'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 3}]
+>>> sorted(combined_group, key=0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object is not callable
+>>> sorted(combined_group, key=)
+  File "<stdin>", line 1
+    sorted(combined_group, key=)
+                               ^
+SyntaxError: invalid syntax
+>>> combined_group = [{'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 'Board'}, {'refs': 'X1', 'fp': '000', 'stage': 'FP'}, {'refs': 'C
+1, C3', 'fp': 'C_0402', 'stage': 'Assmb'}]
+>>> combined_group
+[{'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 'Board'}, {'refs': 'X1', 'fp': '000', 'stage': 'FP'}, {'refs': 'C1, C3', 'fp': 'C_0402
+', 'stage': 'Assmb'}]
+>>> sorted(combined_group, key=lambda x: 0 if x['stage']=='Board' else 1)
+[{'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 'Board'}, {'refs': 'X1', 'fp': '000', 'stage': 'FP'}, {'refs': 'C1, C3', 'fp': 'C_0402
+', 'stage': 'Assmb'}]
+>>> sorted(combined_group, key=lambda x: 0 if x['stage']=='FP' else 1)
+[{'refs': 'X1', 'fp': '000', 'stage': 'FP'}, {'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 'Board'}, {'refs': 'C1, C3', 'fp': 'C_0402
+', 'stage': 'Assmb'}]
+>>> sorted(combined_group, key=lambda x: 0 if x['stage']=='FP' else 1 if x['stage']=='Assmb' else 2)
+[{'refs': 'X1', 'fp': '000', 'stage': 'FP'}, {'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 'Assmb'}, {'refs': 'R1, R2, R3', 'fp': 'R_0603
+', 'stage': 'Board'}]
+>>> sorted(combined_group, key=lambda x: 0 if x['stage']=='Assmb' else 1 if x['stage']=='Board' else 2)
+[{'refs': 'C1, C3', 'fp': 'C_0402', 'stage': 'Assmb'}, {'refs': 'R1, R2, R3', 'fp': 'R_0603', 'stage': 'Board'}, {'refs': 'X1', 'fp': '
+000', 'stage': 'FP'}]
+>>> refs = ['R1']
+>>> refs.append['R2']
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'builtin_function_or_method' object is not subscriptable
+>>> refs.append('R2')
+>>> refs.append('R3')
+>>> refs
+['R1', 'R2', 'R3']
+>>> refs.join(', ')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'join'
+>>> refs.
+refs.append(  refs.copy(    refs.extend(  refs.insert(  refs.remove(  refs.sort(   
+refs.clear(   refs.count(   refs.index(   refs.pop(     refs.reverse(
+>>> str(
+
+>>> ", ".join(refs)
+'R1, R2, R3'
+>>> "ABC".join(refs)
+'R1ABCR2ABCR3'
+>>> "_".join(refs)
+'R1_R2_R3'
+>>> ", ".join(refs)
+'R1, R2, R3'
+>>> dict = {}
+>>> row = {}
+>>> row.partno = "RCC-10k0VB"
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'dict' object has no attribute 'partno'
+>>> row['partno'] = "RCC-10k0VB"
+>>> row
+{'partno': 'RCC-10k0VB'}
+>>> row['refs'] = ", ".join(refs)
+>>> row
+{'partno': 'RCC-10k0VB', 'refs': 'R1, R2, R3'}
+>>> grouped = []
+>>> grouped.append(row)
+>>> grouped
+[{'partno': 'RCC-10k0VB', 'refs': 'R1, R2, R3'}]
+>>> row = {}
+>>> row['partno'] = "ACCDSF=23423"
+>>> row
+{'partno': 'ACCDSF=23423'}
+>>> comp = {'ref': 'R1', 'partno': 'RCC-10k0VB'}
+>>> comp
+{'ref': 'R1', 'partno': 'RCC-10k0VB'}
+>>> row = {}
+>>> row['partno'] = comp['partno']
+>>> row
+{'partno': 'RCC-10k0VB'}
+>>> refs.clear()
+>>> refs.append(comp['ref'])
+>>> refs
+['R1']
+>>> comp = {'ref': 'R2', 'partno': 'RCC-10k0VB'}
+>>> refs.append(comp['ref'])
+>>> refs
+['R1', 'R2']
+>>> comp = {'ref': 'R3', 'partno': 'RCC-10k0VB'}
+>>> refs.append(comp['ref'])
+>>> refs
+['R1', 'R2', 'R3']
+>>> comp = {'ref': 'C1', 'partno': 'sdfasd'}
+>>> row
+{'partno': 'RCC-10k0VB'}
+>>> row['refs'] = ', '.join(refs)
+>>> row
+{'partno': 'RCC-10k0VB', 'refs': 'R1, R2, R3'}
+>>> group
+group   grouped
+>>> grouped.append(row)
+>>> grouped
+[{'partno': 'RCC-10k0VB', 'refs': 'R1, R2, R3'}, {'partno': 'RCC-10k0VB', 'refs': 'R1, R2, R3'}]
+>>> row.clear()
+>>> row
+{}
+>>> refs.clear()
+>>> current_group_partno = comp['partno']
+>>> comp
+{'ref': 'C1', 'partno': 'sdfasd'}
+>>> 
+
+
+
