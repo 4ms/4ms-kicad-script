@@ -188,3 +188,167 @@ group   grouped
 
 
 
+
+
+MORE NOTES FROM DIFFERENT DAY:
+
+
+➜  BOM-scripts git:(bom-ramblings) ✗ python3
+Python 3.9.6 (default, Oct 18 2022, 12:41:40) 
+[Clang 14.0.0 (clang-1400.0.29.202)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import kicad_netlist_reader_4ms
+>>> net = kicad_netlist_reader_4ms.netlist("/Users/zach/kicad/pcb-druminterface/PI/v1.1/Drum-interface.xml")
+>>> net.
+net.addChars(                  net.excluded_footprints        net.getDate(                   net.groupComponents(          
+net.addElement(                net.excluded_references        net.getGroupDatasheet(         net.libparts                  
+net.aliasMatch(                net.excluded_values            net.getGroupField(             net.libraries                 
+net.components                 net.formatHTML(                net.getGroupFootprint(         net.load(                     
+net.design                     net.formatXML(                 net.getInterestingComponents(  net.nets                      
+net.endDocument(               net.gatherComponentFieldUnion( net.getSource(                 net.tree                      
+net.endElement(                net.gatherLibPartFieldUnion(   net.getTool(                  
+>>> net.nets
+[<kicad_netlist_reader_4ms.xmlElement object at 0x10b506250>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5065e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b506e20>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e400>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e520>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e640>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e760>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e880>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e9a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50eac0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50ebe0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50ed60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b517040>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b517280>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5173a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5174c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520880>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520ac0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520d60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520e80>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520fa0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5291c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5292e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529460>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529640>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529820>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5299a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529b20>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529ca0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529e80>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5330a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5331c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5332e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533400>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533520>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533640>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533760>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533880>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5339a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533ac0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533be0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533d60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533e80>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c040>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c280>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c400>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c5e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c7c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53ca00>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53cb20>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53cd60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53ce80>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545040>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5451c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5453a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545520>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545700>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545880>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545a60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545c40>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545ee0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d0a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d220>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d3a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d520>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d5e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d6a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d760>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d820>]
+>>> net.nets.
+net.nets.append(  net.nets.copy(    net.nets.extend(  net.nets.insert(  net.nets.remove(  net.nets.sort(   
+net.nets.clear(   net.nets.count(   net.nets.index(   net.nets.pop(     net.nets.reverse(
+>>> net.nets[0]
+<kicad_netlist_reader_4ms.xmlElement object at 0x10b506250>
+>>> net.nets[0][1]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'xmlElement' object is not subscriptable
+>>> print(net.nets[0])
+net[] attr_count:2
+>>> print(net.nets)
+[<kicad_netlist_reader_4ms.xmlElement object at 0x10b506250>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5065e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b506e20>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e400>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e520>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e640>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e760>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e880>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50e9a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50eac0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50ebe0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b50ed60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b517040>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b517280>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5173a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5174c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520880>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520ac0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520d60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520e80>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b520fa0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5291c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5292e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529460>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529640>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529820>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5299a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529b20>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529ca0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b529e80>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5330a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5331c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5332e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533400>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533520>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533640>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533760>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533880>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5339a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533ac0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533be0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533d60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b533e80>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c040>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c280>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c400>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c5e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53c7c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53ca00>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53cb20>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53cd60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b53ce80>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545040>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5451c0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b5453a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545520>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545700>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545880>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545a60>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545c40>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b545ee0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d0a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d220>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d3a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d520>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d5e0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d6a0>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d760>, <kicad_netlist_reader_4ms.xmlElement object at 0x10b54d820>]
+>>> print(net.nets.
+net.nets.append(  net.nets.copy(    net.nets.extend(  net.nets.insert(  net.nets.remove(  net.nets.sort(   
+net.nets.clear(   net.nets.count(   net.nets.index(   net.nets.pop(     net.nets.reverse(
+>>> print(net.nets.index(1))
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ValueError: 1 is not in list
+>>> print(net.nets.index(-))
+  File "<stdin>", line 1
+    print(net.nets.index(-))
+                          ^
+SyntaxError: invalid syntax
+>>> print(net.nets.index())
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: index expected at least 1 argument, got 0
+>>> print(net.nets.index0))
+  File "<stdin>", line 1
+    print(net.nets.index0))
+                          ^
+SyntaxError: unmatched ')'
+>>> print(net.nets.i
+... 
+... )
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'i'
+>>> 
+>>> len(net)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: object of type 'netlist' has no len()
+>>> len(net.nets)
+69
+>>> len(net.tree)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: object of type 'xmlElement' has no len()
+>>> comps = net.getInterestingComponents()
+>>> comps
+[<kicad_netlist_reader_4ms.comp object at 0x10abde430>, <kicad_netlist_reader_4ms.comp object at 0x10abde7f0>, <kicad_netlist_reader_4ms.comp object at 0x10aba2400>, <kicad_netlist_reader_4ms.comp object at 0x10abe1af0>, <kicad_netlist_reader_4ms.comp object at 0x10abe17f0>, <kicad_netlist_reader_4ms.comp object at 0x10ac236d0>, <kicad_netlist_reader_4ms.comp object at 0x10b184580>, <kicad_netlist_reader_4ms.comp object at 0x10ab9ca90>, <kicad_netlist_reader_4ms.comp object at 0x10acc0df0>, <kicad_netlist_reader_4ms.comp object at 0x10ad1b040>, <kicad_netlist_reader_4ms.comp object at 0x10ad1b280>, <kicad_netlist_reader_4ms.comp object at 0x10b2f87c0>, <kicad_netlist_reader_4ms.comp object at 0x10ac1f190>, <kicad_netlist_reader_4ms.comp object at 0x10abf4a30>, <kicad_netlist_reader_4ms.comp object at 0x10abf4610>, <kicad_netlist_reader_4ms.comp object at 0x10abe2d00>, <kicad_netlist_reader_4ms.comp object at 0x10abe29d0>, <kicad_netlist_reader_4ms.comp object at 0x10ac17700>, <kicad_netlist_reader_4ms.comp object at 0x10ac3afa0>, <kicad_netlist_reader_4ms.comp object at 0x10ac3a160>, <kicad_netlist_reader_4ms.comp object at 0x10ad31ac0>, <kicad_netlist_reader_4ms.comp object at 0x10b18a640>, <kicad_netlist_reader_4ms.comp object at 0x10ab7e0d0>, <kicad_netlist_reader_4ms.comp object at 0x10ab7eb50>, <kicad_netlist_reader_4ms.comp object at 0x10aba1df0>, <kicad_netlist_reader_4ms.comp object at 0x10aba1790>, <kicad_netlist_reader_4ms.comp object at 0x10abdd490>, <kicad_netlist_reader_4ms.comp object at 0x10abdd9a0>, <kicad_netlist_reader_4ms.comp object at 0x10ac1c670>, <kicad_netlist_reader_4ms.comp object at 0x10abbabe0>, <kicad_netlist_reader_4ms.comp object at 0x10abe6970>, <kicad_netlist_reader_4ms.comp object at 0x10b24e6a0>, <kicad_netlist_reader_4ms.comp object at 0x10b24e0a0>, <kicad_netlist_reader_4ms.comp object at 0x10b1df190>, <kicad_netlist_reader_4ms.comp object at 0x10b198ca0>, <kicad_netlist_reader_4ms.comp object at 0x10b198580>, <kicad_netlist_reader_4ms.comp object at 0x10b1a8910>, <kicad_netlist_reader_4ms.comp object at 0x10b1a8e20>, <kicad_netlist_reader_4ms.comp object at 0x10ac03d00>, <kicad_netlist_reader_4ms.comp object at 0x10ac24eb0>, <kicad_netlist_reader_4ms.comp object at 0x10ad69100>, <kicad_netlist_reader_4ms.comp object at 0x10b244d90>, <kicad_netlist_reader_4ms.comp object at 0x10b2d25b0>, <kicad_netlist_reader_4ms.comp object at 0x10b2d2e20>, <kicad_netlist_reader_4ms.comp object at 0x10b1c8640>, <kicad_netlist_reader_4ms.comp object at 0x10b1c8d00>, <kicad_netlist_reader_4ms.comp object at 0x10b1d4c70>, <kicad_netlist_reader_4ms.comp object at 0x10b1d40a0>, <kicad_netlist_reader_4ms.comp object at 0x10b21ef70>, <kicad_netlist_reader_4ms.comp object at 0x10acb5760>, <kicad_netlist_reader_4ms.comp object at 0x10b233be0>, <kicad_netlist_reader_4ms.comp object at 0x10acb1d00>, <kicad_netlist_reader_4ms.comp object at 0x10acb13d0>, <kicad_netlist_reader_4ms.comp object at 0x10abc86d0>, <kicad_netlist_reader_4ms.comp object at 0x10abbd070>, <kicad_netlist_reader_4ms.comp object at 0x10abbd940>, <kicad_netlist_reader_4ms.comp object at 0x10ab84f70>, <kicad_netlist_reader_4ms.comp object at 0x10ad27640>, <kicad_netlist_reader_4ms.comp object at 0x10ad2bf10>, <kicad_netlist_reader_4ms.comp object at 0x10ad2b0d0>, <kicad_netlist_reader_4ms.comp object at 0x10b2d6790>, <kicad_netlist_reader_4ms.comp object at 0x10b2e60d0>, <kicad_netlist_reader_4ms.comp object at 0x10ad4d580>, <kicad_netlist_reader_4ms.comp object at 0x10ad4df40>, <kicad_netlist_reader_4ms.comp object at 0x10ac18430>, <kicad_netlist_reader_4ms.comp object at 0x10ac188e0>, <kicad_netlist_reader_4ms.comp object at 0x10acef2e0>, <kicad_netlist_reader_4ms.comp object at 0x10abc9a60>, <kicad_netlist_reader_4ms.comp object at 0x10ad3e4f0>, <kicad_netlist_reader_4ms.comp object at 0x10acb72b0>, <kicad_netlist_reader_4ms.comp object at 0x10acb7d90>, <kicad_netlist_reader_4ms.comp object at 0x10ab92eb0>, <kicad_netlist_reader_4ms.comp object at 0x10ad330d0>, <kicad_netlist_reader_4ms.comp object at 0x10ad5b730>, <kicad_netlist_reader_4ms.comp object at 0x10acaed90>, <kicad_netlist_reader_4ms.comp object at 0x10b4143d0>, <kicad_netlist_reader_4ms.comp object at 0x10b414cd0>, <kicad_netlist_reader_4ms.comp object at 0x10b41b610>, <kicad_netlist_reader_4ms.comp object at 0x10b41bf10>, <kicad_netlist_reader_4ms.comp object at 0x10b423850>, <kicad_netlist_reader_4ms.comp object at 0x10b429190>, <kicad_netlist_reader_4ms.comp object at 0x10b429a90>, <kicad_netlist_reader_4ms.comp object at 0x10b4303d0>, <kicad_netlist_reader_4ms.comp object at 0x10b430cd0>, <kicad_netlist_reader_4ms.comp object at 0x10b437610>, <kicad_netlist_reader_4ms.comp object at 0x10b437f10>, <kicad_netlist_reader_4ms.comp object at 0x10b43f850>, <kicad_netlist_reader_4ms.comp object at 0x10b445190>, <kicad_netlist_reader_4ms.comp object at 0x10b445a90>, <kicad_netlist_reader_4ms.comp object at 0x10b44c3d0>, <kicad_netlist_reader_4ms.comp object at 0x10b44ccd0>, <kicad_netlist_reader_4ms.comp object at 0x10b454610>, <kicad_netlist_reader_4ms.comp object at 0x10b454f10>, <kicad_netlist_reader_4ms.comp object at 0x10b45a790>, <kicad_netlist_reader_4ms.comp object at 0x10b461190>, <kicad_netlist_reader_4ms.comp object at 0x10b4619d0>, <kicad_netlist_reader_4ms.comp object at 0x10b468190>, <kicad_netlist_reader_4ms.comp object at 0x10b4689d0>, <kicad_netlist_reader_4ms.comp object at 0x10b471190>, <kicad_netlist_reader_4ms.comp object at 0x10b471910>, <kicad_netlist_reader_4ms.comp object at 0x10b477070>, <kicad_netlist_reader_4ms.comp object at 0x10b4777f0>, <kicad_netlist_reader_4ms.comp object at 0x10b477f70>, <kicad_netlist_reader_4ms.comp object at 0x10b47f730>]
+>>> comps.
+comps.append(  comps.copy(    comps.extend(  comps.insert(  comps.remove(  comps.sort(   
+comps.clear(   comps.count(   comps.index(   comps.pop(     comps.reverse(
+>>> comps[0]
+<kicad_netlist_reader_4ms.comp object at 0x10abde430>
+>>> c = comp[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'comp' is not defined
+>>> len(comps)
+104
+>>> c = comps[0]
+>>> c.
+c.element         c.getField(       c.getLibName(     c.getRef(         c.grouped         c.setValue(      
+c.getDatasheet(   c.getFieldNames(  c.getLibPart(     c.getTimestamp(   c.libpart        
+c.getDescription( c.getFootprint(   c.getPartName(    c.getValue(       c.setLibPart(    
+>>> c.getDescription()
+'220pF, Min 25V, C0G/NP0, 5% 0603'
+>>> comps
+[<kicad_netlist_reader_4ms.comp object at 0x10abde430>, <kicad_netlist_reader_4ms.comp object at 0x10abde7f0>, <kicad_netlist_reader_4ms.comp object at 0x10aba2400>, <kicad_netlist_reader_4ms.comp object at 0x10abe1af0>, <kicad_netlist_reader_4ms.comp object at 0x10abe17f0>, <kicad_netlist_reader_4ms.comp object at 0x10ac236d0>, <kicad_netlist_reader_4ms.comp object at 0x10b184580>, <kicad_netlist_reader_4ms.comp object at 0x10ab9ca90>, <kicad_netlist_reader_4ms.comp object at 0x10acc0df0>, <kicad_netlist_reader_4ms.comp object at 0x10ad1b040>, <kicad_netlist_reader_4ms.comp object at 0x10ad1b280>, <kicad_netlist_reader_4ms.comp object at 0x10b2f87c0>, <kicad_netlist_reader_4ms.comp object at 0x10ac1f190>, <kicad_netlist_reader_4ms.comp object at 0x10abf4a30>, <kicad_netlist_reader_4ms.comp object at 0x10abf4610>, <kicad_netlist_reader_4ms.comp object at 0x10abe2d00>, <kicad_netlist_reader_4ms.comp object at 0x10abe29d0>, <kicad_netlist_reader_4ms.comp object at 0x10ac17700>, <kicad_netlist_reader_4ms.comp object at 0x10ac3afa0>, <kicad_netlist_reader_4ms.comp object at 0x10ac3a160>, <kicad_netlist_reader_4ms.comp object at 0x10ad31ac0>, <kicad_netlist_reader_4ms.comp object at 0x10b18a640>, <kicad_netlist_reader_4ms.comp object at 0x10ab7e0d0>, <kicad_netlist_reader_4ms.comp object at 0x10ab7eb50>, <kicad_netlist_reader_4ms.comp object at 0x10aba1df0>, <kicad_netlist_reader_4ms.comp object at 0x10aba1790>, <kicad_netlist_reader_4ms.comp object at 0x10abdd490>, <kicad_netlist_reader_4ms.comp object at 0x10abdd9a0>, <kicad_netlist_reader_4ms.comp object at 0x10ac1c670>, <kicad_netlist_reader_4ms.comp object at 0x10abbabe0>, <kicad_netlist_reader_4ms.comp object at 0x10abe6970>, <kicad_netlist_reader_4ms.comp object at 0x10b24e6a0>, <kicad_netlist_reader_4ms.comp object at 0x10b24e0a0>, <kicad_netlist_reader_4ms.comp object at 0x10b1df190>, <kicad_netlist_reader_4ms.comp object at 0x10b198ca0>, <kicad_netlist_reader_4ms.comp object at 0x10b198580>, <kicad_netlist_reader_4ms.comp object at 0x10b1a8910>, <kicad_netlist_reader_4ms.comp object at 0x10b1a8e20>, <kicad_netlist_reader_4ms.comp object at 0x10ac03d00>, <kicad_netlist_reader_4ms.comp object at 0x10ac24eb0>, <kicad_netlist_reader_4ms.comp object at 0x10ad69100>, <kicad_netlist_reader_4ms.comp object at 0x10b244d90>, <kicad_netlist_reader_4ms.comp object at 0x10b2d25b0>, <kicad_netlist_reader_4ms.comp object at 0x10b2d2e20>, <kicad_netlist_reader_4ms.comp object at 0x10b1c8640>, <kicad_netlist_reader_4ms.comp object at 0x10b1c8d00>, <kicad_netlist_reader_4ms.comp object at 0x10b1d4c70>, <kicad_netlist_reader_4ms.comp object at 0x10b1d40a0>, <kicad_netlist_reader_4ms.comp object at 0x10b21ef70>, <kicad_netlist_reader_4ms.comp object at 0x10acb5760>, <kicad_netlist_reader_4ms.comp object at 0x10b233be0>, <kicad_netlist_reader_4ms.comp object at 0x10acb1d00>, <kicad_netlist_reader_4ms.comp object at 0x10acb13d0>, <kicad_netlist_reader_4ms.comp object at 0x10abc86d0>, <kicad_netlist_reader_4ms.comp object at 0x10abbd070>, <kicad_netlist_reader_4ms.comp object at 0x10abbd940>, <kicad_netlist_reader_4ms.comp object at 0x10ab84f70>, <kicad_netlist_reader_4ms.comp object at 0x10ad27640>, <kicad_netlist_reader_4ms.comp object at 0x10ad2bf10>, <kicad_netlist_reader_4ms.comp object at 0x10ad2b0d0>, <kicad_netlist_reader_4ms.comp object at 0x10b2d6790>, <kicad_netlist_reader_4ms.comp object at 0x10b2e60d0>, <kicad_netlist_reader_4ms.comp object at 0x10ad4d580>, <kicad_netlist_reader_4ms.comp object at 0x10ad4df40>, <kicad_netlist_reader_4ms.comp object at 0x10ac18430>, <kicad_netlist_reader_4ms.comp object at 0x10ac188e0>, <kicad_netlist_reader_4ms.comp object at 0x10acef2e0>, <kicad_netlist_reader_4ms.comp object at 0x10abc9a60>, <kicad_netlist_reader_4ms.comp object at 0x10ad3e4f0>, <kicad_netlist_reader_4ms.comp object at 0x10acb72b0>, <kicad_netlist_reader_4ms.comp object at 0x10acb7d90>, <kicad_netlist_reader_4ms.comp object at 0x10ab92eb0>, <kicad_netlist_reader_4ms.comp object at 0x10ad330d0>, <kicad_netlist_reader_4ms.comp object at 0x10ad5b730>, <kicad_netlist_reader_4ms.comp object at 0x10acaed90>, <kicad_netlist_reader_4ms.comp object at 0x10b4143d0>, <kicad_netlist_reader_4ms.comp object at 0x10b414cd0>, <kicad_netlist_reader_4ms.comp object at 0x10b41b610>, <kicad_netlist_reader_4ms.comp object at 0x10b41bf10>, <kicad_netlist_reader_4ms.comp object at 0x10b423850>, <kicad_netlist_reader_4ms.comp object at 0x10b429190>, <kicad_netlist_reader_4ms.comp object at 0x10b429a90>, <kicad_netlist_reader_4ms.comp object at 0x10b4303d0>, <kicad_netlist_reader_4ms.comp object at 0x10b430cd0>, <kicad_netlist_reader_4ms.comp object at 0x10b437610>, <kicad_netlist_reader_4ms.comp object at 0x10b437f10>, <kicad_netlist_reader_4ms.comp object at 0x10b43f850>, <kicad_netlist_reader_4ms.comp object at 0x10b445190>, <kicad_netlist_reader_4ms.comp object at 0x10b445a90>, <kicad_netlist_reader_4ms.comp object at 0x10b44c3d0>, <kicad_netlist_reader_4ms.comp object at 0x10b44ccd0>, <kicad_netlist_reader_4ms.comp object at 0x10b454610>, <kicad_netlist_reader_4ms.comp object at 0x10b454f10>, <kicad_netlist_reader_4ms.comp object at 0x10b45a790>, <kicad_netlist_reader_4ms.comp object at 0x10b461190>, <kicad_netlist_reader_4ms.comp object at 0x10b4619d0>, <kicad_netlist_reader_4ms.comp object at 0x10b468190>, <kicad_netlist_reader_4ms.comp object at 0x10b4689d0>, <kicad_netlist_reader_4ms.comp object at 0x10b471190>, <kicad_netlist_reader_4ms.comp object at 0x10b471910>, <kicad_netlist_reader_4ms.comp object at 0x10b477070>, <kicad_netlist_reader_4ms.comp object at 0x10b4777f0>, <kicad_netlist_reader_4ms.comp object at 0x10b477f70>, <kicad_netlist_reader_4ms.comp object at 0x10b47f730>]
+>>> len(comps)
+104
+>>> comps[5]
+<kicad_netlist_reader_4ms.comp object at 0x10ac236d0>
+>>> comps[5].getDescription()
+'0.1uF, Min. 16V 10%, X7R or X5R or similar'
+>>> comps[5].grouped
+False
+>>> comps[5].libpart
+<kicad_netlist_reader_4ms.libpart object at 0x10b47ff70>
+>>> c.getRef()
+'C1'
+>>> comps[0].getRef()
+'C1'
+>>> for c in comps:
+...     print(c.getRef())
+... 
+C1
+C2
+C3
+C5
+C6
+C7
+C8
+C9
+C10
+C11
+C12
+C13
+C14
+C15
+C16
+C17
+C18
+C19
+C20
+C21
+C22
+C23
+C24
+C25
+C26
+C27
+C28
+C29
+D1
+D2
+D3
+D4
+D5
+D6
+D7
+DECAY_POT3
+J1
+J2
+J3
+J4
+LED1
+LED2
+LED3
+LED4
+P1
+P2
+
+
+
+
+
+

@@ -81,6 +81,10 @@ if len(sys.argv) != 3:
     print("Usage ", __file__, "<generic_netlist.xml> <output.csv>", file=sys.stderr)
     sys.exit(1)
 
+# Generate an instance of a generic netlist, and load the netlist tree from
+# the command line option. If the file doesn't exist, execution will stop
+net = kicad_netlist_reader_4ms.netlist(sys.argv[1])
+
 # Open a file to write to, if the file cannot be opened output to stdout
 # instead
 try:
@@ -90,8 +94,12 @@ except IOError:
     print( __file__, ":", e, sys.stderr )
     f = sys.stdout
 
+# subset the components to those wanted in the BOM, controlled
+# by <configure> block in kicad_netlist_reader.py
+components = net.getInterestingComponents()
 
-columns = ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Comments', 'Supplied by:']
+#FixMe: Don't use this list of columns twice
+columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
 
 # Create a new csv writer object to use as the output formatter
 out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
@@ -103,11 +111,6 @@ def writerow( acsvwriter, columns ):
         utf8row.append( str(col) )
     acsvwriter.writerow( utf8row )
 
-# Generate an instance of a generic netlist, and load the netlist tree from
-# the command line option. If the file doesn't exist, execution will stop
-net = kicad_netlist_reader_4ms.netlist(sys.argv[1])
-
-
 [schematic_name, revision] = get_project_info(net)
 
 # Output a set of rows as a header providing general information
@@ -115,45 +118,12 @@ writerow( out, ['4ms Company'] )
 writerow( out, ['PCBA Project:', schematic_name, 'Revision: ', revision] )
 writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', date.today()] )
+writerow( out, ['Component Count:', len(components)] )
 writerow( out, [] )
-writerow( out, columns)
+writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
 
 row = []
-
-
-# subset the components to those wanted in the BOM, controlled
-# by <configure> block in kicad_netlist_reader.py
-components = net.getInterestingComponents()
-
-# components is a list e.g. [componentObject1, componentObject2, ..., ]
-# each componentObject has methods like getDescription() etc..
-
-
-# We have been using this to group:
-# grouped = net.groupComponents(components)
-# But it's not working always. So we should fix it or else make our own grouping algorithm. Like this:
-# Must sort components by every field that constitutes the same part (value, footprint, part number, stage, etc..)
-
-current_group_partno = ""
-for c in components:
-    print(c.getRef() + " " + c.getFootprint())
-
-    #Check if fields are different than the current group
-    #if so, then close out the current group (write it to grouped list) and open a new group
-    #   Also, check if some fields match but others don't, and flag an error 
-    #regardless of the above, append the ref to refs
-
-#for group in grouped:
-    #make combined_group, which is a list of dictionaries
-    #[{'refs': 'R1, R2', 'package': 'R_0603', 'value': '10k', 'stage': 'Board',....},
-    # {'refs': 'C1, C2', 'package': 'C_0603', 'value': '1nF', 'stage': 'Board',....},
-    # {'refs': 'POT222', 'package': '16mm..', 'value': '...', 'stage': 'Faceplate',....},
-    # ..
-    # ]
-
-
-#Then, we sort combined_group
-#sorted_combined_group = sorted(combined_group, key=lambda row: 0 if row['stage'] == 'Board' else 1 if row['stage']=='Facplate' else 2
+grouped = net.groupComponents(components)
 
 # Output component information organized by group, aka as collated:
 item = 0
@@ -163,17 +133,15 @@ for group in grouped:
 
     # Add the reference of every component in the group and keep a reference
     # to the component so that the other data can be filled in once per group
-    for c in group:
+    for component in group:
         if len(refs) > 0:
             refs += ", "
-        refs += c.getRef()
+        refs += component.getRef()
+        c = component
 
     item += 1
 
     package = get_package(c.getFootprint())
-
-    [smd, points] = deduce_SMD_TH(package)
-    totalpoints = (len(group) * points)
 
     value = c.getValue()
 
@@ -197,11 +165,10 @@ for group in grouped:
     row.append( designation )
     row.append( package )
     row.append( c.getField("Comments"))
-    row.append("") #Supplied By
 
     #FixMe: test if this line is doing anything
-    # for field in columns[12:]:
-    #     row.append( net.getGroupField(group, field) );
+    for field in columns[12:]:
+        row.append( net.getGroupField(group, field) );
 
     writerow( out, row  )
 
