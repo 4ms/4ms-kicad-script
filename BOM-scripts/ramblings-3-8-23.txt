@@ -1,0 +1,1471 @@
+Last login: Wed Mar  8 15:35:58 on ttys001
+➜  ~ cd kicad/_script/BOM-scripts 
+➜  BOM-scripts git:(bom-ramblings) python3
+Python 3.11.2 (v3.11.2:878ead1ac1, Feb  7 2023, 10:02:41) [Clang 13.0.0 (clang-1300.0.29.30)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import kicad_netlist_reader_4ms
+>>> net = kicad_netlist_reader_4ms.netlist("/Users/zach/kicad/pcb-druminterface/PI/v1.1/Drum-interface.xml")
+>>> net
+<kicad_netlist_reader_4ms.netlist object at 0x10ba1cf50>
+>>> parts = net.getInterestingComponents()
+>>> parts
+[<kicad_netlist_reader_4ms.comp object at 0x10c318410>, <kicad_netlist_reader_4ms.comp object at 0x10c31ac50>, <kicad_netlist_reader_4ms.comp object at 0x10c31d4d0>, <kicad_netlist_reader_4ms.comp object at 0x10c31fd90>, <kicad_netlist_reader_4ms.comp object at 0x10c322650>, <kicad_netlist_reader_4ms.comp object at 0x10c328e90>, <kicad_netlist_reader_4ms.comp object at 0x10c32b750>, <kicad_netlist_reader_4ms.comp object at 0x10c32e050>, <kicad_netlist_reader_4ms.comp object at 0x10c322610>, <kicad_netlist_reader_4ms.comp object at 0x10c333190>, <kicad_netlist_reader_4ms.comp object at 0x10c339a10>, <kicad_netlist_reader_4ms.comp object at 0x10c33c310>, <kicad_netlist_reader_4ms.comp object at 0x10c33eb50>, <kicad_netlist_reader_4ms.comp object at 0x10c345450>, <kicad_netlist_reader_4ms.comp object at 0x10c347d10>, <kicad_netlist_reader_4ms.comp object at 0x10c34a590>, <kicad_netlist_reader_4ms.comp object at 0x10c34ce90>, <kicad_netlist_reader_4ms.comp object at 0x10c34f750>, <kicad_netlist_reader_4ms.comp object at 0x10c352050>, <kicad_netlist_reader_4ms.comp object at 0x10c3588d0>, <kicad_netlist_reader_4ms.comp object at 0x10c35b110>, <kicad_netlist_reader_4ms.comp object at 0x10c35d990>, <kicad_netlist_reader_4ms.comp object at 0x10c360210>, <kicad_netlist_reader_4ms.comp object at 0x10c362a50>, <kicad_netlist_reader_4ms.comp object at 0x10c365310>, <kicad_netlist_reader_4ms.comp object at 0x10c367bd0>, <kicad_netlist_reader_4ms.comp object at 0x10c36a4d0>, <kicad_netlist_reader_4ms.comp object at 0x10c370dd0>, <kicad_netlist_reader_4ms.comp object at 0x10c373610>, <kicad_netlist_reader_4ms.comp object at 0x10c375e90>, <kicad_netlist_reader_4ms.comp object at 0x10c378310>, <kicad_netlist_reader_4ms.comp object at 0x10c37a750>, <kicad_netlist_reader_4ms.comp object at 0x10c37d410>, <kicad_netlist_reader_4ms.comp object at 0x10c3840d0>, <kicad_netlist_reader_4ms.comp object at 0x10c386510>, <kicad_netlist_reader_4ms.comp object at 0x10c38c990>, <kicad_netlist_reader_4ms.comp object at 0x10c38f050>, <kicad_netlist_reader_4ms.comp object at 0x10c391310>, <kicad_netlist_reader_4ms.comp object at 0x10c393590>, <kicad_netlist_reader_4ms.comp object at 0x10c395850>, <kicad_netlist_reader_4ms.comp object at 0x10c397ad0>, <kicad_netlist_reader_4ms.comp object at 0x10c39dc90>, <kicad_netlist_reader_4ms.comp object at 0x10c3a0b10>, <kicad_netlist_reader_4ms.comp object at 0x10c3a3a10>, <kicad_netlist_reader_4ms.comp object at 0x10c3a5fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3a7fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3a9f50>, <kicad_netlist_reader_4ms.comp object at 0x10c3ac7d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3af450>, <kicad_netlist_reader_4ms.comp object at 0x10c3b6110>, <kicad_netlist_reader_4ms.comp object at 0x10c3b8dd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3bba50>, <kicad_netlist_reader_4ms.comp object at 0x10c3be690>, <kicad_netlist_reader_4ms.comp object at 0x10c3c1350>, <kicad_netlist_reader_4ms.comp object at 0x10c3c3fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3cac10>, <kicad_netlist_reader_4ms.comp object at 0x10c3cd8d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3d0510>, <kicad_netlist_reader_4ms.comp object at 0x10c3d3110>, <kicad_netlist_reader_4ms.comp object at 0x10c3d5d50>, <kicad_netlist_reader_4ms.comp object at 0x10c3d8990>, <kicad_netlist_reader_4ms.comp object at 0x10c3db610>, <kicad_netlist_reader_4ms.comp object at 0x10c3e62d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3e8f90>, <kicad_netlist_reader_4ms.comp object at 0x10c3ebc10>, <kicad_netlist_reader_4ms.comp object at 0x10c3ee850>, <kicad_netlist_reader_4ms.comp object at 0x10c3f1510>, <kicad_netlist_reader_4ms.comp object at 0x10c3fc1d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3fee50>, <kicad_netlist_reader_4ms.comp object at 0x10c401b10>, <kicad_netlist_reader_4ms.comp object at 0x10c404750>, <kicad_netlist_reader_4ms.comp object at 0x10c4073d0>, <kicad_netlist_reader_4ms.comp object at 0x10c40a010>, <kicad_netlist_reader_4ms.comp object at 0x10c40ccd0>, <kicad_netlist_reader_4ms.comp object at 0x10c40f8d0>, <kicad_netlist_reader_4ms.comp object at 0x10c416590>, <kicad_netlist_reader_4ms.comp object at 0x10c419250>, <kicad_netlist_reader_4ms.comp object at 0x10c41bed0>, <kicad_netlist_reader_4ms.comp object at 0x10c41eb90>, <kicad_netlist_reader_4ms.comp object at 0x10c421850>, <kicad_netlist_reader_4ms.comp object at 0x10c428510>, <kicad_netlist_reader_4ms.comp object at 0x10c42b190>, <kicad_netlist_reader_4ms.comp object at 0x10c42de50>, <kicad_netlist_reader_4ms.comp object at 0x10c430b10>, <kicad_netlist_reader_4ms.comp object at 0x10c433790>, <kicad_netlist_reader_4ms.comp object at 0x10c436450>, <kicad_netlist_reader_4ms.comp object at 0x10c441090>, <kicad_netlist_reader_4ms.comp object at 0x10c443d10>, <kicad_netlist_reader_4ms.comp object at 0x10c4469d0>, <kicad_netlist_reader_4ms.comp object at 0x10c449690>, <kicad_netlist_reader_4ms.comp object at 0x10c44c350>, <kicad_netlist_reader_4ms.comp object at 0x10c44efd0>, <kicad_netlist_reader_4ms.comp object at 0x10c451c90>, <kicad_netlist_reader_4ms.comp object at 0x10c458450>, <kicad_netlist_reader_4ms.comp object at 0x10c45b290>, <kicad_netlist_reader_4ms.comp object at 0x10c45d990>, <kicad_netlist_reader_4ms.comp object at 0x10c45fd50>, <kicad_netlist_reader_4ms.comp object at 0x10c466550>, <kicad_netlist_reader_4ms.comp object at 0x10c468950>, <kicad_netlist_reader_4ms.comp object at 0x10c46ad10>, <kicad_netlist_reader_4ms.comp object at 0x10c470f50>, <kicad_netlist_reader_4ms.comp object at 0x10c473310>, <kicad_netlist_reader_4ms.comp object at 0x10c475710>, <kicad_netlist_reader_4ms.comp object at 0x10c477ad0>]
+>>> parts.gerRef()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'gerRef'
+>>> parts.getRef()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'getRef'
+>>> part = parts[0]
+>>> part.getRef()
+'C1'
+>>> parts.getRef()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'getRef'
+>>> for part in parts:
+...     print(part.getRef())
+... 
+C1
+C2
+C3
+C5
+C6
+C7
+C8
+C9
+C10
+C11
+C12
+C13
+C14
+C15
+C16
+C17
+C18
+C19
+C20
+C21
+C22
+C23
+C24
+C25
+C26
+C27
+C28
+C29
+D1
+D2
+D3
+D4
+D5
+D6
+D7
+DECAY_POT3
+J1
+J2
+J3
+J4
+LED1
+LED2
+LED3
+LED4
+P1
+P2
+Q1
+R1
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R9
+R10
+R11
+R12
+R13
+R14
+R15
+R16
+R17
+R18
+R19
+R20
+R21
+R22
+R23
+R24
+R25
+R26
+R27
+R28
+R29
+R30
+R31
+R32
+R33
+R34
+R35
+R36
+R37
+R38
+R39
+R40
+R41
+R42
+R43
+R44
+R45
+SENSE_POT1
+SPDT1
+SUSTAIN_POT2
+TR1
+U1
+U2
+U3
+U4
+U5
+U6
+U7
+U8
+>>> for part in parts:
+...     value = part.getValue()
+...     
+... 
+>>> for part in parts:
+...     
+  File "<stdin>", line 2
+    
+    ^
+IndentationError: expected an indented block after 'for' statement on line 1
+>>> parts.getRef()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'getRef'
+>>> parts
+[<kicad_netlist_reader_4ms.comp object at 0x10c318410>, <kicad_netlist_reader_4ms.comp object at 0x10c31ac50>, <kicad_netlist_reader_4ms.comp object at 0x10c31d4d0>, <kicad_netlist_reader_4ms.comp object at 0x10c31fd90>, <kicad_netlist_reader_4ms.comp object at 0x10c322650>, <kicad_netlist_reader_4ms.comp object at 0x10c328e90>, <kicad_netlist_reader_4ms.comp object at 0x10c32b750>, <kicad_netlist_reader_4ms.comp object at 0x10c32e050>, <kicad_netlist_reader_4ms.comp object at 0x10c322610>, <kicad_netlist_reader_4ms.comp object at 0x10c333190>, <kicad_netlist_reader_4ms.comp object at 0x10c339a10>, <kicad_netlist_reader_4ms.comp object at 0x10c33c310>, <kicad_netlist_reader_4ms.comp object at 0x10c33eb50>, <kicad_netlist_reader_4ms.comp object at 0x10c345450>, <kicad_netlist_reader_4ms.comp object at 0x10c347d10>, <kicad_netlist_reader_4ms.comp object at 0x10c34a590>, <kicad_netlist_reader_4ms.comp object at 0x10c34ce90>, <kicad_netlist_reader_4ms.comp object at 0x10c34f750>, <kicad_netlist_reader_4ms.comp object at 0x10c352050>, <kicad_netlist_reader_4ms.comp object at 0x10c3588d0>, <kicad_netlist_reader_4ms.comp object at 0x10c35b110>, <kicad_netlist_reader_4ms.comp object at 0x10c35d990>, <kicad_netlist_reader_4ms.comp object at 0x10c360210>, <kicad_netlist_reader_4ms.comp object at 0x10c362a50>, <kicad_netlist_reader_4ms.comp object at 0x10c365310>, <kicad_netlist_reader_4ms.comp object at 0x10c367bd0>, <kicad_netlist_reader_4ms.comp object at 0x10c36a4d0>, <kicad_netlist_reader_4ms.comp object at 0x10c370dd0>, <kicad_netlist_reader_4ms.comp object at 0x10c373610>, <kicad_netlist_reader_4ms.comp object at 0x10c375e90>, <kicad_netlist_reader_4ms.comp object at 0x10c378310>, <kicad_netlist_reader_4ms.comp object at 0x10c37a750>, <kicad_netlist_reader_4ms.comp object at 0x10c37d410>, <kicad_netlist_reader_4ms.comp object at 0x10c3840d0>, <kicad_netlist_reader_4ms.comp object at 0x10c386510>, <kicad_netlist_reader_4ms.comp object at 0x10c38c990>, <kicad_netlist_reader_4ms.comp object at 0x10c38f050>, <kicad_netlist_reader_4ms.comp object at 0x10c391310>, <kicad_netlist_reader_4ms.comp object at 0x10c393590>, <kicad_netlist_reader_4ms.comp object at 0x10c395850>, <kicad_netlist_reader_4ms.comp object at 0x10c397ad0>, <kicad_netlist_reader_4ms.comp object at 0x10c39dc90>, <kicad_netlist_reader_4ms.comp object at 0x10c3a0b10>, <kicad_netlist_reader_4ms.comp object at 0x10c3a3a10>, <kicad_netlist_reader_4ms.comp object at 0x10c3a5fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3a7fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3a9f50>, <kicad_netlist_reader_4ms.comp object at 0x10c3ac7d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3af450>, <kicad_netlist_reader_4ms.comp object at 0x10c3b6110>, <kicad_netlist_reader_4ms.comp object at 0x10c3b8dd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3bba50>, <kicad_netlist_reader_4ms.comp object at 0x10c3be690>, <kicad_netlist_reader_4ms.comp object at 0x10c3c1350>, <kicad_netlist_reader_4ms.comp object at 0x10c3c3fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3cac10>, <kicad_netlist_reader_4ms.comp object at 0x10c3cd8d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3d0510>, <kicad_netlist_reader_4ms.comp object at 0x10c3d3110>, <kicad_netlist_reader_4ms.comp object at 0x10c3d5d50>, <kicad_netlist_reader_4ms.comp object at 0x10c3d8990>, <kicad_netlist_reader_4ms.comp object at 0x10c3db610>, <kicad_netlist_reader_4ms.comp object at 0x10c3e62d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3e8f90>, <kicad_netlist_reader_4ms.comp object at 0x10c3ebc10>, <kicad_netlist_reader_4ms.comp object at 0x10c3ee850>, <kicad_netlist_reader_4ms.comp object at 0x10c3f1510>, <kicad_netlist_reader_4ms.comp object at 0x10c3fc1d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3fee50>, <kicad_netlist_reader_4ms.comp object at 0x10c401b10>, <kicad_netlist_reader_4ms.comp object at 0x10c404750>, <kicad_netlist_reader_4ms.comp object at 0x10c4073d0>, <kicad_netlist_reader_4ms.comp object at 0x10c40a010>, <kicad_netlist_reader_4ms.comp object at 0x10c40ccd0>, <kicad_netlist_reader_4ms.comp object at 0x10c40f8d0>, <kicad_netlist_reader_4ms.comp object at 0x10c416590>, <kicad_netlist_reader_4ms.comp object at 0x10c419250>, <kicad_netlist_reader_4ms.comp object at 0x10c41bed0>, <kicad_netlist_reader_4ms.comp object at 0x10c41eb90>, <kicad_netlist_reader_4ms.comp object at 0x10c421850>, <kicad_netlist_reader_4ms.comp object at 0x10c428510>, <kicad_netlist_reader_4ms.comp object at 0x10c42b190>, <kicad_netlist_reader_4ms.comp object at 0x10c42de50>, <kicad_netlist_reader_4ms.comp object at 0x10c430b10>, <kicad_netlist_reader_4ms.comp object at 0x10c433790>, <kicad_netlist_reader_4ms.comp object at 0x10c436450>, <kicad_netlist_reader_4ms.comp object at 0x10c441090>, <kicad_netlist_reader_4ms.comp object at 0x10c443d10>, <kicad_netlist_reader_4ms.comp object at 0x10c4469d0>, <kicad_netlist_reader_4ms.comp object at 0x10c449690>, <kicad_netlist_reader_4ms.comp object at 0x10c44c350>, <kicad_netlist_reader_4ms.comp object at 0x10c44efd0>, <kicad_netlist_reader_4ms.comp object at 0x10c451c90>, <kicad_netlist_reader_4ms.comp object at 0x10c458450>, <kicad_netlist_reader_4ms.comp object at 0x10c45b290>, <kicad_netlist_reader_4ms.comp object at 0x10c45d990>, <kicad_netlist_reader_4ms.comp object at 0x10c45fd50>, <kicad_netlist_reader_4ms.comp object at 0x10c466550>, <kicad_netlist_reader_4ms.comp object at 0x10c468950>, <kicad_netlist_reader_4ms.comp object at 0x10c46ad10>, <kicad_netlist_reader_4ms.comp object at 0x10c470f50>, <kicad_netlist_reader_4ms.comp object at 0x10c473310>, <kicad_netlist_reader_4ms.comp object at 0x10c475710>, <kicad_netlist_reader_4ms.comp object at 0x10c477ad0>]
+>>> parts[0]
+<kicad_netlist_reader_4ms.comp object at 0x10c318410>
+>>> x[] = parts[0]
+  File "<stdin>", line 1
+    x[] = parts[0]
+      ^
+SyntaxError: invalid syntax
+>>> x{} = parts[0]
+  File "<stdin>", line 1
+    x{} = parts[0]
+     ^
+SyntaxError: invalid syntax
+>>> x = []
+>>> x = parts[0]
+>>> x.append = parts[1]
+>>> x
+<kicad_netlist_reader_4ms.comp object at 0x10c318410>
+>>> parts[0]
+<kicad_netlist_reader_4ms.comp object at 0x10c318410>
+>>> parts[0,1,2,3]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: list indices must be integers or slices, not tuple
+>>> parts[0, 1, 2, 3]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: list indices must be integers or slices, not tuple
+>>> parts[0]
+<kicad_netlist_reader_4ms.comp object at 0x10c318410>
+>>> for x in parts:
+...     print(x)
+... 
+<kicad_netlist_reader_4ms.comp object at 0x10c318410>
+<kicad_netlist_reader_4ms.comp object at 0x10c31ac50>
+<kicad_netlist_reader_4ms.comp object at 0x10c31d4d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c31fd90>
+<kicad_netlist_reader_4ms.comp object at 0x10c322650>
+<kicad_netlist_reader_4ms.comp object at 0x10c328e90>
+<kicad_netlist_reader_4ms.comp object at 0x10c32b750>
+<kicad_netlist_reader_4ms.comp object at 0x10c32e050>
+<kicad_netlist_reader_4ms.comp object at 0x10c322610>
+<kicad_netlist_reader_4ms.comp object at 0x10c333190>
+<kicad_netlist_reader_4ms.comp object at 0x10c339a10>
+<kicad_netlist_reader_4ms.comp object at 0x10c33c310>
+<kicad_netlist_reader_4ms.comp object at 0x10c33eb50>
+<kicad_netlist_reader_4ms.comp object at 0x10c345450>
+<kicad_netlist_reader_4ms.comp object at 0x10c347d10>
+<kicad_netlist_reader_4ms.comp object at 0x10c34a590>
+<kicad_netlist_reader_4ms.comp object at 0x10c34ce90>
+<kicad_netlist_reader_4ms.comp object at 0x10c34f750>
+<kicad_netlist_reader_4ms.comp object at 0x10c352050>
+<kicad_netlist_reader_4ms.comp object at 0x10c3588d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c35b110>
+<kicad_netlist_reader_4ms.comp object at 0x10c35d990>
+<kicad_netlist_reader_4ms.comp object at 0x10c360210>
+<kicad_netlist_reader_4ms.comp object at 0x10c362a50>
+<kicad_netlist_reader_4ms.comp object at 0x10c365310>
+<kicad_netlist_reader_4ms.comp object at 0x10c367bd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c36a4d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c370dd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c373610>
+<kicad_netlist_reader_4ms.comp object at 0x10c375e90>
+<kicad_netlist_reader_4ms.comp object at 0x10c378310>
+<kicad_netlist_reader_4ms.comp object at 0x10c37a750>
+<kicad_netlist_reader_4ms.comp object at 0x10c37d410>
+<kicad_netlist_reader_4ms.comp object at 0x10c3840d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c386510>
+<kicad_netlist_reader_4ms.comp object at 0x10c38c990>
+<kicad_netlist_reader_4ms.comp object at 0x10c38f050>
+<kicad_netlist_reader_4ms.comp object at 0x10c391310>
+<kicad_netlist_reader_4ms.comp object at 0x10c393590>
+<kicad_netlist_reader_4ms.comp object at 0x10c395850>
+<kicad_netlist_reader_4ms.comp object at 0x10c397ad0>
+<kicad_netlist_reader_4ms.comp object at 0x10c39dc90>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a0b10>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a3a10>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a5fd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a7fd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a9f50>
+<kicad_netlist_reader_4ms.comp object at 0x10c3ac7d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3af450>
+<kicad_netlist_reader_4ms.comp object at 0x10c3b6110>
+<kicad_netlist_reader_4ms.comp object at 0x10c3b8dd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3bba50>
+<kicad_netlist_reader_4ms.comp object at 0x10c3be690>
+<kicad_netlist_reader_4ms.comp object at 0x10c3c1350>
+<kicad_netlist_reader_4ms.comp object at 0x10c3c3fd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3cac10>
+<kicad_netlist_reader_4ms.comp object at 0x10c3cd8d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3d0510>
+<kicad_netlist_reader_4ms.comp object at 0x10c3d3110>
+<kicad_netlist_reader_4ms.comp object at 0x10c3d5d50>
+<kicad_netlist_reader_4ms.comp object at 0x10c3d8990>
+<kicad_netlist_reader_4ms.comp object at 0x10c3db610>
+<kicad_netlist_reader_4ms.comp object at 0x10c3e62d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3e8f90>
+<kicad_netlist_reader_4ms.comp object at 0x10c3ebc10>
+<kicad_netlist_reader_4ms.comp object at 0x10c3ee850>
+<kicad_netlist_reader_4ms.comp object at 0x10c3f1510>
+<kicad_netlist_reader_4ms.comp object at 0x10c3fc1d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3fee50>
+<kicad_netlist_reader_4ms.comp object at 0x10c401b10>
+<kicad_netlist_reader_4ms.comp object at 0x10c404750>
+<kicad_netlist_reader_4ms.comp object at 0x10c4073d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c40a010>
+<kicad_netlist_reader_4ms.comp object at 0x10c40ccd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c40f8d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c416590>
+<kicad_netlist_reader_4ms.comp object at 0x10c419250>
+<kicad_netlist_reader_4ms.comp object at 0x10c41bed0>
+<kicad_netlist_reader_4ms.comp object at 0x10c41eb90>
+<kicad_netlist_reader_4ms.comp object at 0x10c421850>
+<kicad_netlist_reader_4ms.comp object at 0x10c428510>
+<kicad_netlist_reader_4ms.comp object at 0x10c42b190>
+<kicad_netlist_reader_4ms.comp object at 0x10c42de50>
+<kicad_netlist_reader_4ms.comp object at 0x10c430b10>
+<kicad_netlist_reader_4ms.comp object at 0x10c433790>
+<kicad_netlist_reader_4ms.comp object at 0x10c436450>
+<kicad_netlist_reader_4ms.comp object at 0x10c441090>
+<kicad_netlist_reader_4ms.comp object at 0x10c443d10>
+<kicad_netlist_reader_4ms.comp object at 0x10c4469d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c449690>
+<kicad_netlist_reader_4ms.comp object at 0x10c44c350>
+<kicad_netlist_reader_4ms.comp object at 0x10c44efd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c451c90>
+<kicad_netlist_reader_4ms.comp object at 0x10c458450>
+<kicad_netlist_reader_4ms.comp object at 0x10c45b290>
+<kicad_netlist_reader_4ms.comp object at 0x10c45d990>
+<kicad_netlist_reader_4ms.comp object at 0x10c45fd50>
+<kicad_netlist_reader_4ms.comp object at 0x10c466550>
+<kicad_netlist_reader_4ms.comp object at 0x10c468950>
+<kicad_netlist_reader_4ms.comp object at 0x10c46ad10>
+<kicad_netlist_reader_4ms.comp object at 0x10c470f50>
+<kicad_netlist_reader_4ms.comp object at 0x10c473310>
+<kicad_netlist_reader_4ms.comp object at 0x10c475710>
+<kicad_netlist_reader_4ms.comp object at 0x10c477ad0>
+>>> for x in parts[0]:
+...     print(x)
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'comp' object is not iterable
+>>> for x in [parts[0]]
+  File "<stdin>", line 1
+    for x in [parts[0]]
+                       ^
+SyntaxError: expected ':'
+>>> for x in [parts[0]]:
+...     print(x)
+... 
+<kicad_netlist_reader_4ms.comp object at 0x10c318410>
+>>> for x in [parts[0]]:
+...     print(x[])
+  File "<stdin>", line 2
+    print(x[])
+          ^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+>>> for x in [parts[0]]:
+...     print(x())
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+TypeError: 'comp' object is not callable
+>>> dict1 = {'a': [1,2,3], 'b': [2,5]}
+>>> dict1
+{'a': [1, 2, 3], 'b': [2, 5]}
+>>> dict[a]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'a' is not defined
+>>> dict{'a'}
+  File "<stdin>", line 1
+    dict{'a'}
+        ^
+SyntaxError: invalid syntax
+>>> dict1{'a'}
+  File "<stdin>", line 1
+    dict1{'a'}
+         ^
+SyntaxError: invalid syntax
+>>> dict1[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+KeyError: 0
+>>> dict1
+{'a': [1, 2, 3], 'b': [2, 5]}
+>>> dict1
+{'a': [1, 2, 3], 'b': [2, 5]}
+>>> dict1{0}
+  File "<stdin>", line 1
+    dict1{0}
+         ^
+SyntaxError: invalid syntax
+>>> dict1[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+KeyError: 0
+>>> dict1{'a'}
+  File "<stdin>", line 1
+    dict1{'a'}
+         ^
+SyntaxError: invalid syntax
+>>> dict1 = {}
+>>> dict2 = dict()
+>>> dict['A'] = [1,2,3]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'type' object does not support item assignment
+>>> dict1['A'] = [1,2,3]
+>>> dict1
+{'A': [1, 2, 3]}
+>>> refs = {}>>> 
+>>> 
+>>> parts
+[<kicad_netlist_reader_4ms.comp object at 0x10c318410>, <kicad_netlist_reader_4ms.comp object at 0x10c31ac50>, <kicad_netlist_reader_4ms.comp object at 0x10c31d4d0>, <kicad_netlist_reader_4ms.comp object at 0x10c31fd90>, <kicad_netlist_reader_4ms.comp object at 0x10c322650>, <kicad_netlist_reader_4ms.comp object at 0x10c328e90>, <kicad_netlist_reader_4ms.comp object at 0x10c32b750>, <kicad_netlist_reader_4ms.comp object at 0x10c32e050>, <kicad_netlist_reader_4ms.comp object at 0x10c322610>, <kicad_netlist_reader_4ms.comp object at 0x10c333190>, <kicad_netlist_reader_4ms.comp object at 0x10c339a10>, <kicad_netlist_reader_4ms.comp object at 0x10c33c310>, <kicad_netlist_reader_4ms.comp object at 0x10c33eb50>, <kicad_netlist_reader_4ms.comp object at 0x10c345450>, <kicad_netlist_reader_4ms.comp object at 0x10c347d10>, <kicad_netlist_reader_4ms.comp object at 0x10c34a590>, <kicad_netlist_reader_4ms.comp object at 0x10c34ce90>, <kicad_netlist_reader_4ms.comp object at 0x10c34f750>, <kicad_netlist_reader_4ms.comp object at 0x10c352050>, <kicad_netlist_reader_4ms.comp object at 0x10c3588d0>, <kicad_netlist_reader_4ms.comp object at 0x10c35b110>, <kicad_netlist_reader_4ms.comp object at 0x10c35d990>, <kicad_netlist_reader_4ms.comp object at 0x10c360210>, <kicad_netlist_reader_4ms.comp object at 0x10c362a50>, <kicad_netlist_reader_4ms.comp object at 0x10c365310>, <kicad_netlist_reader_4ms.comp object at 0x10c367bd0>, <kicad_netlist_reader_4ms.comp object at 0x10c36a4d0>, <kicad_netlist_reader_4ms.comp object at 0x10c370dd0>, <kicad_netlist_reader_4ms.comp object at 0x10c373610>, <kicad_netlist_reader_4ms.comp object at 0x10c375e90>, <kicad_netlist_reader_4ms.comp object at 0x10c378310>, <kicad_netlist_reader_4ms.comp object at 0x10c37a750>, <kicad_netlist_reader_4ms.comp object at 0x10c37d410>, <kicad_netlist_reader_4ms.comp object at 0x10c3840d0>, <kicad_netlist_reader_4ms.comp object at 0x10c386510>, <kicad_netlist_reader_4ms.comp object at 0x10c38c990>, <kicad_netlist_reader_4ms.comp object at 0x10c38f050>, <kicad_netlist_reader_4ms.comp object at 0x10c391310>, <kicad_netlist_reader_4ms.comp object at 0x10c393590>, <kicad_netlist_reader_4ms.comp object at 0x10c395850>, <kicad_netlist_reader_4ms.comp object at 0x10c397ad0>, <kicad_netlist_reader_4ms.comp object at 0x10c39dc90>, <kicad_netlist_reader_4ms.comp object at 0x10c3a0b10>, <kicad_netlist_reader_4ms.comp object at 0x10c3a3a10>, <kicad_netlist_reader_4ms.comp object at 0x10c3a5fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3a7fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3a9f50>, <kicad_netlist_reader_4ms.comp object at 0x10c3ac7d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3af450>, <kicad_netlist_reader_4ms.comp object at 0x10c3b6110>, <kicad_netlist_reader_4ms.comp object at 0x10c3b8dd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3bba50>, <kicad_netlist_reader_4ms.comp object at 0x10c3be690>, <kicad_netlist_reader_4ms.comp object at 0x10c3c1350>, <kicad_netlist_reader_4ms.comp object at 0x10c3c3fd0>, <kicad_netlist_reader_4ms.comp object at 0x10c3cac10>, <kicad_netlist_reader_4ms.comp object at 0x10c3cd8d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3d0510>, <kicad_netlist_reader_4ms.comp object at 0x10c3d3110>, <kicad_netlist_reader_4ms.comp object at 0x10c3d5d50>, <kicad_netlist_reader_4ms.comp object at 0x10c3d8990>, <kicad_netlist_reader_4ms.comp object at 0x10c3db610>, <kicad_netlist_reader_4ms.comp object at 0x10c3e62d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3e8f90>, <kicad_netlist_reader_4ms.comp object at 0x10c3ebc10>, <kicad_netlist_reader_4ms.comp object at 0x10c3ee850>, <kicad_netlist_reader_4ms.comp object at 0x10c3f1510>, <kicad_netlist_reader_4ms.comp object at 0x10c3fc1d0>, <kicad_netlist_reader_4ms.comp object at 0x10c3fee50>, <kicad_netlist_reader_4ms.comp object at 0x10c401b10>, <kicad_netlist_reader_4ms.comp object at 0x10c404750>, <kicad_netlist_reader_4ms.comp object at 0x10c4073d0>, <kicad_netlist_reader_4ms.comp object at 0x10c40a010>, <kicad_netlist_reader_4ms.comp object at 0x10c40ccd0>, <kicad_netlist_reader_4ms.comp object at 0x10c40f8d0>, <kicad_netlist_reader_4ms.comp object at 0x10c416590>, <kicad_netlist_reader_4ms.comp object at 0x10c419250>, <kicad_netlist_reader_4ms.comp object at 0x10c41bed0>, <kicad_netlist_reader_4ms.comp object at 0x10c41eb90>, <kicad_netlist_reader_4ms.comp object at 0x10c421850>, <kicad_netlist_reader_4ms.comp object at 0x10c428510>, <kicad_netlist_reader_4ms.comp object at 0x10c42b190>, <kicad_netlist_reader_4ms.comp object at 0x10c42de50>, <kicad_netlist_reader_4ms.comp object at 0x10c430b10>, <kicad_netlist_reader_4ms.comp object at 0x10c433790>, <kicad_netlist_reader_4ms.comp object at 0x10c436450>, <kicad_netlist_reader_4ms.comp object at 0x10c441090>, <kicad_netlist_reader_4ms.comp object at 0x10c443d10>, <kicad_netlist_reader_4ms.comp object at 0x10c4469d0>, <kicad_netlist_reader_4ms.comp object at 0x10c449690>, <kicad_netlist_reader_4ms.comp object at 0x10c44c350>, <kicad_netlist_reader_4ms.comp object at 0x10c44efd0>, <kicad_netlist_reader_4ms.comp object at 0x10c451c90>, <kicad_netlist_reader_4ms.comp object at 0x10c458450>, <kicad_netlist_reader_4ms.comp object at 0x10c45b290>, <kicad_netlist_reader_4ms.comp object at 0x10c45d990>, <kicad_netlist_reader_4ms.comp object at 0x10c45fd50>, <kicad_netlist_reader_4ms.comp object at 0x10c466550>, <kicad_netlist_reader_4ms.comp object at 0x10c468950>, <kicad_netlist_reader_4ms.comp object at 0x10c46ad10>, <kicad_netlist_reader_4ms.comp object at 0x10c470f50>, <kicad_netlist_reader_4ms.comp object at 0x10c473310>, <kicad_netlist_reader_4ms.comp object at 0x10c475710>, <kicad_netlist_reader_4ms.comp object at 0x10c477ad0>]
+>>> for part in parts:
+...     print(part)
+... 
+<kicad_netlist_reader_4ms.comp object at 0x10c318410>
+<kicad_netlist_reader_4ms.comp object at 0x10c31ac50>
+<kicad_netlist_reader_4ms.comp object at 0x10c31d4d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c31fd90>
+<kicad_netlist_reader_4ms.comp object at 0x10c322650>
+<kicad_netlist_reader_4ms.comp object at 0x10c328e90>
+<kicad_netlist_reader_4ms.comp object at 0x10c32b750>
+<kicad_netlist_reader_4ms.comp object at 0x10c32e050>
+<kicad_netlist_reader_4ms.comp object at 0x10c322610>
+<kicad_netlist_reader_4ms.comp object at 0x10c333190>
+<kicad_netlist_reader_4ms.comp object at 0x10c339a10>
+<kicad_netlist_reader_4ms.comp object at 0x10c33c310>
+<kicad_netlist_reader_4ms.comp object at 0x10c33eb50>
+<kicad_netlist_reader_4ms.comp object at 0x10c345450>
+<kicad_netlist_reader_4ms.comp object at 0x10c347d10>
+<kicad_netlist_reader_4ms.comp object at 0x10c34a590>
+<kicad_netlist_reader_4ms.comp object at 0x10c34ce90>
+<kicad_netlist_reader_4ms.comp object at 0x10c34f750>
+<kicad_netlist_reader_4ms.comp object at 0x10c352050>
+<kicad_netlist_reader_4ms.comp object at 0x10c3588d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c35b110>
+<kicad_netlist_reader_4ms.comp object at 0x10c35d990>
+<kicad_netlist_reader_4ms.comp object at 0x10c360210>
+<kicad_netlist_reader_4ms.comp object at 0x10c362a50>
+<kicad_netlist_reader_4ms.comp object at 0x10c365310>
+<kicad_netlist_reader_4ms.comp object at 0x10c367bd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c36a4d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c370dd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c373610>
+<kicad_netlist_reader_4ms.comp object at 0x10c375e90>
+<kicad_netlist_reader_4ms.comp object at 0x10c378310>
+<kicad_netlist_reader_4ms.comp object at 0x10c37a750>
+<kicad_netlist_reader_4ms.comp object at 0x10c37d410>
+<kicad_netlist_reader_4ms.comp object at 0x10c3840d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c386510>
+<kicad_netlist_reader_4ms.comp object at 0x10c38c990>
+<kicad_netlist_reader_4ms.comp object at 0x10c38f050>
+<kicad_netlist_reader_4ms.comp object at 0x10c391310>
+<kicad_netlist_reader_4ms.comp object at 0x10c393590>
+<kicad_netlist_reader_4ms.comp object at 0x10c395850>
+<kicad_netlist_reader_4ms.comp object at 0x10c397ad0>
+<kicad_netlist_reader_4ms.comp object at 0x10c39dc90>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a0b10>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a3a10>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a5fd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a7fd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3a9f50>
+<kicad_netlist_reader_4ms.comp object at 0x10c3ac7d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3af450>
+<kicad_netlist_reader_4ms.comp object at 0x10c3b6110>
+<kicad_netlist_reader_4ms.comp object at 0x10c3b8dd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3bba50>
+<kicad_netlist_reader_4ms.comp object at 0x10c3be690>
+<kicad_netlist_reader_4ms.comp object at 0x10c3c1350>
+<kicad_netlist_reader_4ms.comp object at 0x10c3c3fd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3cac10>
+<kicad_netlist_reader_4ms.comp object at 0x10c3cd8d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3d0510>
+<kicad_netlist_reader_4ms.comp object at 0x10c3d3110>
+<kicad_netlist_reader_4ms.comp object at 0x10c3d5d50>
+<kicad_netlist_reader_4ms.comp object at 0x10c3d8990>
+<kicad_netlist_reader_4ms.comp object at 0x10c3db610>
+<kicad_netlist_reader_4ms.comp object at 0x10c3e62d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3e8f90>
+<kicad_netlist_reader_4ms.comp object at 0x10c3ebc10>
+<kicad_netlist_reader_4ms.comp object at 0x10c3ee850>
+<kicad_netlist_reader_4ms.comp object at 0x10c3f1510>
+<kicad_netlist_reader_4ms.comp object at 0x10c3fc1d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c3fee50>
+<kicad_netlist_reader_4ms.comp object at 0x10c401b10>
+<kicad_netlist_reader_4ms.comp object at 0x10c404750>
+<kicad_netlist_reader_4ms.comp object at 0x10c4073d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c40a010>
+<kicad_netlist_reader_4ms.comp object at 0x10c40ccd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c40f8d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c416590>
+<kicad_netlist_reader_4ms.comp object at 0x10c419250>
+<kicad_netlist_reader_4ms.comp object at 0x10c41bed0>
+<kicad_netlist_reader_4ms.comp object at 0x10c41eb90>
+<kicad_netlist_reader_4ms.comp object at 0x10c421850>
+<kicad_netlist_reader_4ms.comp object at 0x10c428510>
+<kicad_netlist_reader_4ms.comp object at 0x10c42b190>
+<kicad_netlist_reader_4ms.comp object at 0x10c42de50>
+<kicad_netlist_reader_4ms.comp object at 0x10c430b10>
+<kicad_netlist_reader_4ms.comp object at 0x10c433790>
+<kicad_netlist_reader_4ms.comp object at 0x10c436450>
+<kicad_netlist_reader_4ms.comp object at 0x10c441090>
+<kicad_netlist_reader_4ms.comp object at 0x10c443d10>
+<kicad_netlist_reader_4ms.comp object at 0x10c4469d0>
+<kicad_netlist_reader_4ms.comp object at 0x10c449690>
+<kicad_netlist_reader_4ms.comp object at 0x10c44c350>
+<kicad_netlist_reader_4ms.comp object at 0x10c44efd0>
+<kicad_netlist_reader_4ms.comp object at 0x10c451c90>
+<kicad_netlist_reader_4ms.comp object at 0x10c458450>
+<kicad_netlist_reader_4ms.comp object at 0x10c45b290>
+<kicad_netlist_reader_4ms.comp object at 0x10c45d990>
+<kicad_netlist_reader_4ms.comp object at 0x10c45fd50>
+<kicad_netlist_reader_4ms.comp object at 0x10c466550>
+<kicad_netlist_reader_4ms.comp object at 0x10c468950>
+<kicad_netlist_reader_4ms.comp object at 0x10c46ad10>
+<kicad_netlist_reader_4ms.comp object at 0x10c470f50>
+<kicad_netlist_reader_4ms.comp object at 0x10c473310>
+<kicad_netlist_reader_4ms.comp object at 0x10c475710>
+<kicad_netlist_reader_4ms.comp object at 0x10c477ad0>
+>>> for part in parts:
+...     print(part.getRef())
+... 
+C1
+C2
+C3
+C5
+C6
+C7
+C8
+C9
+C10
+C11
+C12
+C13
+C14
+C15
+C16
+C17
+C18
+C19
+C20
+C21
+C22
+C23
+C24
+C25
+C26
+C27
+C28
+C29
+D1
+D2
+D3
+D4
+D5
+D6
+D7
+DECAY_POT3
+J1
+J2
+J3
+J4
+LED1
+LED2
+LED3
+LED4
+P1
+P2
+Q1
+R1
+R2
+R3
+R4
+R5
+R6
+R7
+R8
+R9
+R10
+R11
+R12
+R13
+R14
+R15
+R16
+R17
+R18
+R19
+R20
+R21
+R22
+R23
+R24
+R25
+R26
+R27
+R28
+R29
+R30
+R31
+R32
+R33
+R34
+R35
+R36
+R37
+R38
+R39
+R40
+R41
+R42
+R43
+R44
+R45
+SENSE_POT1
+SPDT1
+SUSTAIN_POT2
+TR1
+U1
+U2
+U3
+U4
+U5
+U6
+U7
+U8
+>>> for part in parts:
+...     print(parts.getValue())
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+AttributeError: 'list' object has no attribute 'getValue'
+>>>     print(part.getValue())
+  File "<stdin>", line 1
+    print(part.getValue())
+IndentationError: unexpected indent
+>>> for part in parts:
+...     print(part.getValue())
+... 
+220pF_0603_25V
+220pF_0603_25V
+100nF_0603_16V
+1uF_0603_25V
+20pF_0603_50V
+100nF_0603_16V
+100nF_0603_16V
+100nF_0603_16V
+100nF_0603_16V
+10uF_0805_25V
+100nF_0603_16V
+1uF_0603_25V
+100nF_0603_16V
+100nF_0603_16V
+22uF_1206_25V
+100nF_0603_16V
+100nF_0603_16V
+100nF_0603_16V
+1uF_0603_25V
+47uF_5x5.3_16V
+47uF_5x5.3_16V
+1nF_0603_50V
+1uF_0603_25V
+22uF_0805_25V
+100nF_0603_16V
+100nF_0603_16V
+100nF_0603_16V
+2.2uF_0603_25V
+BAT54S
+SD103
+SD103
+B140HW-7
+B140HW-7
+SD103
+SD103
+9mm_NoDet_100k_Knurled_Lined
+3.5mm_Mono_Switched
+3.5mm_Mono_Switched
+3.5mm_Mono_Switched
+3.5mm_Mono_Switched
+RGB_CA_PLCC4
+White_min200mcd_0603
+Blue_56mcd_0603
+Green_350mcd_0603
+Conn_02x04
+Eurorack_Power_10pin_Unshrouded
+MBT3904DW1
+10k_0603
+1k_0603
+10k_0603
+10k_0603
+49.9k_0603
+1k_0603
+1k_0603
+100k_0603
+10k_0603
+100k_0603
+100k_0603
+10.2k_0603
+16.5k_0603
+1k_0603
+1k_0603
+1k_0603
+1k_0603
+6.04k_0603
+1k_0603
+1k_0603
+10k_0603
+47k_0603
+100k_0603
+10k_0603
+49.9k_0603
+22k_0603
+300k_0603
+10k_0603
+4.7k_0603
+2k_0603
+47k_0603
+13k_0603
+1M_0603
+10k_0603
+1k_0603
+1k_0603
+1k_0603
+1k_0603
+100k_0603
+10k_0603
+2k_0603
+10k_0603
+10k_0603
+1k_0603
+22k_0603
+16mm_NoDet_100k
+Toggle_SPDT_SubMini_2pos
+9mm_NoDet_100k_Knurled_Lined
+TrimPot_TC33X_100k
+CD4001BM
+TL082
+TL082
+NJM2068
+TL082
+TL082
+AP7381-50
+TL082
+>>> for part in parts:
+...     refs = ""
+...     for c in part:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = get_package(c.getFootprint())
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+TypeError: 'comp' object is not iterable
+>>> import blocks.py
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/Users/zach/kicad/_script/BOM-scripts/blocks.py", line 1, in <module>
+    for part in parts:
+                ^^^^^
+NameError: name 'parts' is not defined. Did you mean: 'vars'?
+>>> import blocks.py
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/Users/zach/kicad/_script/BOM-scripts/blocks.py", line 1
+    def loops()
+               ^
+SyntaxError: expected ':'
+>>> import blocks.py
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'blocks.py'; 'blocks' is not a package
+>>> for part in parts:
+...     refs = ""
+...     for c in part:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = get_package(c.getFootprint())
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+TypeError: 'comp' object is not iterable
+>>> for part in parts:
+...     refs = ""
+...     for a in part:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = get_package(c.getFootprint())
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+TypeError: 'comp' object is not iterable
+>>> grouped
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'grouped' is not defined
+>>> def groupingMethod(self, other):
+...     """groupingMethod is a more advanced equivalence function for components which is
+...     used by component grouping. 
+...     For the 4ms BOM we group components based on:
+...     Value, Specifications, Designation, Manufacturer, Part number, Footprint, Comments
+... 
+...     """
+...     result = True
+...     if self.getValue() != other.getValue():
+...         result = False
+...     elif self.getPartName() != other.getPartName():
+...         result = False
+...     elif self.getFootprint() != other.getFootprint():
+...         result = False
+...     elif self.getField("Specifications") != other.getField("Specifications"):
+...         result = False
+...     elif self.getField("Designation") != other.getField("Designation"):
+...         result = False
+...     elif self.getField("Manufacturer") != other.getField("Manufacturer"):
+...         result = False
+...     elif self.getField("Comments") != other.getField("Comments"):
+...         result = False
+...     return result
+... 
+>>> kicad_netlist_reader_4ms.comp.__eq__ = groupingMethod
+>>> grouped
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'grouped' is not defined
+>>> components = net.getInterestingComponents()
+>>> row = []
+>>> grouped = net.groupComponents(components)
+>>> for group in groups:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = get_package(c.getFootprint())
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'groups' is not defined. Did you mean: 'grouped'?
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = get_package(c.getFootprint())
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... 
+Traceback (most recent call last):
+  File "<stdin>", line 7, in <module>
+NameError: name 'get_package' is not defined
+>>> import part
+part  parts
+>>> import partnum_magic.py
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'partnum_magic.py'; 'partnum_magic' is not a package
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... 
+['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221']
+['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A']
+['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D']
+['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D']
+['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L']
+['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T']
+['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505']
+['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D']
+['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L']
+['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D']
+['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F']
+['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18']
+['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7']
+['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS']
+['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA']
+['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA']
+['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW']
+['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B']
+['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G']
+['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T']
+['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T']
+['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G']
+['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL']
+['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL']
+['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L']
+['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL']
+['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L']
+['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L']
+['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L']
+['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL']
+['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL']
+['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL']
+['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L']
+['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL']
+['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL']
+['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML']
+['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301']
+['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX ']
+['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G']
+['U1', '4ms_Package_SOIC:SOIC-14_3.9x8.65mm_Pitch1.27mm', 'CD4001BM', 'Texas Instruments', 'CD4001BM']
+['U2, U3, U5, U6, U8', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'TL082', 'STMicroelectronics', 'TL082CPT']
+['U4', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'NJM2068', 'NJR', 'NJM2068V-TE1']
+['U7', '4ms_Package_SOT:SOT23-3_PO132', 'AP7381-50', 'Diodes Incorporated', 'AP7381-50SA-7']
+>>> row_group = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... row_group.append(row)
+  File "<stdin>", line 13
+    row_group.append(row)
+    ^^^^^^^^^
+SyntaxError: invalid syntax
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... rowgroup.append(row)
+  File "<stdin>", line 13
+    rowgroup.append(row)
+    ^^^^^^^^
+SyntaxError: invalid syntax
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... rowgroup.append()
+  File "<stdin>", line 13
+    rowgroup.append()
+    ^^^^^^^^
+SyntaxError: invalid syntax
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+... rowgroup.append(row)
+  File "<stdin>", line 13
+    rowgroup.append(row)
+    ^^^^^^^^
+SyntaxError: invalid syntax
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+...     rowgroup.append(row)
+... 
+['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221']
+['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A']
+['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D']
+['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D']
+['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L']
+['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T']
+['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505']
+['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D']
+['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L']
+['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D']
+['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F']
+['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18']
+['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7']
+['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS']
+['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA']
+['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA']
+['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW']
+['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B']
+['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G']
+['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T']
+['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T']
+['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G']
+['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL']
+['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL']
+['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L']
+['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL']
+['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L']
+['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L']
+['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L']
+['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL']
+['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL']
+['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL']
+['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L']
+['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL']
+['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL']
+['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML']
+['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301']
+['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX ']
+['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G']
+['U1', '4ms_Package_SOIC:SOIC-14_3.9x8.65mm_Pitch1.27mm', 'CD4001BM', 'Texas Instruments', 'CD4001BM']
+['U2, U3, U5, U6, U8', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'TL082', 'STMicroelectronics', 'TL082CPT']
+['U4', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'NJM2068', 'NJR', 'NJM2068V-TE1']
+['U7', '4ms_Package_SOT:SOT23-3_PO132', 'AP7381-50', 'Diodes Incorporated', 'AP7381-50SA-7']
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+...     rowgroup.append(row)
+...     print(rowgroup)
+... 
+['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221']]
+['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A']]
+['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D']]
+['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D']]
+['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L']]
+['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T']]
+['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505']]
+['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D']]
+['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L']]
+['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D']]
+['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F']]
+['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18']]
+['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7']]
+['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS']]
+['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA']]
+['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA']]
+['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW']]
+['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B']]
+['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G']]
+['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T']]
+['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T']]
+['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G']]
+['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL']]
+['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL']]
+['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L']]
+['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL']]
+['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L']]
+['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L']]
+['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L']]
+['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL']]
+['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL']]
+['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL']]
+['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L']]
+['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL']]
+['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL']]
+['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML']]
+['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML'], ['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301']]
+['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX ']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML'], ['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301'], ['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX ']]
+['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML'], ['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301'], ['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX '], ['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G']]
+['U1', '4ms_Package_SOIC:SOIC-14_3.9x8.65mm_Pitch1.27mm', 'CD4001BM', 'Texas Instruments', 'CD4001BM']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML'], ['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301'], ['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX '], ['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G'], ['U1', '4ms_Package_SOIC:SOIC-14_3.9x8.65mm_Pitch1.27mm', 'CD4001BM', 'Texas Instruments', 'CD4001BM']]
+['U2, U3, U5, U6, U8', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'TL082', 'STMicroelectronics', 'TL082CPT']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML'], ['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301'], ['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX '], ['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G'], ['U1', '4ms_Package_SOIC:SOIC-14_3.9x8.65mm_Pitch1.27mm', 'CD4001BM', 'Texas Instruments', 'CD4001BM'], ['U2, U3, U5, U6, U8', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'TL082', 'STMicroelectronics', 'TL082CPT']]
+['U4', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'NJM2068', 'NJR', 'NJM2068V-TE1']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML'], ['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301'], ['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX '], ['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G'], ['U1', '4ms_Package_SOIC:SOIC-14_3.9x8.65mm_Pitch1.27mm', 'CD4001BM', 'Texas Instruments', 'CD4001BM'], ['U2, U3, U5, U6, U8', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'TL082', 'STMicroelectronics', 'TL082CPT'], ['U4', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'NJM2068', 'NJR', 'NJM2068V-TE1']]
+['U7', '4ms_Package_SOT:SOT23-3_PO132', 'AP7381-50', 'Diodes Incorporated', 'AP7381-50SA-7']
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML'], ['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301'], ['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX '], ['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G'], ['U1', '4ms_Package_SOIC:SOIC-14_3.9x8.65mm_Pitch1.27mm', 'CD4001BM', 'Texas Instruments', 'CD4001BM'], ['U2, U3, U5, U6, U8', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'TL082', 'STMicroelectronics', 'TL082CPT'], ['U4', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'NJM2068', 'NJR', 'NJM2068V-TE1'], ['U7', '4ms_Package_SOT:SOT23-3_PO132', 'AP7381-50', 'Diodes Incorporated', 'AP7381-50SA-7']]
+>>>     rowgroup = []
+  File "<stdin>", line 1
+    rowgroup = []
+IndentationError: unexpected indent
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     print(row)
+...     rowgroup.append(row)
+... print(rowgroup)
+  File "<stdin>", line 14
+    print(rowgroup)
+    ^^^^^
+SyntaxError: invalid syntax
+>>> 
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = [refs, package, value, manufacturer, part_no]
+...     rowgroup.append(row)
+... 
+>>> rowgroup
+[['C1, C2', '4ms_Capacitor:C_0603', '220pF_0603_25V', 'Yageo', 'CC0603JRNPO9BN221'], ['C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', '4ms_Capacitor:C_0603', '100nF_0603_16V', 'AVX Corporation', '0603YC104KAT2A'], ['C5, C13, C20, C24', '4ms_Capacitor:C_0603', '1uF_0603_25V', 'Murata', 'GRM188R61E105KA12D'], ['C6', '4ms_Capacitor:C_0603', '20pF_0603_50V', 'Murata Electronics', 'GRM1885C1H200JA01D'], ['C11', '4ms_Capacitor:C_0805', '10uF_0805_25V', 'Murata', 'GRM21BR61E106MA73L'], ['C16', '4ms_Capacitor:C_1206', '22uF_1206_25V', 'Taiyo Yuden', 'TMK316BBJ226ML-T'], ['C21, C22', '4ms_Capacitor:CP_Elec_5x5.3', '47uF_5x5.3_16V', 'Lelon', 'VES470M1CTR-0505'], ['C23', '4ms_Capacitor:C_0603', '1nF_0603_50V', 'Murata', 'GRM1885C1H102JA01D'], ['C25', '4ms_Capacitor:C_0805', '22uF_0805_25V', 'Murata', 'GRM21BR61E226ME44L'], ['C29', '4ms_Capacitor:C_0603', '2.2uF_0603_25V', 'Murata', 'GRM188R6YA225KA12D'], ['D1', '4ms_Package_SOT:SOT23-3_PO132', 'BAT54S', 'Diodes Incorporated', 'BAT54S-7-F'], ['D2, D3, D6, D7', '4ms_Diode:D_SOD-323F', 'SD103', 'Vishay', 'SD103AWS-E3-18'], ['D4, D5', '4ms_Diode:D_SOD-123', 'B140HW-7', 'Diodes Incorporated', 'B140HW-7'], ['DECAY_POT3, SUSTAIN_POT2', '4ms_Potentiometer:Pot_9mm_Knurl_NoDet', '9mm_NoDet_100k_Knurled_Lined', 'Song Huei ', 'R0904N-B100K L-25KQ/LWS'], ['J1, J2, J3, J4', '4ms_Jack:EighthInch_PJ398SM', '3.5mm_Mono_Switched', 'Wenzhou QingPu\xa0Electronics Co', 'WQP-WQP518MA'], ['LED1', '4ms_LED:LED_PLCC-4', 'RGB_CA_PLCC4', 'Hebei I.T. (Shanghai)', 'PLCC4RGBCT-CA'], ['LED2', '4ms_LED:LED_0603_1608Metric', 'White_min200mcd_0603', 'Inolux', 'IN-S63AT5UW'], ['LED3', '4ms_LED:LED_0603_1608Metric', 'Blue_56mcd_0603', 'Inolux', 'IN-S63AT5B'], ['LED4', '4ms_LED:LED_0603_1608Metric', 'Green_350mcd_0603', 'Inolux', 'IN-S63AT5G'], ['P1', '4ms_Connector:Pins_2x04_2.54mm_TH', 'Conn_02x04', 'TAD', '1-0802FBV0T'], ['P2', '4ms_Connector:Pins_2x05_2.54mm_TH_Europower', 'Eurorack_Power_10pin_Unshrouded', 'TAD', '1-1002FBV0T'], ['Q1', '4ms_Package_SOT:SOT-363_SC-70-6', 'MBT3904DW1', 'ON Semiconductor', 'MBT3904DW1T1G'], ['R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', '4ms_Resistor:R_0603', '10k_0603', 'Yageo', 'RC0603FR-0710KL'], ['R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', '4ms_Resistor:R_0603', '1k_0603', 'Yageo', 'RC0603FR-071KL'], ['R5, R25', '4ms_Resistor:R_0603', '49.9k_0603', 'Yageo', 'RC0603FR-0749K9L'], ['R8, R10, R11, R23, R39', '4ms_Resistor:R_0603', '100k_0603', 'Yageo', 'RC0603FR-07100KL'], ['R12', '4ms_Resistor:R_0603', '10.2k_0603', 'Yageo', 'RC0603FR-0710K2L'], ['R13', '4ms_Resistor:R_0603', '16.5k_0603', 'Yageo', 'RC0603FR-0716K5L'], ['R18', '4ms_Resistor:R_0603', '6.04k_0603', 'Yageo', 'RC0603FR-076K04L'], ['R22, R31', '4ms_Resistor:R_0603', '47k_0603', 'Yageo', 'RC0603FR-0747KL'], ['R26, R45', '4ms_Resistor:R_0603', '22k_0603', 'Yageo', 'RC0603FR-0722KL'], ['R27', '4ms_Resistor:R_0603', '300k_0603', 'Yageo', 'RC0603FR-07300KL'], ['R29', '4ms_Resistor:R_0603', '4.7k_0603', 'Yageo', 'RC0603FR-074K7L'], ['R30, R41', '4ms_Resistor:R_0603', '2k_0603', 'Yageo', 'RC0603FR-072KL'], ['R32', '4ms_Resistor:R_0603', '13k_0603', 'Yageo', 'RC0603FR-0713KL'], ['R33', '4ms_Resistor:R_0603', '1M_0603', 'Yageo', 'RC0603FR-071ML'], ['SENSE_POT1', '4ms_Potentiometer:Pot_16mm_NoDet_RV16AF-4A', '16mm_NoDet_100k', 'Alpha Taiwan', 'RV16AF-4A-15FW-B100K-301'], ['SPDT1', '4ms_Switch:Switch_Toggle_SPDT_SubMini', 'Toggle_SPDT_SubMini_2pos', 'Mountain Switch ', ' 108-2MS1T2B3M2QE-EVX '], ['TR1', '4ms_Potentiometer:Pot_Trim_SMT_TC33X', 'TrimPot_TC33X_100k', 'Bourns', 'TC33X-2-104G'], ['U1', '4ms_Package_SOIC:SOIC-14_3.9x8.65mm_Pitch1.27mm', 'CD4001BM', 'Texas Instruments', 'CD4001BM'], ['U2, U3, U5, U6, U8', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'TL082', 'STMicroelectronics', 'TL082CPT'], ['U4', '4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm', 'NJM2068', 'NJR', 'NJM2068V-TE1'], ['U7', '4ms_Package_SOT:SOT23-3_PO132', 'AP7381-50', 'Diodes Incorporated', 'AP7381-50SA-7']]
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = ["Refs": refs, "Value": value, "Part No": part_no]
+  File "<stdin>", line 11
+    row = ["Refs": refs, "Value": value, "Part No": part_no]
+                 ^
+SyntaxError: invalid syntax
+>>>     rowgroup.append(row)
+  File "<stdin>", line 1
+    rowgroup.append(row)
+IndentationError: unexpected indent
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = ["Refs": refs, "Value": value, "Part No": part_no]
+  File "<stdin>", line 11
+    row = ["Refs": refs, "Value": value, "Part No": part_no]
+                 ^
+SyntaxError: invalid syntax
+>>>     
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = {"Refs": refs, "Value": value, "Part No": part_no}
+...     rowgroup.append(row)
+... 
+>>> rowgroup
+[{'Refs': 'C1, C2', 'Value': '220pF_0603_25V', 'Part No': 'CC0603JRNPO9BN221'}, {'Refs': 'C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', 'Value': '100nF_0603_16V', 'Part No': '0603YC104KAT2A'}, {'Refs': 'C5, C13, C20, C24', 'Value': '1uF_0603_25V', 'Part No': 'GRM188R61E105KA12D'}, {'Refs': 'C6', 'Value': '20pF_0603_50V', 'Part No': 'GRM1885C1H200JA01D'}, {'Refs': 'C11', 'Value': '10uF_0805_25V', 'Part No': 'GRM21BR61E106MA73L'}, {'Refs': 'C16', 'Value': '22uF_1206_25V', 'Part No': 'TMK316BBJ226ML-T'}, {'Refs': 'C21, C22', 'Value': '47uF_5x5.3_16V', 'Part No': 'VES470M1CTR-0505'}, {'Refs': 'C23', 'Value': '1nF_0603_50V', 'Part No': 'GRM1885C1H102JA01D'}, {'Refs': 'C25', 'Value': '22uF_0805_25V', 'Part No': 'GRM21BR61E226ME44L'}, {'Refs': 'C29', 'Value': '2.2uF_0603_25V', 'Part No': 'GRM188R6YA225KA12D'}, {'Refs': 'D1', 'Value': 'BAT54S', 'Part No': 'BAT54S-7-F'}, {'Refs': 'D2, D3, D6, D7', 'Value': 'SD103', 'Part No': 'SD103AWS-E3-18'}, {'Refs': 'D4, D5', 'Value': 'B140HW-7', 'Part No': 'B140HW-7'}, {'Refs': 'DECAY_POT3, SUSTAIN_POT2', 'Value': '9mm_NoDet_100k_Knurled_Lined', 'Part No': 'R0904N-B100K L-25KQ/LWS'}, {'Refs': 'J1, J2, J3, J4', 'Value': '3.5mm_Mono_Switched', 'Part No': 'WQP-WQP518MA'}, {'Refs': 'LED1', 'Value': 'RGB_CA_PLCC4', 'Part No': 'PLCC4RGBCT-CA'}, {'Refs': 'LED2', 'Value': 'White_min200mcd_0603', 'Part No': 'IN-S63AT5UW'}, {'Refs': 'LED3', 'Value': 'Blue_56mcd_0603', 'Part No': 'IN-S63AT5B'}, {'Refs': 'LED4', 'Value': 'Green_350mcd_0603', 'Part No': 'IN-S63AT5G'}, {'Refs': 'P1', 'Value': 'Conn_02x04', 'Part No': '1-0802FBV0T'}, {'Refs': 'P2', 'Value': 'Eurorack_Power_10pin_Unshrouded', 'Part No': '1-1002FBV0T'}, {'Refs': 'Q1', 'Value': 'MBT3904DW1', 'Part No': 'MBT3904DW1T1G'}, {'Refs': 'R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', 'Value': '10k_0603', 'Part No': 'RC0603FR-0710KL'}, {'Refs': 'R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', 'Value': '1k_0603', 'Part No': 'RC0603FR-071KL'}, {'Refs': 'R5, R25', 'Value': '49.9k_0603', 'Part No': 'RC0603FR-0749K9L'}, {'Refs': 'R8, R10, R11, R23, R39', 'Value': '100k_0603', 'Part No': 'RC0603FR-07100KL'}, {'Refs': 'R12', 'Value': '10.2k_0603', 'Part No': 'RC0603FR-0710K2L'}, {'Refs': 'R13', 'Value': '16.5k_0603', 'Part No': 'RC0603FR-0716K5L'}, {'Refs': 'R18', 'Value': '6.04k_0603', 'Part No': 'RC0603FR-076K04L'}, {'Refs': 'R22, R31', 'Value': '47k_0603', 'Part No': 'RC0603FR-0747KL'}, {'Refs': 'R26, R45', 'Value': '22k_0603', 'Part No': 'RC0603FR-0722KL'}, {'Refs': 'R27', 'Value': '300k_0603', 'Part No': 'RC0603FR-07300KL'}, {'Refs': 'R29', 'Value': '4.7k_0603', 'Part No': 'RC0603FR-074K7L'}, {'Refs': 'R30, R41', 'Value': '2k_0603', 'Part No': 'RC0603FR-072KL'}, {'Refs': 'R32', 'Value': '13k_0603', 'Part No': 'RC0603FR-0713KL'}, {'Refs': 'R33', 'Value': '1M_0603', 'Part No': 'RC0603FR-071ML'}, {'Refs': 'SENSE_POT1', 'Value': '16mm_NoDet_100k', 'Part No': 'RV16AF-4A-15FW-B100K-301'}, {'Refs': 'SPDT1', 'Value': 'Toggle_SPDT_SubMini_2pos', 'Part No': ' 108-2MS1T2B3M2QE-EVX '}, {'Refs': 'TR1', 'Value': 'TrimPot_TC33X_100k', 'Part No': 'TC33X-2-104G'}, {'Refs': 'U1', 'Value': 'CD4001BM', 'Part No': 'CD4001BM'}, {'Refs': 'U2, U3, U5, U6, U8', 'Value': 'TL082', 'Part No': 'TL082CPT'}, {'Refs': 'U4', 'Value': 'NJM2068', 'Part No': 'NJM2068V-TE1'}, {'Refs': 'U7', 'Value': 'AP7381-50', 'Part No': 'AP7381-50SA-7'}]
+>>> rowgroup(Refs)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'Refs' is not defined. Did you mean: 'refs'?
+>>> rowgroup[0]
+{'Refs': 'C1, C2', 'Value': '220pF_0603_25V', 'Part No': 'CC0603JRNPO9BN221'}
+>>> rowgroup[1]
+{'Refs': 'C3, C7, C8, C9, C10, C12, C14, C15, C17, C18, C19, C26, C27, C28', 'Value': '100nF_0603_16V', 'Part No': '0603YC104KAT2A'}
+>>> rowgroup["Refs"]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: list indices must be integers or slices, not str
+>>> rowgroup(["Refs"])
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'list' object is not callable
+>>> rowgroup(['Refs'])
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'list' object is not callable
+>>> rowgroup['Refs']
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: list indices must be integers or slices, not str
+>>> rowgroup[0]
+{'Refs': 'C1, C2', 'Value': '220pF_0603_25V', 'Part No': 'CC0603JRNPO9BN221'}
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = {"Refs": refs, "Value": value, "Part No": part_no}
+...     rowgroup.append{row}
+  File "<stdin>", line 12
+    rowgroup.append{row}
+                   ^
+SyntaxError: invalid syntax
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = {"Refs": refs, "Value": value, "Part No": part_no
+...     rowgroup.append(row)
+  File "<stdin>", line 11
+    row = {"Refs": refs, "Value": value, "Part No": part_no
+                                                    ^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+>>> 
+>>> rowgroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     row = {"Refs": refs, "Value": value, "Part No": part_no}
+...     rowgroup.append(row)
+... 
+>>> row
+{'Refs': 'U7', 'Value': 'AP7381-50', 'Part No': 'AP7381-50SA-7'}
+>>> part1 = rowgroup[0]
+>>> part1[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+KeyError: 0
+>>> part1 = []
+>>> part1() = rowgroup[0]
+  File "<stdin>", line 1
+    part1() = rowgroup[0]
+    ^^^^^^^
+SyntaxError: cannot assign to function call here. Maybe you meant '==' instead of '='?
+>>> part1 = rowgroup[0]
+>>> part1
+{'Refs': 'C1, C2', 'Value': '220pF_0603_25V', 'Part No': 'CC0603JRNPO9BN221'}
+>>> part[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'comp' object is not subscriptable
+>>> part1["Refs"]
+'C1, C2'
+>>> boardgroup = []
+>>> faceplategroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     stage = c.getField("Production Stage")
+...     row = {"Refs": refs, "Value": value, "Part No": part_no, "Stage": stage}
+...             if stage == "Board":
+  File "<stdin>", line 13
+    if stage == "Board":
+IndentationError: unexpected indent
+>>>                     boardgroup.append(row)
+  File "<stdin>", line 1
+    boardgroup.append(row)
+IndentationError: unexpected indent
+>>>             elif stage == "Faceplate Assm":
+  File "<stdin>", line 1
+    elif stage == "Faceplate Assm":
+IndentationError: unexpected indent
+>>> boardgroup = []     
+>>> faceplategroup = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     stage = c.getField("Production Stage")
+...     row = {"Refs": refs, "Value": value, "Part No": part_no, "Stage": stage}
+...     if stage == "Board":
+...             boardgroup.append(row)
+...     elif stage == "Faceplate Assm":
+...             faceplategroup.append(row)
+... 
+>>> faceplategroup
+[{'Refs': 'DECAY_POT3, SUSTAIN_POT2', 'Value': '9mm_NoDet_100k_Knurled_Lined', 'Part No': 'R0904N-B100K L-25KQ/LWS', 'Stage': 'Faceplate Assm'}, {'Refs': 'J1, J2, J3, J4', 'Value': '3.5mm_Mono_Switched', 'Part No': 'WQP-WQP518MA', 'Stage': 'Faceplate Assm'}, {'Refs': 'SENSE_POT1', 'Value': '16mm_NoDet_100k', 'Part No': 'RV16AF-4A-15FW-B100K-301', 'Stage': 'Faceplate Assm'}, {'Refs': 'SPDT1', 'Value': 'Toggle_SPDT_SubMini_2pos', 'Part No': ' 108-2MS1T2B3M2QE-EVX ', 'Stage': 'Faceplate Assm'}]
+>>> for x in boardgroup:
+...     print(x)
+... 
+{'Refs': 'R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', 'Value': '10k_0603', 'Part No': 'RC0603FR-0710KL', 'Stage': 'Board'}
+{'Refs': 'R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', 'Value': '1k_0603', 'Part No': 'RC0603FR-071KL', 'Stage': 'Board'}
+{'Refs': 'R5, R25', 'Value': '49.9k_0603', 'Part No': 'RC0603FR-0749K9L', 'Stage': 'Board'}
+{'Refs': 'R8, R10, R11, R23, R39', 'Value': '100k_0603', 'Part No': 'RC0603FR-07100KL', 'Stage': 'Board'}
+{'Refs': 'R12', 'Value': '10.2k_0603', 'Part No': 'RC0603FR-0710K2L', 'Stage': 'Board'}
+{'Refs': 'R13', 'Value': '16.5k_0603', 'Part No': 'RC0603FR-0716K5L', 'Stage': 'Board'}
+{'Refs': 'R18', 'Value': '6.04k_0603', 'Part No': 'RC0603FR-076K04L', 'Stage': 'Board'}
+{'Refs': 'R22, R31', 'Value': '47k_0603', 'Part No': 'RC0603FR-0747KL', 'Stage': 'Board'}
+{'Refs': 'R26, R45', 'Value': '22k_0603', 'Part No': 'RC0603FR-0722KL', 'Stage': 'Board'}
+{'Refs': 'R27', 'Value': '300k_0603', 'Part No': 'RC0603FR-07300KL', 'Stage': 'Board'}
+{'Refs': 'R29', 'Value': '4.7k_0603', 'Part No': 'RC0603FR-074K7L', 'Stage': 'Board'}
+{'Refs': 'R30, R41', 'Value': '2k_0603', 'Part No': 'RC0603FR-072KL', 'Stage': 'Board'}
+{'Refs': 'R32', 'Value': '13k_0603', 'Part No': 'RC0603FR-0713KL', 'Stage': 'Board'}
+{'Refs': 'R33', 'Value': '1M_0603', 'Part No': 'RC0603FR-071ML', 'Stage': 'Board'}
+>>> for y in faceplategroup:
+...     print(y)
+... 
+{'Refs': 'DECAY_POT3, SUSTAIN_POT2', 'Value': '9mm_NoDet_100k_Knurled_Lined', 'Part No': 'R0904N-B100K L-25KQ/LWS', 'Stage': 'Faceplate Assm'}
+{'Refs': 'J1, J2, J3, J4', 'Value': '3.5mm_Mono_Switched', 'Part No': 'WQP-WQP518MA', 'Stage': 'Faceplate Assm'}
+{'Refs': 'SENSE_POT1', 'Value': '16mm_NoDet_100k', 'Part No': 'RV16AF-4A-15FW-B100K-301', 'Stage': 'Faceplate Assm'}
+{'Refs': 'SPDT1', 'Value': 'Toggle_SPDT_SubMini_2pos', 'Part No': ' 108-2MS1T2B3M2QE-EVX ', 'Stage': 'Faceplate Assm'}
+>>> brd_group = []
+>>> fp_group = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     stage = c.getField("Production Stage")
+...     row = {"Refs": refs, "Value": value, "Part No": part_no, "Stage": stage}
+...     if stage == "Board":
+...             brd_group.append(row)
+...     elif stage == "Faceplate Assm":
+...             fp_group.append(row)
+... 
+>>> for x in brd_group:
+...     print(x)
+... for y in fp_group:
+  File "<stdin>", line 3
+    for y in fp_group:
+    ^^^
+SyntaxError: invalid syntax
+>>>     print(y)
+  File "<stdin>", line 1
+    print(y)
+IndentationError: unexpected indent
+>>>
+>>>
+>>> 
+>>> brd_group = []
+>>> fp_group = []
+>>> for group in grouped:
+...     refs = ""
+...     for c in group:
+...             if len(refs) > 0:
+...                     refs += ", "
+...             refs += c.getRef()
+...     package = c.getFootprint()
+...     value = c.getValue()
+...     manufacturer = c.getField("Manufacturer")
+...     part_no = c.getField("Part Number") + c.getField("Part number")
+...     stage = c.getField("Production Stage")
+...     row = {"Refs": refs, "Value": value, "Part No": part_no, "Stage": stage}
+...     if stage == "Board":
+...             brd_group.append(row)
+...     elif stage == "Faceplate Assm":
+...             fp_group.append(row)
+... 
+>>> for x in brd_group:
+...     print(x)
+... 
+{'Refs': 'R1, R3, R4, R9, R21, R24, R28, R34, R40, R42, R43', 'Value': '10k_0603', 'Part No': 'RC0603FR-0710KL', 'Stage': 'Board'}
+{'Refs': 'R2, R6, R7, R14, R15, R16, R17, R19, R20, R35, R36, R37, R38, R44', 'Value': '1k_0603', 'Part No': 'RC0603FR-071KL', 'Stage': 'Board'}
+{'Refs': 'R5, R25', 'Value': '49.9k_0603', 'Part No': 'RC0603FR-0749K9L', 'Stage': 'Board'}
+{'Refs': 'R8, R10, R11, R23, R39', 'Value': '100k_0603', 'Part No': 'RC0603FR-07100KL', 'Stage': 'Board'}
+{'Refs': 'R12', 'Value': '10.2k_0603', 'Part No': 'RC0603FR-0710K2L', 'Stage': 'Board'}
+{'Refs': 'R13', 'Value': '16.5k_0603', 'Part No': 'RC0603FR-0716K5L', 'Stage': 'Board'}
+{'Refs': 'R18', 'Value': '6.04k_0603', 'Part No': 'RC0603FR-076K04L', 'Stage': 'Board'}
+{'Refs': 'R22, R31', 'Value': '47k_0603', 'Part No': 'RC0603FR-0747KL', 'Stage': 'Board'}
+{'Refs': 'R26, R45', 'Value': '22k_0603', 'Part No': 'RC0603FR-0722KL', 'Stage': 'Board'}
+{'Refs': 'R27', 'Value': '300k_0603', 'Part No': 'RC0603FR-07300KL', 'Stage': 'Board'}
+{'Refs': 'R29', 'Value': '4.7k_0603', 'Part No': 'RC0603FR-074K7L', 'Stage': 'Board'}
+{'Refs': 'R30, R41', 'Value': '2k_0603', 'Part No': 'RC0603FR-072KL', 'Stage': 'Board'}
+{'Refs': 'R32', 'Value': '13k_0603', 'Part No': 'RC0603FR-0713KL', 'Stage': 'Board'}
+{'Refs': 'R33', 'Value': '1M_0603', 'Part No': 'RC0603FR-071ML', 'Stage': 'Board'}
+>>> for y in fp_group:
+...     print(y)
+...
+... 
+{'Refs': 'DECAY_POT3, SUSTAIN_POT2', 'Value': '9mm_NoDet_100k_Knurled_Lined', 'Part No': 'R0904N-B100K L-25KQ/LWS', 'Stage': 'Faceplate Assm'}
+{'Refs': 'J1, J2, J3, J4', 'Value': '3.5mm_Mono_Switched', 'Part No': 'WQP-WQP518MA', 'Stage': 'Faceplate Assm'}
+{'Refs': 'SENSE_POT1', 'Value': '16mm_NoDet_100k', 'Part No': 'RV16AF-4A-15FW-B100K-301', 'Stage': 'Faceplate Assm'}
+{'Refs': 'SPDT1', 'Value': 'Toggle_SPDT_SubMini_2pos', 'Part No': ' 108-2MS1T2B3M2QE-EVX ', 'Stage': 'Faceplate Assm'}
+>>> 

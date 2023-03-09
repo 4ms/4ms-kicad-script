@@ -67,7 +67,6 @@ def groupingMethod(self, other):
         result = False
     elif self.getField("Comments") != other.getField("Comments"):
         result = False
-
     return result
 
 # Grouping of components is done with the equivalence (__eq__) operator.
