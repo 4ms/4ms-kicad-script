@@ -56,6 +56,7 @@ def groupingMethod(self, other):
     if self.getValue() != other.getValue():
         result = False
     elif self.getPartName() != other.getPartName():
+        print(self.getPartName())
         result = False
     elif self.getFootprint() != other.getFootprint():
         result = False
@@ -120,26 +121,35 @@ writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', date.today()] )
 writerow( out, ['Component Count:', len(components)] )
 writerow( out, [] )
-writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Production Stage', 'Comments', 'Supplied by:'])
+writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
 
 row = []
-brd_group = []
-fp_group = []
 grouped = net.groupComponents(components)
 
 # Output component information organized by group, aka as collated:
+item = 0
 for group in grouped:
+    del row[:]
     refs = ""
-    for c in group:
+
+    # Add the reference of every component in the group and keep a reference
+    # to the component so that the other data can be filled in once per group
+    for component in group:
         if len(refs) > 0:
             refs += ", "
-        refs += c.getRef()
+        refs += component.getRef()
+        c = component
+
+    item += 1
+
     package = get_package(c.getFootprint())
+
+    [smd, points] = deduce_SMD_TH(package)
+    totalpoints = (len(group) * points)
+
     value = c.getValue()
-    manufacturer = c.getField("Manufacturer")
-    part_no = c.getField("Part Number") + c.getField("Part number")
-    stage = c.getField("Production Stage")
-    row = [refs, value, part_no, stage]
+
+
     if (package=='R0603') and (c.getField("Specifications") == ""):
         [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
@@ -147,23 +157,7 @@ for group in grouped:
         designation = combine_specs_and_value(c)
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
-        
-    if stage == "Board":
-        brd_group.append(row)
-    elif stage == "Faceplate Assm":
-        fp_group.append(row)
-    else:
-        brd_group.append(row)   
-
-"""
-    if (package=='R0603') and (c.getField("Specifications") == ""):
-        [manufacturer, part_no, designation] = deduce_0603_resistor(value)
-
-    else :
-        designation = combine_specs_and_value(c)
-        manufacturer = c.getField("Manufacturer")
-        part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
-
+    
     # if (c.getField("JLCPCB ID")):
     #     part_no = c.getField("JLCPCB ID")
 
@@ -182,7 +176,7 @@ for group in grouped:
     #FixMe: test if this line is doing anything
     for field in columns[12:]:
         row.append( net.getGroupField(group, field) );
-"""
-writerow( out, row  )
+
+    writerow( out, row  )
 
 f.close()

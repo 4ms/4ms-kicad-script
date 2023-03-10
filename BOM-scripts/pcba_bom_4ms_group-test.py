@@ -52,21 +52,31 @@ def groupingMethod(self, other):
     Value, Specifications, Designation, Manufacturer, Part number, Footprint, Comments
 
     """
+   # print("Comparing " + self.getRef() + " and " + other.getRef())
     result = True
     if self.getValue() != other.getValue():
+    #    print("Values differ: " + self.getValue() + " != " + other.getValue())
         result = False
     elif self.getPartName() != other.getPartName():
+        print("PartNames differ: " + self.getPartName() + " != " + other.getPartName())
         result = False
     elif self.getFootprint() != other.getFootprint():
+        print("Footprints differ: " + self.getFootprint() + " != " + other.getFootprint())
         result = False
     elif self.getField("Specifications") != other.getField("Specifications"):
+        print("Specs differ: " + self.getField("Specifications") + " != " + other.getField("Specifications"))
         result = False
     elif self.getField("Designation") != other.getField("Designation"):
+        print("Designations differ: " + self.getField("Designation") + " != " + other.getField("Designation"))
         result = False
     elif self.getField("Manufacturer") != other.getField("Manufacturer"):
+        print("Manufacturers differ: " + self.getField("Manufacturer") + " != " + other.getField("Manufacturer"))
         result = False
     elif self.getField("Comments") != other.getField("Comments"):
+        print("Comments differ: " + self.getField("Comments") + " != " + other.getField("Comments"))
         result = False
+    #if result == True:
+     #   print(self.getRef() + " is the same as " + other.getRef())
     return result
 
 # Grouping of components is done with the equivalence (__eq__) operator.
@@ -142,6 +152,9 @@ for group in grouped:
 
     package = get_package(c.getFootprint())
 
+    [smd, points] = deduce_SMD_TH(package)
+    totalpoints = (len(group) * points)
+
     value = c.getValue()
 
 
@@ -163,6 +176,9 @@ for group in grouped:
     row.append( len(group) )
     row.append( designation )
     row.append( package )
+    row.append( smd )
+    row.append( points )
+    row.append( totalpoints )
     row.append( c.getField("Comments"))
 
     #FixMe: test if this line is doing anything

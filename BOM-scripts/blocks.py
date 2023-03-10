@@ -6,12 +6,14 @@ for group in grouped:
 		if len(refs) > 0:
 			refs += ", "
 		refs += c.getRef()
+#    package = get_package(c.getFootprint())
 	package = c.getFootprint()
 	value = c.getValue()
 	manufacturer = c.getField("Manufacturer")
 	part_no = c.getField("Part Number") + c.getField("Part number")
 	stage = c.getField("Production Stage")
-	row = {"Refs": refs, "Value": value, "Part No": part_no, "Stage": stage}
+	#row = {"Refs": refs, "Value": value, "Part No": part_no, "Stage": stage}
+	row = [refs, value, part_no, stage]
 	if stage == "Board":
 		brd_group.append(row)
 	elif stage == "Faceplate Assm":
