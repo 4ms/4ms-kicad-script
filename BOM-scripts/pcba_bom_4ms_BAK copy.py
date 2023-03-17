@@ -49,7 +49,7 @@ def groupingMethod(self, other):
     """groupingMethod is a more advanced equivalence function for components which is
     used by component grouping. 
     For the 4ms BOM we group components based on:
-    Value, Specifications, Designation, Manufacturer, Part number, Footprint, Comments
+    Value, Specifications, Designation, Manufacturer, Part number, Footprint, Comments, Stage
 
     """
     result = True

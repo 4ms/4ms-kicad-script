@@ -57,9 +57,9 @@ def groupingMethod(self, other):
     if self.getValue() != other.getValue():
     #    print("Values differ: " + self.getValue() + " != " + other.getValue())
         result = False
-    elif self.getPartName() != other.getPartName():
-        print("PartNames differ: " + self.getPartName() + " != " + other.getPartName())
-        result = False
+#    elif self.getPartName() != other.getPartName():
+#        print("PartNames differ: " + self.getPartName() + " != " + other.getPartName())
+#        result = False
     elif self.getFootprint() != other.getFootprint():
         print("Footprints differ: " + self.getFootprint() + " != " + other.getFootprint())
         result = False

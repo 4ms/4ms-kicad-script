@@ -55,8 +55,13 @@ def groupingMethod(self, other):
     result = True
     if self.getValue() != other.getValue():
         result = False
+# We can ignore PartName differences as long as all other fields match
+# KiCad adds a "_1" or "_n" to the end of PartNames when parts may be from a different library or not updated properly
+# We discussed adding a check to flag these differences, however it may not stay
     elif self.getPartName() != other.getPartName():
-        result = False
+        # this is just a flag for now - we comment out the result = false to just continues on with the check
+        print("PartNames differ: " + self.getPartName() + " != " + other.getPartName())
+#        result = False
     elif self.getFootprint() != other.getFootprint():
         result = False
     elif self.getField("Specifications") != other.getField("Specifications"):
@@ -66,6 +71,8 @@ def groupingMethod(self, other):
     elif self.getField("Manufacturer") != other.getField("Manufacturer"):
         result = False
     elif self.getField("Comments") != other.getField("Comments"):
+        result = False
+    elif self.getField("Production Stage") != other.getField("Production Stage"):
         result = False
 
     return result
@@ -98,9 +105,6 @@ except IOError:
 # by <configure> block in kicad_netlist_reader.py
 components = net.getInterestingComponents()
 
-#FixMe: Don't use this list of columns twice
-columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'SMD/TH', 'Layer', 'Points', 'Total Points', 'Comments']
-
 # Create a new csv writer object to use as the output formatter
 out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
 
@@ -118,14 +122,16 @@ writerow( out, ['4ms Company'] )
 writerow( out, ['PCBA Project:', schematic_name, 'Revision: ', revision] )
 writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', date.today()] )
-writerow( out, ['Component Count:', len(components)] )
 writerow( out, [] )
-writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Production Stage', 'Comments', 'Supplied by:'])
+writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Stage', 'Comments', 'Supplied by:'])
 
 row = []
-brd_group = []
+smd_group = []
+th_group = []
 fp_group = []
+blank_group = []
 grouped = net.groupComponents(components)
+item = 0
 
 # Output component information organized by group, aka as collated:
 for group in grouped:
@@ -134,12 +140,14 @@ for group in grouped:
         if len(refs) > 0:
             refs += ", "
         refs += c.getRef()
+    item += 1
     package = get_package(c.getFootprint())
     value = c.getValue()
+    qty = len(group)
     manufacturer = c.getField("Manufacturer")
     part_no = c.getField("Part Number") + c.getField("Part number")
     stage = c.getField("Production Stage")
-    row = [refs, value, part_no, stage]
+    row = [item, manufacturer, part_no, refs, qty, value, package, stage]
     if (package=='R0603') and (c.getField("Specifications") == ""):
         [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
@@ -148,41 +156,23 @@ for group in grouped:
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
         
-    if stage == "Board":
-        brd_group.append(row)
-    elif stage == "Faceplate Assm":
+    if stage == "10 - SMD":
+        smd_group.append(row)
+    elif stage == "20 - TH":
+        th_group.append(row)
+    elif stage == "30 - FP":
         fp_group.append(row)
     else:
-        brd_group.append(row)   
+        blank_group.append(row)   
 
-"""
-    if (package=='R0603') and (c.getField("Specifications") == ""):
-        [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
-    else :
-        designation = combine_specs_and_value(c)
-        manufacturer = c.getField("Manufacturer")
-        part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
-
-    # if (c.getField("JLCPCB ID")):
-    #     part_no = c.getField("JLCPCB ID")
-
-    row.append( item )
-    row.append( manufacturer )
-    row.append( part_no )
-    row.append( refs );
-    row.append( len(group) )
-    row.append( designation )
-    row.append( package )
-    row.append( smd )
-    row.append( points )
-    row.append( totalpoints )
-    row.append( c.getField("Comments"))
-
-    #FixMe: test if this line is doing anything
-    for field in columns[12:]:
-        row.append( net.getGroupField(group, field) );
-"""
-writerow( out, row  )
+for groupings in smd_group:
+    writerow( out, groupings )
+for groupings in th_group:
+    writerow( out, groupings )
+for groupings in fp_group:
+    writerow( out, groupings )
+for groupings in blank_group:
+    writerow( out, groupings )
 
 f.close()
