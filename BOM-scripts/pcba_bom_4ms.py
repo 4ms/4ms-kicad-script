@@ -18,6 +18,7 @@ from __future__ import print_function
 
 # Import the KiCad python helper module and the csv formatter
 import kicad_netlist_reader_4ms
+import re
 import csv
 import sys
 from datetime import date
@@ -125,11 +126,14 @@ writerow( out, ['DATE:', date.today()] )
 writerow( out, [] )
 writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Stage', 'Comments', 'Supplied by:'])
 
-row = []
-smd_group = []
+
+"""smd_group = []
 th_group = []
 fp_group = []
-blank_group = []
+blank_group = []"""
+
+row = []
+list_main = []
 grouped = net.groupComponents(components)
 item = 0
 
@@ -140,23 +144,35 @@ for group in grouped:
         if len(refs) > 0:
             refs += ", "
         refs += c.getRef()
-    item += 1
+#    item += 1
     package = get_package(c.getFootprint())
     value = c.getValue()
     qty = len(group)
     manufacturer = c.getField("Manufacturer")
     part_no = c.getField("Part Number") + c.getField("Part number")
     stage = c.getField("Production Stage")
-    row = [item, manufacturer, part_no, refs, qty, value, package, stage]
     if (package=='R0603') and (c.getField("Specifications") == ""):
+
         [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
     else :
         designation = combine_specs_and_value(c)
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
+
+    row = [manufacturer, part_no, refs, qty, value, package, stage]
+    list_main.append(row)
+
+#sort list of lists by Production Stage    
+list_main.sort(key=lambda x: x[6])
+
+
+for row in list_main:
+    item += 1
+    row.insert(0, item)
+    writerow( out, row )
         
-    if stage == "10 - SMD":
+"""    if stage == "10 - SMD":
         smd_group.append(row)
     elif stage == "20 - TH":
         th_group.append(row)
@@ -165,7 +181,6 @@ for group in grouped:
     else:
         blank_group.append(row)   
 
-
 for groupings in smd_group:
     writerow( out, groupings )
 for groupings in th_group:
@@ -173,6 +188,9 @@ for groupings in th_group:
 for groupings in fp_group:
     writerow( out, groupings )
 for groupings in blank_group:
-    writerow( out, groupings )
+    writerow( out, groupings )"""
+
+
+
 
 f.close()
