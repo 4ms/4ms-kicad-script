@@ -124,7 +124,7 @@ writerow( out, ['PCBA Project:', schematic_name, 'Revision: ', revision] )
 writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', date.today()] )
 writerow( out, [] )
-writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Stage', 'Comments', 'Supplied by:'])
+writerow( out, ['Group', 'Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Comments', 'Supplied by:'])
 
 
 """smd_group = []
@@ -150,7 +150,7 @@ for group in grouped:
     qty = len(group)
     manufacturer = c.getField("Manufacturer")
     part_no = c.getField("Part Number") + c.getField("Part number")
-    stage = c.getField("Production Stage")
+    stage = c.getField("Group")
     if (package=='R0603') and (c.getField("Specifications") == ""):
 
         [manufacturer, part_no, designation] = deduce_0603_resistor(value)
@@ -160,16 +160,16 @@ for group in grouped:
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
 
-    row = [manufacturer, part_no, refs, qty, value, package, stage]
+    row = [stage, manufacturer, part_no, refs, qty, value, package, stage]
     list_main.append(row)
 
-#sort list of lists by Production Stage    
-list_main.sort(key=lambda x: x[6])
+#sort list of lists by Group    
+list_main.sort(key=lambda x: x[0])
 
 
 for row in list_main:
     item += 1
-    row.insert(0, item)
+    row.insert(1, item)
     writerow( out, row )
         
 """    if stage == "10 - SMD":
