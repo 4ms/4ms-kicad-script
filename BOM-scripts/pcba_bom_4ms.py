@@ -144,7 +144,7 @@ for group in grouped:
     qty = len(group)
     manufacturer = c.getField("Manufacturer")
     part_no = c.getField("Part Number") + c.getField("Part number")
-    stage = c.getField("Group")
+    stage = c.getField("Production Stage")
     if (package=='R0603') and (c.getField("Specifications") == ""):
 
         [manufacturer, part_no, designation] = deduce_0603_resistor(value)
