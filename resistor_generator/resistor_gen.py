@@ -294,7 +294,10 @@ def get_manuf_partnum(tolerance, package, value_ohms):
     if tolerance=="0.1%":
         return "RT"+package+"BRD07"+get_short_value(value_ohms)+"L"
     elif tolerance == "1%":
-        return "RC"+package+"FR-07"+get_short_value(value_ohms)+"L"
+        if package == "2010":
+            return "RC"+package+"FK-07"+get_short_value(value_ohms)+"L"
+        else:
+            return "RC"+package+"FR-07"+get_short_value(value_ohms)+"L"
     elif package == "TH0.125":
         return "299-"+ get_value_with_units(value_ohms).strip("Ω") +"-RC"
     elif package == "TH0.250":
@@ -305,7 +308,7 @@ def get_manuf_partnum(tolerance, package, value_ohms):
 
 def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     value_with_units = get_value_with_units(value_ohms)
-    value_short = get_short_value(value_ohms)
+    value_short = get_short_value(value_ohms) ##not used
     wattage = wattage_dict[package]
     manuf_partnum  = get_manuf_partnum(tolerance, package, value_ohms)
     manuf = "Xicon" if package.startswith("TH") else "Yageo"
@@ -316,7 +319,7 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
 
     symdata = tpl_data
     symdata = symdata.replace(r'%VAL%', value_with_units)
-    symdata = symdata.replace(r'%VALSHORT%', value_short)
+    symdata = symdata.replace(r'%VALSHORT%', value_short) #not in template
     symdata = symdata.replace(r'%PKG%', package)
     symdata = symdata.replace(r'%FOOTPRINT%', footprint)
     symdata = symdata.replace(r'%OPTTOL%', opttol)
@@ -392,15 +395,15 @@ if __name__ == "__main__":
 
     Generates a Kicad 6 symbol library of E96+E24 resistors for a given
     package size and tolerance. Yageo RC-series resistor part numbers will be added
-    to each symbol's Part Number field (RT-series for 0.1%).
+    to each symbol's Part Number field (RT-series for 0.1%). JLCPCB part numbers will
+    be added when found in JLCPCB's database.
 
     Parameters:
     {libfilename} is the output file name. Required. If you want Kicad to recognize the file, end it with .kicad_sym
-    {package} can be 0201, 0402, 0603, 0805, or 1206 (default 0603)
+    {package} can be 0201, 0402, 0603, 0805, or 1206 (default 0603). The 2010 package is also supported, but the part numbers have not been verified.
     {tolerance} can be 1% or 0.1% (default 1%)
     {min_mult} is lowest power of 10 for which to generate values (default 1}. This is inclusive, so if min_mult is 100, values starting at 100Ω will be output.
     {max_mult} is highest power of 10 for which to generate values (default 1000000}. This is inclusive, so if max_mult is 1000, then values up to 9.76k will be output.
-       
 
     Note: A 0R resistor is added if tolerance is 1% and min_mult is 1
 
