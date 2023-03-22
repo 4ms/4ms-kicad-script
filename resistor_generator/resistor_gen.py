@@ -145,6 +145,8 @@ template_file = "resistor_template_kicad_sym"
 jlc_file = "JLCPCB-ChipResistorSMT-20220531.csv"
 
 def get_value_with_units(value):
+    if value == 0:
+        return str(value) + "Ω"
     if value < 1000:
         return str(value)[:4].rstrip('0').rstrip('.') + "Ω"
     elif value < 1000000:
@@ -162,6 +164,8 @@ def get_short_value(value):
     K = kilo
     M = mega
     """
+    if value == 0:
+        return "0R"
     if value < 1000:
         return str(value).replace(".", "R")[:4].rstrip('0')
     elif value < 1000000:
@@ -264,6 +268,23 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
 
 
 def get_jlcpcb_id(jlc, value_ohms, package, tolerance):
+    if value_ohms == 0:
+        if package == "0201":
+            return "C270337"
+        if package == "0402":
+            return "C106231"
+        if package == "0603":
+            return "C21189"
+        if package == "0805":
+            return "C100045"
+        if package == "1206":
+            return "C19290"
+        if package == "1210":
+            return "C474103"
+        if package == "2010":
+            return "C270958"
+        if package == "2512":
+            return "C25469"
     id, _, _ = get_jlcpcb_id_and_matchtype(jlc, value_ohms, package, tolerance)
     return id
 
@@ -380,6 +401,9 @@ if __name__ == "__main__":
     {min_mult} is lowest power of 10 for which to generate values (default 1}. This is inclusive, so if min_mult is 100, values starting at 100Ω will be output.
     {max_mult} is highest power of 10 for which to generate values (default 1000000}. This is inclusive, so if max_mult is 1000, then values up to 9.76k will be output.
        
+
+    Note: A 0R resistor is added if tolerance is 1% and min_mult is 1
+
     There are some special commands that can be specified instead of libfilename. These are probably only useful for debugging or fine-tuning the algorithm that deduces the JLCPCB ID. These all output to stdout instead of a file. The other parameters (package, tolerance, etc) have the same meaning.
 
     print-partnums: print the Yageo part numbers. Useful for importing into mouser to verify the part numbers are orderable.
@@ -458,6 +482,11 @@ if __name__ == "__main__":
         libdata = header
         with open(template_file) as tpl:
             tpl_data = tpl.read()
+
+            if tolerance == "1%" and minmult == 1:
+                print("Generating 0Ω")
+                libdata += gen_res(jlc, 0, package, tolerance, tpl_data)
+
             for m in multiplier_list:
                 if m < minmult or m > maxmult:
                     continue
