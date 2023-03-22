@@ -127,11 +127,6 @@ writerow( out, [] )
 writerow( out, ['Group', 'Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Comments', 'Supplied by:'])
 
 
-"""smd_group = []
-th_group = []
-fp_group = []
-blank_group = []"""
-
 row = []
 list_main = []
 grouped = net.groupComponents(components)
@@ -144,7 +139,6 @@ for group in grouped:
         if len(refs) > 0:
             refs += ", "
         refs += c.getRef()
-#    item += 1
     package = get_package(c.getFootprint())
     value = c.getValue()
     qty = len(group)
@@ -171,26 +165,5 @@ for row in list_main:
     item += 1
     row.insert(1, item)
     writerow( out, row )
-        
-"""    if stage == "10 - SMD":
-        smd_group.append(row)
-    elif stage == "20 - TH":
-        th_group.append(row)
-    elif stage == "30 - FP":
-        fp_group.append(row)
-    else:
-        blank_group.append(row)   
-
-for groupings in smd_group:
-    writerow( out, groupings )
-for groupings in th_group:
-    writerow( out, groupings )
-for groupings in fp_group:
-    writerow( out, groupings )
-for groupings in blank_group:
-    writerow( out, groupings )"""
-
-
-
 
 f.close()
