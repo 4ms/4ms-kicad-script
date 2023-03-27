@@ -206,6 +206,7 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
     alt_AR_partnum = "not found"
     alt2_AR_partnum = "not found"
     alt_uniroyal_partnum = "not found"
+    alt_uniroyal_partnum2 = "not found"
 
     # Calc Yageo part number (primary matching technique)
     manuf_partnum  = get_manuf_partnum(tolerance, package, value_ohms)
@@ -220,6 +221,7 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
         alt_AR_partnum = "AR" + package[2]+package[3] + "BTD"+val4dig
         alt2_AR_partnum = "AR" + package[2]+package[3] + "BTC"+val4dig
         alt_uniroyal_partnum = "TC" + package[2]+package[3] + "50B"+ val4dig + "TCC"
+        alt_uniroyal_partnum2 = package + "WBF" + val4dig + "TCE"
 
     # For searching by specifications, we match particular format of the Description field in the JLCPCB CSV file. 
     # This may need to be updated for future csv files
@@ -238,7 +240,8 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
                     alt_bournes_partnum in comp or
                     alt_AR_partnum in comp or
                     alt2_AR_partnum in comp or
-                    alt_uniroyal_partnum in comp
+                    alt_uniroyal_partnum in comp or
+                    alt_uniroyal_partnum2 in comp
                     )):
             partnum_match = comp.split(",")[0].strip('"')
             found_partnum_match = True
