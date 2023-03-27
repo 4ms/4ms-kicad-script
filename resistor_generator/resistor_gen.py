@@ -145,6 +145,8 @@ template_file = "resistor_template_kicad_sym"
 jlc_file = "JLCPCB-ChipResistorSMT-20220531.csv"
 
 def get_value_with_units(value):
+    if value == 0:
+        return str(value) + "Ω"
     if value < 1000:
         return str(value)[:4].rstrip('0').rstrip('.') + "Ω"
     elif value < 1000000:
@@ -162,6 +164,8 @@ def get_short_value(value):
     K = kilo
     M = mega
     """
+    if value == 0:
+        return "0R"
     if value < 1000:
         return str(value).replace(".", "R")[:4].rstrip('0')
     elif value < 1000000:
@@ -267,6 +271,23 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
 
 
 def get_jlcpcb_id(jlc, value_ohms, package, tolerance):
+    if value_ohms == 0:
+        if package == "0201":
+            return "C270337"
+        if package == "0402":
+            return "C106231"
+        if package == "0603":
+            return "C21189"
+        if package == "0805":
+            return "C100045"
+        if package == "1206":
+            return "C19290"
+        if package == "1210":
+            return "C474103"
+        if package == "2010":
+            return "C270958"
+        if package == "2512":
+            return "C25469"
     id, _, _ = get_jlcpcb_id_and_matchtype(jlc, value_ohms, package, tolerance)
     return id
 
@@ -276,7 +297,10 @@ def get_manuf_partnum(tolerance, package, value_ohms):
     if tolerance=="0.1%":
         return "RT"+package+"BRD07"+get_short_value(value_ohms)+"L"
     elif tolerance == "1%":
-        return "RC"+package+"FR-07"+get_short_value(value_ohms)+"L"
+        if package == "2010":
+            return "RC"+package+"FK-07"+get_short_value(value_ohms)+"L"
+        else:
+            return "RC"+package+"FR-07"+get_short_value(value_ohms)+"L"
     elif package == "TH0.125":
         return "299-"+ get_value_with_units(value_ohms).strip("Ω") +"-RC"
     elif package == "TH0.250":
@@ -287,7 +311,7 @@ def get_manuf_partnum(tolerance, package, value_ohms):
 
 def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     value_with_units = get_value_with_units(value_ohms)
-    value_short = get_short_value(value_ohms)
+    value_short = get_short_value(value_ohms) ##not used
     wattage = wattage_dict[package]
     manuf_partnum  = get_manuf_partnum(tolerance, package, value_ohms)
     manuf = "Xicon" if package.startswith("TH") else "Yageo"
@@ -298,7 +322,7 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
 
     symdata = tpl_data
     symdata = symdata.replace(r'%VAL%', value_with_units)
-    symdata = symdata.replace(r'%VALSHORT%', value_short)
+    symdata = symdata.replace(r'%VALSHORT%', value_short) #not in template
     symdata = symdata.replace(r'%PKG%', package)
     symdata = symdata.replace(r'%FOOTPRINT%', footprint)
     symdata = symdata.replace(r'%OPTTOL%', opttol)
@@ -374,15 +398,18 @@ if __name__ == "__main__":
 
     Generates a Kicad 6 symbol library of E96+E24 resistors for a given
     package size and tolerance. Yageo RC-series resistor part numbers will be added
-    to each symbol's Part Number field (RT-series for 0.1%).
+    to each symbol's Part Number field (RT-series for 0.1%). JLCPCB part numbers will
+    be added when found in JLCPCB's database.
 
     Parameters:
     {libfilename} is the output file name. Required. If you want Kicad to recognize the file, end it with .kicad_sym
-    {package} can be 0201, 0402, 0603, 0805, or 1206 (default 0603)
+    {package} can be 0201, 0402, 0603, 0805, or 1206 (default 0603). The 2010 package is also supported, but the part numbers have not been verified.
     {tolerance} can be 1% or 0.1% (default 1%)
     {min_mult} is lowest power of 10 for which to generate values (default 1}. This is inclusive, so if min_mult is 100, values starting at 100Ω will be output.
     {max_mult} is highest power of 10 for which to generate values (default 1000000}. This is inclusive, so if max_mult is 1000, then values up to 9.76k will be output.
-       
+
+    Note: A 0R resistor is added if tolerance is 1% and min_mult is 1
+
     There are some special commands that can be specified instead of libfilename. These are probably only useful for debugging or fine-tuning the algorithm that deduces the JLCPCB ID. These all output to stdout instead of a file. The other parameters (package, tolerance, etc) have the same meaning.
 
     print-partnums: print the Yageo part numbers. Useful for importing into mouser to verify the part numbers are orderable.
@@ -461,6 +488,11 @@ if __name__ == "__main__":
         libdata = header
         with open(template_file) as tpl:
             tpl_data = tpl.read()
+
+            if tolerance == "1%" and minmult == 1:
+                print("Generating 0Ω")
+                libdata += gen_res(jlc, 0, package, tolerance, tpl_data)
+
             for m in multiplier_list:
                 if m < minmult or m > maxmult:
                     continue
