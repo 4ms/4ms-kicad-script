@@ -159,7 +159,7 @@ for group in grouped:
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
 #to do: Add a code to recognize DNP in part name and print to COMMENTS column
-    row = [stage, manufacturer, part_no, refs, qty, value, package, comments]
+    row = [stage, manufacturer, part_no, refs, qty, designation, package, comments]
     list_main.append(row)
 
 #sort list of lists by Group    
