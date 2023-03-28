@@ -18,6 +18,7 @@ from __future__ import print_function
 
 # Import the KiCad python helper module and the csv formatter
 import kicad_netlist_reader_4ms
+import re
 import csv
 import sys
 from datetime import date
@@ -55,8 +56,13 @@ def groupingMethod(self, other):
     result = True
     if self.getValue() != other.getValue():
         result = False
+# We can ignore PartName differences as long as all other fields match
+# KiCad adds a "_1" or "_n" to the end of PartNames when parts may be from a different library or not updated properly
+# We discussed adding a check to flag these differences, however it may not stay
     elif self.getPartName() != other.getPartName():
-        result = False
+        # this is just a flag for now - we comment out the result = false to just continues on with the check
+        print("PartNames differ: " + self.getPartName() + " != " + other.getPartName())
+#        result = False
     elif self.getFootprint() != other.getFootprint():
         result = False
     elif self.getField("Specifications") != other.getField("Specifications"):
@@ -66,6 +72,8 @@ def groupingMethod(self, other):
     elif self.getField("Manufacturer") != other.getField("Manufacturer"):
         result = False
     elif self.getField("Comments") != other.getField("Comments"):
+        result = False
+    elif self.getField("Production Stage") != other.getField("Production Stage"):
         result = False
 
     return result
@@ -98,9 +106,6 @@ except IOError:
 # by <configure> block in kicad_netlist_reader.py
 components = net.getInterestingComponents()
 
-#FixMe: Don't use this list of columns twice
-columns = ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'Production Stage', 'Layer', 'Comments']
-
 # Create a new csv writer object to use as the output formatter
 out = csv.writer( f, lineterminator='\n', delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL )
 
@@ -118,70 +123,52 @@ writerow( out, ['4ms Company'] )
 writerow( out, ['PCBA Project:', schematic_name, 'Revision: ', revision] )
 writerow( out, ['EMAIL:', '4ms@4mscompany.com'] )
 writerow( out, ['DATE:', date.today()] )
-writerow( out, ['Component Count:', len(components)] )
 writerow( out, [] )
-writerow( out, ['Item#', 'Manufacturer', 'Part #', 'Designator', 'Qnty', 'Designation', 'Package', 'Production Stage', 'Layer', 'Comments', 'Supplied by:'])
-
+writerow( out, ['Group', 'Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'Comments', 'Supplied by:'])
 
 
 row = []
+list_main = []
 grouped = net.groupComponents(components)
-
-# Output component information organized by group, aka as collated:
 item = 0
 
+# Output component information organized by group, aka as collated:
 for group in grouped:
-    del row[:]
     refs = ""
-    
-    # Add the reference of every component in the group and keep a reference
-    # to the component so that the other data can be filled in once per group
-    for component in group:
+    for c in group:
         if len(refs) > 0:
             refs += ", "
-        refs += component.getRef()
-        c = component
-
-         
-    item += 1
-
+        refs += c.getRef()
     package = get_package(c.getFootprint())
-
     value = c.getValue()
-
-    stage = getField("Production Stage")
-
-
+    qty = len(group)
+    manufacturer = c.getField("Manufacturer")
+    part_no = c.getField("Part Number") + c.getField("Part number")
+    stage = c.getField("Production Stage")
+    if part_no == "DNP":
+        comments = "DNP"
+    else:
+        comments = ""
 
     if (package=='R0603') and (c.getField("Specifications") == ""):
-        [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
+        [manufacturer, part_no, designation] = deduce_0603_resistor(value)
 
     else :
         designation = combine_specs_and_value(c)
         manufacturer = c.getField("Manufacturer")
         part_no = c.getField("Part Number") + c.getField("Part number") # we've used both lower and upper-case 'n' in the past 
-    
-    # if (c.getField("JLCPCB ID")):
-    #     part_no = c.getField("JLCPCB ID")
+#to do: Add a code to recognize DNP in part name and print to COMMENTS column
+    row = [stage, manufacturer, part_no, refs, qty, designation, package, comments]
+    list_main.append(row)
 
-    row.append( item )
-    row.append( manufacturer )
-    row.append( part_no )
-    row.append( refs );
-    row.append( len(group) )
-    row.append( designation )
-    row.append( package )
-    row.append( c.getField("Production Stage"))
-    row.append( c.getField("Comments"))
+#sort list of lists by Group    
+list_main.sort(key=lambda x: x[0])
 
-    #FixMe: test if this line is doing anything
-    for field in columns[12:]:
-        row.append( net.getGroupField(group, field) );
 
-    writerow( out, row  )
-writerow( out, ['Assembly'])
-writerow( out, ['Item#', 'Manufacturer', 'Manufacter Part#', 'Designator', 'Quantity', 'Designation', 'Package', 'SMD/TH', 'Points', 'Total Points', 'Comments', 'Supplied by:'])
-
+for row in list_main:
+    item += 1
+    row.insert(1, item)
+    writerow( out, row )
 
 f.close()
