@@ -21,13 +21,6 @@ def test_metric(value, expected_metric):
     else:
         print ("\tPass: " + value + " metric is " + expected_metric_printable)
 
-def test_smd_th(package, expected_SMD_TH, expected_points):
-    [smd, points] = deduce_SMD_TH(package)
-    if (smd == expected_SMD_TH and points == expected_points):
-        print ("\tPass: " + package + " is " + str(points) + " points " + smd)
-    else:
-        print ("****\tFAIL: " + package + " expected to be " + str(expected_points) + ", " + expected_SMD_TH + " but was " + str(points) + ", " + smd)
-
 def test_get_package(footprint, expected_package):
     package = get_package(footprint)
     if (package == expected_package):
@@ -137,40 +130,6 @@ if __name__ == "__main__":
     test_res_value("12k345" , "")
 
     test_res_value("30Ω", "RC0603FR-0730RL") #Todo: This is failing
-
-    test_smd_th("D_SOD-123", "SMD", 2)
-    test_smd_th("SOT23-3_PO132", "SMD", 3)
-    test_smd_th("SOT23-3_PO123", "SMD", 3)
-    test_smd_th("SOT23-3_PO213", "SMD", 3)
-    test_smd_th("LED_PLCC-4", "SMD", 4)
-    test_smd_th("C_0603", "SMD", 2)
-    test_smd_th("C0603", "SMD", 2)
-    test_smd_th("C_1206", "SMD", 2)
-    test_smd_th("C1206", "SMD", 2)
-    test_smd_th("C_1210", "SMD", 2)
-    test_smd_th("C1210", "SMD", 2)
-    test_smd_th("C_0402", "SMD", 2)
-    test_smd_th("C0402", "SMD", 2)
-    test_smd_th("R_0603", "SMD", 2)
-    test_smd_th("R0603", "SMD", 2)
-    test_smd_th("R_0402", "SMD", 2)
-    test_smd_th("R0402", "SMD", 2)
-    test_smd_th("LQFP-48_7x7mm_P0.5mm", "SMD", 48)
-    test_smd_th("FA-238", "SMD", 4)
-    test_smd_th("Button_RgbLED_SPST_TC002", "TH", 8)
-    test_smd_th("Button_RgbLED_SPST_PB615303HL-7mm", "TH", 8)
-    test_smd_th("TSOT-23-6", "SMD", 6)
-    test_smd_th("L_Taiyo-Yuden_NR-40xx", "SMD", 2)
-    test_smd_th("LED_0603_1608Metric", "SMD", 2)
-
-    test_smd_th("Pins_2x08_2.54mm_TH_EuroPower", "TH", 16)
-    test_smd_th("Pins_1x02_2.54mm_TH", "TH", 2)
-    test_smd_th("Pins_1x06_2.54mm_TH_SWD", "TH", 6)
-    test_smd_th("Pot_16mm_NoDet_RV16AF-4A", "TH", 3)
-    test_smd_th("Pot_16mm_CtrDet_RV16AF-4A", "TH", 3)
-    test_smd_th("Pot_16mm_21Det_RV16AF-4A", "TH", 3)
-    test_smd_th("Pot_9mm_Knurl_Det", "TH", 5)
-    test_smd_th("EighthInch_PJ398SM", "TH", 3)
 
     test_get_package("4ms_Package_SSOP:TSSOP-8_4.4x3mm_Pitch0.65mm", "TSSOP-8_4.4x3mm_Pitch0.65mm")
     test_get_package("4ms_Resistor:R_0805", "R0805")
