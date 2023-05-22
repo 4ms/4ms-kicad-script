@@ -53,30 +53,37 @@ def groupingMethod(self, other):
     Value, Specifications, Designation, Manufacturer, Part number, Footprint, Comments
 
     """
-    result = True
+    should_group = True
     if self.getValue() != other.getValue():
-        result = False
-# We can ignore PartName differences as long as all other fields match
-# KiCad adds a "_1" or "_n" to the end of PartNames when parts may be from a different library or not updated properly
-# We discussed adding a check to flag these differences, however it may not stay
-    elif self.getPartName() != other.getPartName():
-        # this is just a flag for now - we comment out the result = false to just continues on with the check
-        print("PartNames differ: " + self.getPartName() + " != " + other.getPartName())
-#        result = False
+        should_group = False
     elif self.getFootprint() != other.getFootprint():
-        result = False
+        should_group = False
     elif self.getField("Specifications") != other.getField("Specifications"):
-        result = False
+        should_group = False
     elif self.getField("Designation") != other.getField("Designation"):
-        result = False
+        should_group = False
     elif self.getField("Manufacturer") != other.getField("Manufacturer"):
-        result = False
+        should_group = False
     elif self.getField("Comments") != other.getField("Comments"):
-        result = False
+        should_group = False
     elif self.getField("Production Stage") != other.getField("Production Stage"):
-        result = False
+        should_group = False
+    elif self.getPartName() != other.getPartName():
+        # PartName is the name of the part in the library
+        # If either part name begins with the other (e.g. "10k_0402" and "10k_0402_7") then treat it like they're the same part.
+        # Otherwise, treat them differently
+        # Note: KiCad adds a "_1" or "_n" to the end of PartNames when parts may be from a different library version or not updated properly
+        # But sometimes a DNP can cause part names to differ and we DO want those to be grouped differently
+        print("PartNames differ: " + self.getRef() + " (" + self.getPartName() + ")" + " != " + other.getRef() + " (" + other.getPartName() + ")")
 
-    return result
+        # Don't group them if neither one is the same as the beginning of the other
+        if not (self.getPartName().startswith(other.getPartName()) or other.getPartName().startswith(self.getPartName())):
+            should_group = False
+            print("<<< >>> will be grouped separately")
+        else:
+            print("======= one starts with the other and all other fields match, so they will be grouped")
+
+    return should_group
 
 # Grouping of components is done with the equivalence (__eq__) operator.
 # Override the component equivalence operator now - it is important to do this
