@@ -37,6 +37,7 @@ footprint_convert={
 
     # ENCODERS: 
     'ENC_SPST_12mm': 'Faceplate_Hole_Encoder_290',
+    'ENC_12mm_HollowShaft': 'Faceplate_Hole_Encoder_290',
     'ENC_SPST_12mm_NUDGED': 'Faceplate_Hole_Encoder_290',
     # Alternative: 
     #'ENC_SPST_12mm_NUDGED': 'Faceplate_Hole_Encoder_KnurledShaft_Alpha'
