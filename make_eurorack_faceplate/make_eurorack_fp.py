@@ -34,6 +34,7 @@ footprint_convert={
     'Pot_Slider_LED_20mm_RA2045F': 'Faceplate_Hole_Slider_25mm_Slot',
     'POT-SLIDER-LED-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
     'POT-SLIDER-ALPHA-RA2045F-20': 'Faceplate_Hole_Slider_25mm_Slot',
+    'Top-Up_60RFT2-B':'Faceplate_Hole_Top-Up_60RFT2-B',
 
     # ENCODERS: 
     'ENC_SPST_12mm': 'Faceplate_Hole_Encoder_290',
