@@ -102,7 +102,7 @@ remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'SOT23-3_PO132', 'R
               'BGA-54_8.0x8.0mm_P0.8', 'BGA-144_07X07MM_P0.5', 'TSOT-23-6',
               'Pins_2x05_2.54mm_TH_EurorackPower','Pins_2x05_2.54mm_TH_Europower', 'Pins_2x04_2.54mm_TH', 'Pins_1x04_2.54mm_TH_SWD', 'Pins_1x03_2.54mm_TH_AudioOutsRGndL', 'Pins_1x03_2.54mm_TH_AudioInsRGndL', 'Pins_2x08_2.54mm_TH_EuroPower', 'Socket_2x05_2.54mm_TH', 'Pins_1x03_2.54mm_TH', 'Pins_1x02_2.54mm_TH',
               'DIP-8pin_TH', 'R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal', 'C_Disc_P2.54mm', 'CP_Radial_P2.5mm', 'D_DO-35_P7.62mm_Horizontal', 'C_Disc_P5.08mm',
-              '4msLogo_15.5x6.6mm', '4ms-logo-4', '4msLogo_3.8x1.7mm']
+              '4msLogo_15.5x6.6mm', '4ms-logo-4', '4msLogo_3.8x1.7mm','NetTie-2_SMD_Pad0.16mm_6mil']
 
 
 # Calculate the HP
