@@ -97,7 +97,7 @@ footprint_convert={
 }
 
 remove_fps = ['R0603', 'C0603', 'PAD-06', 'SOT-363_SC-70-6', 'SOT23-3_PO132', 'R_0402', 'R_0603', 'C_0402', 'C_0603', 'C_1206', 'C_0805','CP_Elec_5x5.3', 'R_0805_2012Metric',
-              'TSSOP-8_4.4x3mm_Pitch0.65mm', 'TSSOP-14_4.4x5mm_P0.65mm', 'SSOP-10_3.9x4.9mm_P1.00mm','TSSOP-28_4.4x9.7mm_Pitch0.65mm',
+              'TSSOP-8_4.4x3mm_Pitch0.65mm', 'TSSOP-14_4.4x5mm_P0.65mm', 'SSOP-10_3.9x4.9mm_P1.00mm','TSSOP-28_4.4x9.7mm_Pitch0.65mm','QFN-48-1EP_7x7mm_P0.5mm_EP5.6x5.6mm','TSSOP-20_4.4x6.5mm_P0.65mm','SOIC-8_3.9x4.9mm_Pitch1.27mm','SOT-23-THIN-16','QFN-32-1EP_4x4mm_P0.4mm_EP2.65x2.65mm',
               'D_SOD-323F', 'TSOT-23-5', 'D_SOD-123', 'D_SMA', 'FA-238', 'NetTie-2_SMD_Pad0.5mm', 'Button_Tact_PTS540', 'L_Taiyo-Yuden_NR-40xx', 
               'BGA-54_8.0x8.0mm_P0.8', 'BGA-144_07X07MM_P0.5', 'TSOT-23-6',
               'Pins_2x05_2.54mm_TH_Europower', 'Pins_2x04_2.54mm_TH', 'Pins_1x04_2.54mm_TH_SWD', 'Pins_1x03_2.54mm_TH_AudioOutsRGndL', 'Pins_1x03_2.54mm_TH_AudioInsRGndL', 'Pins_2x08_2.54mm_TH_EuroPower', 'Socket_2x05_2.54mm_TH', 'Pins_1x03_2.54mm_TH', 'Pins_1x02_2.54mm_TH',
