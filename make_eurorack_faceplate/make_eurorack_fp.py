@@ -76,6 +76,8 @@ footprint_convert={
     'Switch_Toggle_SPDT_SubMini': 'Faceplate_Hole_SubMini_Toggle',
 
     # BUTTONS:
+    'Button_PB20B': 'Faceplate_Hole_Button_PB20',
+    'Button_LED_PKS-01L-X': 'Faceplate_Hole_Button_PB20',
     'BUTTON-LED-PB61303': 'Faceplate_Hole_LED_Button_7mm_With_Mask_Opening',
     'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
     'Button_RgbLED_SPST_TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
