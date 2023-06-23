@@ -95,6 +95,7 @@ footprint_convert={
     'Faceplate_Rail_Mount_Slot': 'Faceplate_Rail_Mount_Slot',
     'Faceplate_Hole_Spacer_Mount_256': 'Faceplate_Hole_Spacer_Mount_256',
     'Faceplate_Hole_FSR_slot': 'Faceplate_Hole_FSR_slot',
+    'MountingHole_WurthElektronik_WA-SNTI':'Faceplate_Hole_Spacer_Mount_M3',
 
     'last_item': 'last_item'
 }
