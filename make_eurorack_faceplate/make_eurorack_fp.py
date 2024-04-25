@@ -153,15 +153,20 @@ def find_pcb_outline_bbox(board):
     """Get the bounding box around all edge cuts drawings, and list of edge cuts drawings"""
     edgecuts_dwgs = []
     boundingbox = None
+
     for d in board.GetDrawings():
         if (d.GetLayerName() != "Edge.Cuts"):
             continue
         edgecuts_dwgs.append(d)
-        if (boundingbox == None):
+
+        if boundingbox is None:
             boundingbox = d.GetBoundingBox()
         else:
             boundingbox.Merge(d.GetBoundingBox())
-    boundingbox.Inflate(-150000) #assume a 0.15mm line width
+
+    if boundingbox is not None:
+        boundingbox.Inflate(-150000) #assume a 0.15mm line width
+
     return boundingbox, edgecuts_dwgs
 
 
@@ -409,7 +414,7 @@ def make_ground_zone(board):
     global msg
 
     gndnet = find_net("GND", board)
-    if gndnet == None:
+    if gndnet is None:
         return
         #TODO: create a new net
 
