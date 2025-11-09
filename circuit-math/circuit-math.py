@@ -112,121 +112,116 @@ def voltage_divider():
     GOLDILOCKS_MIN = 0.00001  # 10 µA
     GOLDILOCKS_MAX = 0.001    # 1 mA
 
-    # Common 1% resistor values
+    # Common resistor list for marking
     COMMON_VALUES = [1000, 2200, 3300, 4700, 5600, 6800, 8200,
                      10000, 22000, 33000, 47000, 56000, 68000, 82000, 100000]
 
-    # Helper: Calculate current
-    def calculate_current(vin, r1, r2):
-        return vin / (r1 + r2)
-
-    # Helper: Format resistor (remove unnecessary 0s)
-    def format_resistor(r):
-        if r >= 1000:
-            r_k = r / 1000
-            if r_k.is_integer():
-                return f"{int(r_k)}kΩ"
-            return f"{r_k:.1f}kΩ"
-        else:
-            if r.is_integer():
-                return f"{int(r)}Ω"
-            return f"{r:.1f}Ω"
-
-    # Helper: Format current nicely
-    def format_current(curr):
-        if curr >= 0.001:
-            return f"{curr*1000:.1f} mA"
-        return f"{curr*1e6:.1f} µA"
-
-    # Find the 6 closest 1% options, noting if using common resistor
+    # --- Find closest 1% resistor combinations ---
     def find_closest_options(resistors, count=6):
         options = []
         for r1 in resistors:
             for r2 in resistors:
-                if r1 + r2 == 0:
-                    continue
                 vout = vin * r2 / (r1 + r2)
                 error = abs(vout - vout_target)
-                current = calculate_current(vin, r1, r2)
+                current = vin / (r1 + r2)
                 if GOLDILOCKS_MIN <= current <= GOLDILOCKS_MAX:
-                    note = "Common R" if r1 in COMMON_VALUES or r2 in COMMON_VALUES else ""
+                    note = "Common R" if (r1 in COMMON_VALUES or r2 in COMMON_VALUES) else ""
                     options.append((error, vout, r1, r2, current, note))
         options.sort(key=lambda x: x[0])
-        return options[:count]
+        seen = set()
+        unique = []
+        for opt in options:
+            key = (round(opt[2]), round(opt[3]))
+            if key not in seen:
+                seen.add(key)
+                unique.append(opt)
+            if len(unique) >= count:
+                break
+        return unique
 
-    # Find the 0.1% closest options with current filter
-    def find_01pct_options(resistors, count=3):
+    # --- Find closest 0.1% resistor combinations ---
+    def find_01pct_options(resistors, count=6):
         options = []
         for r1 in resistors:
             for r2 in resistors:
-                if r1 + r2 == 0:
-                    continue
                 vout = vin * r2 / (r1 + r2)
                 error = abs(vout - vout_target)
-                current = calculate_current(vin, r1, r2)
+                current = vin / (r1 + r2)
                 if GOLDILOCKS_MIN <= current <= GOLDILOCKS_MAX:
-                    options.append((error, vout, r1, r2, current, ""))
+                    options.append((error, vout, r1, r2, current))
         options.sort(key=lambda x: x[0])
-        return options[:count]
+        seen = set()
+        unique = []
+        for opt in options:
+            key = (round(opt[2]), round(opt[3]))
+            if key not in seen:
+                seen.add(key)
+                unique.append(opt)
+            if len(unique) >= count:
+                break
+        return unique
 
-    # Find combined options (top 3 from both lists)
-    def find_combined_options(resistors1, resistors2, count=3):
+    # --- Combined 1% + 0.1% combinations ---
+    def find_combined_options(rlist_1pct, rlist_01pct, count=6):
         options = []
-
-        # 1% options
-        for r1 in resistors1:
-            for r2 in resistors1:
-                if r1 + r2 == 0:
-                    continue
+        for r1 in rlist_1pct:
+            for r2 in rlist_01pct:
                 vout = vin * r2 / (r1 + r2)
                 error = abs(vout - vout_target)
-                current = calculate_current(vin, r1, r2)
+                current = vin / (r1 + r2)
                 if GOLDILOCKS_MIN <= current <= GOLDILOCKS_MAX:
-                    note = "1%"
-                    options.append((error, vout, r1, r2, current, note))
-
-        # 0.1% options
-        for r1 in resistors2:
-            for r2 in resistors2:
-                if r1 + r2 == 0:
-                    continue
-                vout = vin * r2 / (r1 + r2)
-                error = abs(vout - vout_target)
-                current = calculate_current(vin, r1, r2)
-                if GOLDILOCKS_MIN <= current <= GOLDILOCKS_MAX:
-                    note = "0.1%"
-                    options.append((error, vout, r1, r2, current, note))
-
-        # Sort by error
+                    options.append((error, vout, r1, r2, current))
         options.sort(key=lambda x: x[0])
-        return options[:count]
+        seen = set()
+        unique = []
+        for opt in options:
+            key = (round(opt[2]), round(opt[3]))
+            if key not in seen:
+                seen.add(key)
+                unique.append(opt)
+            if len(unique) >= count:
+                break
+        return unique
 
-    # Display function with error in mV and optional Note
-    def display_options(options, title):
-        print(f"\n{title}")
-        print("| Vout      | Error      | R1      | R2      | Current  | Note       |")
-        print("|----------|------------|---------|---------|----------|------------|")
-        for _, vout, r1, r2, current, note in options:
-            error_mv = int(round((vout - vout_target) * 1000))  # mV
-            error_str = f"{error_mv:+d} mV"
-            print(f"| {vout:.3f}    | {error_str:<10} | {format_resistor(r1):<7} | {format_resistor(r2):<7} | {format_current(current):<8} | {note:<10} |")
-
-    # Correct E96 list scaling (1Ω → 10MΩ)
+    # Correctly scaled E96 list
     E96_LIST_CORRECTED = []
     for decade in range(-1, 7):  # 0.1Ω to 10MΩ
         factor = 10 ** decade
         for val in E96_LIST:
             E96_LIST_CORRECTED.append(val * factor)
 
-    # Get options
+    # --- Get results ---
     options_1pct = find_closest_options(E24_LIST, count=6)
-    options_01pct = find_01pct_options(E96_LIST_CORRECTED)
-    options_combined = find_combined_options(E24_LIST, E96_LIST_CORRECTED, count=3)
+    options_01pct = find_01pct_options(E96_LIST_CORRECTED, count=6)
+    options_combined = find_combined_options(E24_LIST, E96_LIST_CORRECTED, count=6)
 
-    # Display results
+    # --- Display helper ---
+    def display_options(options, title, combined=False, with_note=True):
+        print(f"\n{title}")
+        if combined:
+            print("| Vout      | Error      | R1         | R2         | Current  |")
+            print("|-----------|------------|------------|------------|----------|")
+        else:
+            print("| Vout      | Error      | R1      | R2      | Current  | Note       |")
+            print("|-----------|------------|---------|---------|----------|------------|")
+
+        for opt in options:
+            error_mv = int(round((opt[1] - vout_target) * 1000))
+            error_str = f"{error_mv:+d} mV"
+            vout_str = f"{opt[1]:.3f}"
+            if combined:
+                r1_str = f"{format_resistor(opt[2])} (1%)"
+                r2_str = f"{format_resistor(opt[3])} (0.1%)"
+                print(f"| {vout_str:<8} | {error_str:<10} | {r1_str:<11} | {r2_str:<11} | {format_current(opt[4]):<8} |")
+            else:
+                note = opt[5] if with_note else ""
+                print(f"| {vout_str:<8} | {error_str:<10} | {format_resistor(opt[2]):<7} | {format_resistor(opt[3]):<7} | {format_current(opt[4]):<8} | {note:<10} |")
+
+    # --- Output all tables ---
     display_options(options_1pct, "1% OPTIONS (Closest, up to 6)")
-    display_options(options_01pct, "0.1% OPTIONS (Closest, 0.1–1 mA)")
-    display_options(options_combined, "COMBINED OPTIONS (1% + 0.1%, top 3)")
+    display_options(options_01pct, "0.1% OPTIONS (Closest, 0.1–1 mA)", with_note=False)
+    display_options(options_combined, "COMBINED OPTIONS (1% + 0.1%, top 6)", combined=True)
+
 
 
 
