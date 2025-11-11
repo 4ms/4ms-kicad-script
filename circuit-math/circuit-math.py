@@ -222,6 +222,131 @@ def voltage_divider():
     display_options(options_01pct, "0.1% OPTIONS (Closest, 0.1–1 mA)", with_note=False)
     display_options(options_combined, "COMBINED OPTIONS (1% + 0.1%, top 6)", combined=True)
 
+# -------------------------------
+# Inverting Op Amp + Offset (combined table, % error)
+# -------------------------------
+def basic_inverting_with_offset():
+    print("\n--- Inverting Op Amp + Offset Calculator ---")
+
+    # 1️⃣ Get user inputs
+    vin_min = float(input("Enter Vin(min) (V): "))
+    vin_max = float(input("Enter Vin(max) (V): "))
+    vout_min = float(input("Enter Vout(min) (V): "))
+    vout_max = float(input("Enter Vout(max) (V): "))
+
+    # Validate input order
+    while vin_min >= vin_max or vout_min >= vout_max:
+        print("Error: Ensure Vin_min < Vin_max and Vout_min < Vout_max.")
+        vin_min = float(input("Enter Vin(min) (V): "))
+        vin_max = float(input("Enter Vin(max) (V): "))
+        vout_min = float(input("Enter Vout(min) (V): "))
+        vout_max = float(input("Enter Vout(max) (V): "))
+
+    # 2️⃣ Compute gain and offset
+    ΔVin = vin_max - vin_min
+    ΔVout = vout_max - vout_min
+    if ΔVin == 0:
+        print("Error: ΔVin = 0, cannot continue.")
+        return
+
+    A = ΔVout / ΔVin        # Rfb/Rin
+    gain = -A                # inverting
+    Vplus = (vout_min + A * vin_max) / (1 + A)
+    need_offset = abs(Vplus) > 1e-9
+
+    if need_offset:
+        Vref = float(input("Enter available Vref for offset divider (V): "))
+    else:
+        Vref = 0
+
+    print("\n--- Pseudocode / Summary ---")
+    print(f"  Vin(min) = {vin_min:.3f} V, Vin(max) = {vin_max:.3f} V")
+    print(f"  Vout(min) = {vout_min:.3f} V, Vout(max) = {vout_max:.3f} V")
+    print(f"  Gain = {gain:.4f}")
+    print(f"  Vplus = {Vplus:.4f} V")
+    if need_offset:
+        print(f"  Offset divider → from Vref = {Vref:.3f} V to Vplus = {Vplus:.3f} V")
+    else:
+        print("  No offset required (Vplus ≈ 0 V)")
+
+    # 3️⃣ Search for resistor combinations
+    GOLDILOCKS_MIN, GOLDILOCKS_MAX = 0.0001, 0.001  # 0.1–1 mA
+    worst_vin = max(abs(vin_min), abs(vin_max))
+
+    E96_LIST_CORRECTED = [v * (10 ** d) for d in range(0, 7) for v in E96_BASE]
+
+    def ratio_error(rfb, rin): return abs((rfb / rin) - A)
+    def input_current(rin): return worst_vin / rin if rin else float('inf')
+
+    # Combine all options (1%/0.1%/mixed) in priority order
+    def find_best_pairs(list_rfb, list_rin, tag_rfb, tag_rin):
+        out = []
+        for rfb in list_rfb:
+            for rin in list_rin:
+                if rin == 0: continue
+                err = ratio_error(rfb, rin)
+                curr = input_current(rin)
+                if GOLDILOCKS_MIN <= curr <= GOLDILOCKS_MAX:
+                    out.append((err, rfb, rin, curr, tag_rfb, tag_rin))
+        return out
+
+    all_results = []
+    all_results += find_best_pairs(E24_LIST, E24_LIST, "1%", "1%")          # 1% only
+    all_results += find_best_pairs(E96_LIST_CORRECTED, E96_LIST_CORRECTED, "0.1%", "0.1%")  # 0.1% only
+    all_results += find_best_pairs(E24_LIST, E96_LIST_CORRECTED, "1%", "0.1%") + \
+                   find_best_pairs(E96_LIST_CORRECTED, E24_LIST, "0.1%", "1%")                # mixed
+
+    # Sort by closest gain, then current
+    all_results.sort(key=lambda x: (x[0], x[3]))
+
+    # Keep unique combinations
+    seen, unique_results = set(), []
+    for err, rfb, rin, curr, tag_rfb, tag_rin in all_results:
+        key = (round(rin, 5), round(rfb, 5))
+        if key not in seen:
+            seen.add(key)
+            unique_results.append((err, rfb, rin, curr, tag_rfb, tag_rin))
+        if len(unique_results) >= 12:
+            break
+
+    # 4️⃣ Display combined table
+    print("\n--- Combined Gain Options ---")
+    print("| Gain    | Error % | Rin        | Rfb        | Current | Types       |")
+    print("|---------|---------|------------|------------|---------|-------------|")
+    for err, rfb, rin, curr, tag_rfb, tag_rin in unique_results:
+        g = -(rfb / rin)
+        err_pct = ((g - gain) / gain * 100) if gain != 0 else 0.0
+        print(f"| {g:7.3f} | {err_pct:7.2f}% | {format_resistor(rin):10} | {format_resistor(rfb):10} | {format_current(curr):8} | Rin:{tag_rin},Rfb:{tag_rfb} |")
+
+    # 5️⃣ Offset divider (unchanged)
+    if need_offset:
+        print("\n--- Offset Divider Options ---")
+        print("Target equation:  Vplus = Vref * (Rbot / (Rtop + Rbot))")
+        print(f"→ Need Vplus = {Vplus:.4f} V from Vref = {Vref:.4f} V\n")
+
+        ratio_target = Vplus / Vref
+        if ratio_target <= 0 or ratio_target >= 1:
+            print("⚠️  Invalid ratio — check Vref and Vplus.")
+            return
+
+        pairs = []
+        for rtop in E24_LIST:
+            for rbot in E24_LIST:
+                if rtop + rbot == 0: continue
+                v = Vref * (rbot / (rtop + rbot))
+                err = abs(v - Vplus)
+                i_div = Vref / (rtop + rbot)
+                if i_div > 1e-6:
+                    pairs.append((err, rtop, rbot, i_div))
+        pairs.sort(key=lambda x: (x[0], x[3]))
+        print("| V+      | Error % | Rtop      | Rbot      | Idiv     |")
+        print("|---------|---------|-----------|-----------|----------|")
+        for err, rtop, rbot, i_div in pairs[:6]:
+            v_ach = Vref * (rbot / (rtop + rbot))
+            err_pct = ((v_ach - Vplus) / Vplus * 100) if Vplus != 0 else 0.0
+            print(f"| {v_ach:7.3f} | {err_pct:+7.2f}% | {format_resistor(rtop):9} | {format_resistor(rbot):9} | {format_current(i_div):8} |")
+
+    print("\n✅ Done.\n")
 
 
 
@@ -241,7 +366,7 @@ def main():
         if choice == "1":
             voltage_divider()
         elif choice == "2":
-            print("Inverting Op Amp function not implemented yet.")
+            basic_inverting_with_offset()
         elif choice == "3":
             print("Summing Inverting Op Amp function not implemented yet.")
         elif choice == "4":
