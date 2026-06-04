@@ -344,7 +344,16 @@ def make_ground_zone(board):
         board.Add(zone)
 
     msg += f"GND zones created on F.Cu and B.Cu (solid, no thermal relief).\n"
-    msg += "(Press B in KiCad to fill zones.)\n"
+
+    # Build connectivity before filling — required in KiCad 10 for correct net resolution
+    board.BuildConnectivity()
+    try:
+        filler = pcbnew.ZONE_FILLER(board)
+        filler.Fill(board.Zones())
+        msg += "Zones filled automatically.\n"
+    except Exception as e:
+        msg += f"Auto-fill failed ({e}) — press B in KiCad to fill manually.\n"
+
     return msg
 
 # --- Plugin ---
