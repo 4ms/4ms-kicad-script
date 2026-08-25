@@ -141,6 +141,32 @@ wattage_dict = {
 
 tolerance_list = ["5%", "1%", "0.1%"]
 
+# UNI-ROYAL parts that JLCPCB stocks in its "Basic" category. These are the
+# preferred primary part number (cheaper/always-stocked); Yageo is the fallback.
+# Only 1% tolerance and these four packages have UNI-ROYAL parts in the Basic
+# category. The part number is: package + prefix + 4-char value code + suffix
+# e.g. a 2k 0402 is 0402WGF2001TCE. The value code is 3 significant digits
+# followed by a decade multiplier (see get_uniroyal_value_code).
+uniroyal_basic_fmt = {
+    "0402": ("WGF", "TCE"),
+    "0603": ("WAF", "T5E"),
+    "0805": ("W8F", "T5E"),
+    "1206": ("W4F", "T5E"),
+}
+
+# Manually-curated JLCPCB IDs for 0Ω parts in packages that have no UNI-ROYAL
+# Basic option (the four packages above are resolved automatically via the db).
+zero_ohm_ids = {
+    "0201": "C270337",
+    "0402": "C106231",
+    "0603": "C21189",
+    "0805": "C100045",
+    "1206": "C19290",
+    "1210": "C474103",
+    "2010": "C270958",
+    "2512": "C25469",
+}
+
 template_file = "resistor_template_kicad_sym"
 jlc_file = "JLCPCB-ChipResistorSMT-20220531.csv"
 
@@ -190,11 +216,74 @@ def get_4dig_value(value_ohms):
         return str(value_ohms)[:3].ljust(3, "0") + "4"
 
 
+def get_uniroyal_value_code(value_ohms):
+    """
+    Return UNI-ROYAL's 4-character value code: 3 significant digits followed by
+    a decade multiplier. Digits 0-9 mean x10^0 .. x10^9; the letters J, K, L mean
+    x10^-1, x10^-2, x10^-3 (for values below 100Ω).
+    e.g. 2k -> "2001", 49.9k -> "4992", 10M -> "1005", 10Ω -> "100J", 1Ω -> "100K"
+    """
+    if value_ohms == 0:
+        return "0000"
+    exp = 0
+    v = float(value_ohms)
+    while v < 100:
+        v *= 10
+        exp -= 1
+    while v >= 1000:
+        v /= 10
+        exp += 1
+    ddd = int(round(v))
+    if ddd == 1000:   # rounding pushed us to the next decade
+        ddd = 100
+        exp += 1
+    mult = {-1: "J", -2: "K", -3: "L"}.get(exp, str(exp))
+    return "{:03d}{}".format(ddd, mult)
+
+
+def get_uniroyal_partnum(tolerance, package, value_ohms):
+    """
+    Return the UNI-ROYAL part number for this value, or None if UNI-ROYAL has no
+    Basic-category series for the given package/tolerance. Note that a returned
+    part number is only a *candidate*; it must still be confirmed present and
+    "Basic" in the JLCPCB database before it is preferred over Yageo.
+    """
+    if tolerance != "1%" or package not in uniroyal_basic_fmt:
+        return None
+    prefix, suffix = uniroyal_basic_fmt[package]
+    return package + prefix + get_uniroyal_value_code(value_ohms) + suffix
+
+
+_uniroyal_basic_index_cache = {}
+
+def get_uniroyal_basic_index(jlcdb):
+    """ Build (once, then cache) a dict mapping each Basic-category UNI-ROYAL
+        MFR.Part number to its (JLCPCB_ID, description) tuple. This lets us look
+        up the preferred part in O(1) instead of scanning the whole file per value.
+    """
+    idx = _uniroyal_basic_index_cache.get(id(jlcdb))
+    if idx is None:
+        idx = {}
+        for comp in jlcdb:
+            if "UNI-ROYAL" in comp and '"Basic"' in comp:
+                fields = comp.split(",")
+                idx[fields[3].strip('"')] = (fields[0].strip('"'), fields[8].strip('"'))
+        _uniroyal_basic_index_cache[id(jlcdb)] = idx
+    return idx
+
+
 def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
     """ Returns a tuple of the matching JLCPCB_ID and the method used to find that ID
-        The method is either "partnum", "specs" or "not found"
+        The method is "uniroyal_basic", "partnum", "specs" or "not found"
         If no matches are found the JLCPCB ID will be "?"
     """
+
+    # Preferred: a UNI-ROYAL part that JLCPCB stocks in its "Basic" category
+    uniroyal_partnum = get_uniroyal_partnum(tolerance, package, value_ohms)
+    if uniroyal_partnum:
+        hit = get_uniroyal_basic_index(jlcdb).get(uniroyal_partnum)
+        if hit:
+            return hit[0], "uniroyal_basic", hit[1]
 
     # Default values
     found_partnum_match = False
@@ -260,8 +349,8 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
         if found_partnum_match and found_specs_match:
             break
 
-    # Part number matches are consider the best type of matches, so return that item if we matched one
-    # Otherwise, return the item that matched on specifications
+    # A UNI-ROYAL Basic match is preferred (handled above), then a part number
+    # match, then a specifications match.
     if found_partnum_match:
         return partnum_match, "partnum", partnum_match_fields
     elif found_specs_match:
@@ -271,24 +360,10 @@ def get_jlcpcb_id_and_matchtype(jlcdb, value_ohms, package, tolerance):
 
 
 def get_jlcpcb_id(jlc, value_ohms, package, tolerance):
-    if value_ohms == 0:
-        if package == "0201":
-            return "C270337"
-        if package == "0402":
-            return "C106231"
-        if package == "0603":
-            return "C21189"
-        if package == "0805":
-            return "C100045"
-        if package == "1206":
-            return "C19290"
-        if package == "1210":
-            return "C474103"
-        if package == "2010":
-            return "C270958"
-        if package == "2512":
-            return "C25469"
-    id, _, _ = get_jlcpcb_id_and_matchtype(jlc, value_ohms, package, tolerance)
+    id, method, _ = get_jlcpcb_id_and_matchtype(jlc, value_ohms, package, tolerance)
+    # For 0Ω parts without a UNI-ROYAL Basic option, fall back to a curated ID
+    if value_ohms == 0 and method != "uniroyal_basic":
+        return zero_ohm_ids.get(package, id)
     return id
 
 def get_manuf_partnum(tolerance, package, value_ohms):
@@ -313,12 +388,27 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     value_with_units = get_value_with_units(value_ohms)
     value_short = get_short_value(value_ohms) ##not used
     wattage = wattage_dict[package]
-    manuf_partnum  = get_manuf_partnum(tolerance, package, value_ohms)
-    manuf = "Xicon" if package.startswith("TH") else "Yageo"
+    yageo_partnum  = get_manuf_partnum(tolerance, package, value_ohms)
     opttol = "_" + tolerance if tolerance == "0.1%" else ""
-    footprint = "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" if package.startswith("TH") else "R_"+package 
+    footprint = "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" if package.startswith("TH") else "R_"+package
 
-    jlc_id = "" if package.startswith("TH") else get_jlcpcb_id(jlc, value_ohms, package, tolerance)
+    # Choose the primary part number: a UNI-ROYAL part in JLCPCB's Basic category
+    # is preferred; otherwise fall back to Yageo (Xicon for through-hole).
+    if package.startswith("TH"):
+        partnum = yageo_partnum
+        manuf = "Xicon"
+        jlc_id = ""
+    else:
+        jlc_id, method, _ = get_jlcpcb_id_and_matchtype(jlc, value_ohms, package, tolerance)
+        if method == "uniroyal_basic":
+            partnum = get_uniroyal_partnum(tolerance, package, value_ohms)
+            manuf = "UNI-ROYAL"
+        else:
+            partnum = yageo_partnum
+            manuf = "Yageo"
+            # Curated fallback ID for 0Ω parts the scan can't place
+            if value_ohms == 0:
+                jlc_id = zero_ohm_ids.get(package, jlc_id)
 
     symdata = tpl_data
     symdata = symdata.replace(r'%VAL%', value_with_units)
@@ -328,7 +418,7 @@ def gen_res(jlc, value_ohms, package, tolerance, tpl_data):
     symdata = symdata.replace(r'%OPTTOL%', opttol)
     symdata = symdata.replace(r'%TOL%', tolerance)
     symdata = symdata.replace(r'%WATTS%', wattage)
-    symdata = symdata.replace(r'%PARTNUM%', manuf_partnum)
+    symdata = symdata.replace(r'%PARTNUM%', partnum)
     symdata = symdata.replace(r'%JLCPCBID%', jlc_id)
     symdata = symdata.replace(r'%MANUF%', manuf)
     return symdata
@@ -397,9 +487,10 @@ if __name__ == "__main__":
     Usage: python3 resistor_gen.py libfilename {package} {tolerance} {min_mult} {max_mult} 
 
     Generates a Kicad 6 symbol library of E96+E24 resistors for a given
-    package size and tolerance. Yageo RC-series resistor part numbers will be added
-    to each symbol's Part Number field (RT-series for 0.1%). JLCPCB part numbers will
-    be added when found in JLCPCB's database.
+    package size and tolerance. The Part Number field is set to a UNI-ROYAL part
+    when JLCPCB stocks one in its "Basic" category (1%, 0402/0603/0805/1206);
+    otherwise it falls back to a Yageo RC-series part number (RT-series for 0.1%).
+    JLCPCB part numbers will be added when found in JLCPCB's database.
 
     Parameters:
     {libfilename} is the output file name. Required. If you want Kicad to recognize the file, end it with .kicad_sym
@@ -412,9 +503,10 @@ if __name__ == "__main__":
 
     There are some special commands that can be specified instead of libfilename. These are probably only useful for debugging or fine-tuning the algorithm that deduces the JLCPCB ID. These all output to stdout instead of a file. The other parameters (package, tolerance, etc) have the same meaning.
 
-    print-partnums: print the Yageo part numbers. Useful for importing into mouser to verify the part numbers are orderable.
+    print-partnums: print the primary part numbers (UNI-ROYAL Basic where available, else Yageo). Useful for importing into a distributor to verify the part numbers are orderable.
     print-bom: print a JLCPCB compatible BOM csv file. Useful for verifying the JLCPCB IDs are accurate.
     print-missing: print items with no JLCPCB ID
+    print-matched-uniroyal: print items whose JLCPCB ID was matched to a UNI-ROYAL Basic-category part
     print-matched-partnum: print items with a JLCPCB ID that was matched by an automatically generated vendor part number (e.g. Yageo P/N)
     print-matched-specs: will print items with a JLCPCB ID that was matched by value/package/tolerance instead of part number
 
@@ -455,7 +547,12 @@ if __name__ == "__main__":
                     total = total + 1
         print(f"Missing: {cnt} of {total}")
 
-    elif outfile == "print-matched-specs" or outfile == "print-matched-partnum":
+    elif outfile in ("print-matched-specs", "print-matched-partnum", "print-matched-uniroyal"):
+        wanted = {
+            "print-matched-specs": "specs",
+            "print-matched-partnum": "partnum",
+            "print-matched-uniroyal": "uniroyal_basic",
+        }[outfile]
         cnt = 0
         total = 0
         for m in multiplier_list[multiplier_list.index(minmult):multiplier_list.index(maxmult)+1]:
@@ -465,10 +562,7 @@ if __name__ == "__main__":
                     value_with_units = get_value_with_units(val)
                     jlc_id, method, specs = get_jlcpcb_id_and_matchtype(jlc, val, package, tolerance)
                     specs = specs.replace("Thin Film Resistor ","").replace("-55","").replace("~+155","").replace(" Chip Resistor - Surface Mount ROHS","").replace("150V","").replace("100V","").replace("25ppm/K","").replace("25ppm/","").replace("50ppm/","").replace("10ppm/","").replace("10ppm/K","").replace("~+125","").replace("100mW","").replace("125mW","").replace("1/8W","").replace("1/4W","").replace("�"," ")
-                    if outfile=="print-matched-specs" and method == "specs":
-                        print(value_with_units, package, tolerance, jlc_id, specs)
-                        cnt = cnt + 1
-                    elif outfile=="print-matched-partnum" and method == "partnum":
+                    if method == wanted:
                         print(value_with_units, package, tolerance, jlc_id, specs)
                         cnt = cnt + 1
                     total = total + 1

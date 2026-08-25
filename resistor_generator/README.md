@@ -8,7 +8,7 @@ Ranges:
   * 0.1% 0402: 4.7Ω to 240k
   * 0.1% 0603 to 2512: 1Ω to 1MΩ
 
-A Yageo part number is generated for each symbol and stored in the `Part Number` field. Yageo RC-series is used for 1% and RT-series for 0.1%. Also, most symbols will have a JLCPCB ID if found in the JLCPCB component database.
+The primary part number stored in each symbol's `Part Number` field is a UNI-ROYAL part whenever JLCPCB stocks one in its "Basic" category (these are the cheapest/always-stocked parts). UNI-ROYAL Basic parts only exist for 1% tolerance in the 0402, 0603, 0805 and 1206 packages, and only cover a subset of values. For every other value/package/tolerance the part number falls back to Yageo (RC-series for 1%, RT-series for 0.1%; Xicon for through-hole). The `Manufacturer` field is set accordingly ("UNI-ROYAL", "Yageo" or "Xicon"). Most symbols will also have a JLCPCB ID if found in the JLCPCB component database.
 
 The `4ms_Resistor_*.kicad_sym` symbols libraries were generated with this script.
 
@@ -17,9 +17,9 @@ All values for 0402, 0603, 0805 for 1% and 0.1% tolerance have been manually che
 
 Number of JLCPCB IDs missing:
 
-  * 0402 1%: missing 50 of 798
-  * 0603 1%: missing 49 of 798
-  * 0805 1%: missing 47 of 798
+  * 0402 1%: missing 48 of 798
+  * 0603 1%: missing 45 of 798
+  * 0805 1%: missing 44 of 798
   * 0402 0.1%: missing 276 of 536
   * 0603 0.1%: missing 120 of 685
   * 0805 0.1%: missing 295 of 703
