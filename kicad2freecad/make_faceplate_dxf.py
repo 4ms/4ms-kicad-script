@@ -58,6 +58,8 @@ HOLE_SIZES = {
     'LED-C1-A2-3MM-VERT':    3.048,
     'LED_D3.0mm-3':          3.048,
     'LED-3MM-SQUARE-ANODE':  3.048,
+    # LEDs 5mm → 5.0mm
+    'LED_5mm': 5.0,
     # Lightpipes / PLCC4 → 2.921mm
     'LED-PLCC4':          2.921,
     'LED_PLCC-4':         2.921,
@@ -254,23 +256,19 @@ def main():
         print('\nNo panel holes found — check footprint names against HOLE_SIZES / RECT_SIZES mapping.')
         sys.exit(1)
 
-    # Strip existing board-level Edge.Cuts geometry (boundary rect etc.)
-    pcb_text = strip_board_edge_cuts(pcb_text)
+    # Build modified PCB for DXF export only (strip board Edge.Cuts, add hole circles).
+    # Never written back to the source file.
+    export_text = strip_board_edge_cuts(pcb_text)
 
     # Insert shapes before the final closing paren of the file
     circles_text = '\n'.join(shapes)
-    modified = pcb_text.rstrip()
+    modified = export_text.rstrip()
     if modified.endswith(')'):
         modified = modified[:-1] + '\n' + circles_text + '\n)'
     else:
         modified += '\n' + circles_text
 
-    # Write modified PCB back to the input file so KiCad shows the faceplate holes
-    with open(input_pcb, 'w') as f:
-        f.write(modified)
-    print(f'Updated: {input_pcb}')
-
-    # Also write to a temp file for kicad-cli DXF export
+    # Write to a temp file for kicad-cli DXF export only
     with tempfile.NamedTemporaryFile(suffix='.kicad_pcb', delete=False, mode='w') as tmp:
         tmp.write(modified)
         tmp_path = tmp.name
