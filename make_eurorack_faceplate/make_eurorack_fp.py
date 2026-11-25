@@ -60,6 +60,7 @@ footprint_convert = {
     'RGB-SPST-LED-TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
     'Button_RgbLED_SPST_TC002': 'Faceplate_Hole_LED_Button_5.4mm_With_Mask_Opening',
     'Slide_Switch_Runrun_SS22D06': 'Faceplate_Slide_Switch_SS22D06_Runrun',
+    'Slide_Switch_DPDT_SS22H02': 'Faceplate_Slide_Switch_SS22H02_Daier',
 }
 
 # Full list of parts to remove (substring match, case-insensitive)
