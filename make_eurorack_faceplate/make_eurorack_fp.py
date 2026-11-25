@@ -62,6 +62,8 @@ footprint_convert = {
     'Slide_Switch_Runrun_SS22D06': 'Faceplate_Slide_Switch_SS22D06_Runrun',
     'Slide_Switch_DPDT_SS22H02': 'Faceplate_Slide_Switch_SS22H02_Daier',
     'Slide_Switch_DP3T_SS23D03': 'Faceplate_Slide_Switch_SS23D03_Daier',
+    # SCREENS
+    'ER-TFT3.95-1_Touch': 'Faceplate_Window_ER-TFT3.95-1_Touch',
 }
 
 # Full list of parts to remove (substring match, case-insensitive)
